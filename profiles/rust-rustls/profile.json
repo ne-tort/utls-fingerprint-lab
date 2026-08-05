@@ -1,0 +1,20 @@
+{
+  "expected": {
+    "ja3_hash": "70e7ff2a0f8d4f1537ebe33a64a769f6",
+    "ja3_hash_unstable": true,
+    "ja4": "t13d1009h2_b9b30c653583_3a8073edd8ef"
+  },
+  "files": {
+    "clienthello_bin": "clienthello.bin",
+    "meta_json": "meta.json"
+  },
+  "format": "utls-raw-clienthello-v1",
+  "id": "rust-rustls",
+  "source": {
+    "capture_dir": "/captures/30-rust-rustls",
+    "captured_at": "2026-08-05T20:01:20Z"
+  },
+  "utls": {
+    "import": "Fingerprinter{AllowBluntMimicry:true}.RawClientHello(clienthello.bin) → UClient(HelloCustom).ApplyPreset(spec)"
+  }
+}

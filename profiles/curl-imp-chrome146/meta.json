@@ -1,0 +1,72 @@
+{
+  "target_id": "curl-imp-chrome146",
+  "captured_at": "2026-08-05T20:26:49Z",
+  "peer": "172.27.0.3:59860",
+  "sni": "curl-imp-chrome146.fp.lab.local",
+  "alpn": [
+    "http/1.1"
+  ],
+  "tls_version_record": "0x0301",
+  "tls_version_hello": "0x0303",
+  "ja3": "771,4865-4866-4867-49195-49199-49196-49200-52393-52392-49171-49172-156-157-47-53,13-11-5-43-18-51-0-10-35-16-65037-65281-23-27-45,4588-29-23-24,",
+  "ja3_hash": "23fede2856e0b625bcd864b53276397e",
+  "ja4": "t13d1513h1_acb858a92679_0a20fe35d3a5",
+  "cipher_suites": [
+    "0xaaaa",
+    "0x1301",
+    "0x1302",
+    "0x1303",
+    "0xc02b",
+    "0xc02f",
+    "0xc02c",
+    "0xc030",
+    "0xcca9",
+    "0xcca8",
+    "0xc013",
+    "0xc014",
+    "0x009c",
+    "0x009d",
+    "0x002f",
+    "0x0035"
+  ],
+  "extensions": [
+    "0x3a3a",
+    "0x000d",
+    "0x000b",
+    "0x0005",
+    "0x002b",
+    "0x0012",
+    "0x0033",
+    "0x0000",
+    "0x000a",
+    "0x0023",
+    "0x0010",
+    "0xfe0d",
+    "0xff01",
+    "0x0017",
+    "0x001b",
+    "0x002d",
+    "0xcaca"
+  ],
+  "supported_groups": [
+    "0x0a0a",
+    "0x11ec",
+    "0x001d",
+    "0x0017",
+    "0x0018"
+  ],
+  "signature_algorithms": [
+    "0x0403",
+    "0x0804",
+    "0x0401",
+    "0x0503",
+    "0x0805",
+    "0x0501",
+    "0x0806",
+    "0x0601"
+  ],
+  "clienthello_sha256": "ed09a42056bf65469f96504f67ed00c17503489258ae6af7daa4fef735fb71e2",
+  "clienthello_path": "clienthello.bin",
+  "utls_fingerprinter_ok": true,
+  "notes": ""
+}

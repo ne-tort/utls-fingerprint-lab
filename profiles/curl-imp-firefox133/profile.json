@@ -1,0 +1,20 @@
+{
+  "expected": {
+    "ja3_hash": "397c8c9c1eecd1092852ce8149d7fc32",
+    "ja3_hash_unstable": true,
+    "ja4": "t13d1714h1_5b234860e130_eeeea6562960"
+  },
+  "files": {
+    "clienthello_bin": "clienthello.bin",
+    "meta_json": "meta.json"
+  },
+  "format": "utls-raw-clienthello-v1",
+  "id": "curl-imp-firefox133",
+  "source": {
+    "capture_dir": "/captures/35-curl-imp-firefox133",
+    "captured_at": "2026-08-05T20:02:09Z"
+  },
+  "utls": {
+    "import": "Fingerprinter{AllowBluntMimicry:true}.RawClientHello(clienthello.bin) → UClient(HelloCustom).ApplyPreset(spec)"
+  }
+}

@@ -1,0 +1,17 @@
+clients/**/bin/
+capture/bin/
+tools/bin/
+bin/
+_refs/
+captures/
+certs/*.pem
+
+**/__pycache__/
+**/target/
+profiles/**/verify-last.json
+profiles/verify-*/
+
+.idea/
+.vscode/
+
+

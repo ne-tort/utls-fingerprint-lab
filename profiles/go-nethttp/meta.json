@@ -1,0 +1,69 @@
+{
+  "target_id": "go-nethttp",
+  "captured_at": "2026-08-05T20:26:53Z",
+  "peer": "172.27.0.3:59876",
+  "sni": "go-nethttp.fp.lab.local",
+  "alpn": [
+    "h2",
+    "http/1.1"
+  ],
+  "tls_version_record": "0x0301",
+  "tls_version_hello": "0x0303",
+  "ja3": "771,49195-49199-49196-49200-52393-52392-49161-49171-49162-49172-4865-4866-4867,0-11-65281-23-18-5-10-13-50-16-43-51,4588-29-23-24-25,",
+  "ja3_hash": "9807f2d0b64389f761c71bdc6316a3b1",
+  "ja4": "t13d1310h2_45672f90a73c_e5728521abd4",
+  "cipher_suites": [
+    "0xc02b",
+    "0xc02f",
+    "0xc02c",
+    "0xc030",
+    "0xcca9",
+    "0xcca8",
+    "0xc009",
+    "0xc013",
+    "0xc00a",
+    "0xc014",
+    "0x1301",
+    "0x1302",
+    "0x1303"
+  ],
+  "extensions": [
+    "0x0000",
+    "0x000b",
+    "0xff01",
+    "0x0017",
+    "0x0012",
+    "0x0005",
+    "0x000a",
+    "0x000d",
+    "0x0032",
+    "0x0010",
+    "0x002b",
+    "0x0033"
+  ],
+  "supported_groups": [
+    "0x11ec",
+    "0x001d",
+    "0x0017",
+    "0x0018",
+    "0x0019"
+  ],
+  "signature_algorithms": [
+    "0x0804",
+    "0x0403",
+    "0x0807",
+    "0x0805",
+    "0x0806",
+    "0x0401",
+    "0x0501",
+    "0x0601",
+    "0x0503",
+    "0x0603",
+    "0x0201",
+    "0x0203"
+  ],
+  "clienthello_sha256": "a1278d4aeafe3a2533619509a696dc0f4783aa19c24f8e223e3871bb2bdb8254",
+  "clienthello_path": "clienthello.bin",
+  "utls_fingerprinter_ok": true,
+  "notes": ""
+}

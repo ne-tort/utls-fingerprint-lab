@@ -1,0 +1,20 @@
+{
+  "expected": {
+    "ja3_hash": "0a98b9eba264c1b8de3a0590a21ce256",
+    "ja3_hash_unstable": true,
+    "ja4": "t13d311100_cdf1781c2960_7e1102d2036b"
+  },
+  "files": {
+    "clienthello_bin": "clienthello.bin",
+    "meta_json": "meta.json"
+  },
+  "format": "utls-raw-clienthello-v1",
+  "id": "java-jdk",
+  "source": {
+    "capture_dir": "/captures/26-java-jdk",
+    "captured_at": "2026-08-05T19:56:07Z"
+  },
+  "utls": {
+    "import": "Fingerprinter{AllowBluntMimicry:true}.RawClientHello(clienthello.bin) → UClient(HelloCustom).ApplyPreset(spec)"
+  }
+}

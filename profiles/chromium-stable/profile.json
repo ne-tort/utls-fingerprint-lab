@@ -1,0 +1,20 @@
+{
+    "id":  "chromium-stable",
+    "format":  "utls-raw-clienthello-v1",
+    "source":  {
+                   "captured_at":  "2026-08-05T19:28:00Z",
+                   "capture_dir":  "2-chromium-stable"
+               },
+    "files":  {
+                  "meta_json":  "meta.json",
+                  "clienthello_bin":  "clienthello.bin"
+              },
+    "expected":  {
+                     "ja3_hash_unstable":  true,
+                     "ja4":  "t13d1514h2_acb858a92679_02713d6af862",
+                     "ja3_hash":  "d6b33b0aca83a4efa9b3b387469184a1"
+                 },
+    "utls":  {
+                 "import":  "Fingerprinter.RawClientHello then ApplyPreset"
+             }
+}

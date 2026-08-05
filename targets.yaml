@@ -1,0 +1,411 @@
+# targets.yaml — registry of fingerprint capture targets.
+# Extension contract: add an entry here, implement runner (kind), then
+# `./lab.ps1 capture -Id <id>` (or capture all). See docs/EXTENDING.md.
+#
+# status:
+#   active   — runnable in this lab, profiles committed when captured
+#   wishlist — deferred; see WISHLIST.md
+#   skip     — explicitly out of scope
+#
+# kind:
+#   compose          — docker compose run --rm <service>
+#   emit-builtin     — tools emit-builtin -id <emit_id>
+#   curl-impersonate — lexiforest wrapper inside curl-impersonate image
+#   wishlist         — not runnable yet
+
+version: 1
+
+defaults:
+  sni_suffix: ".fp.lab.local"
+  dial: "capture:8443"
+  curl_impersonate_image: "lexiforest/curl-impersonate:alpine"
+  profile_format: "utls-raw-clienthello-v1"
+
+groups:
+  browsers: { description: "Real browsers in Docker" }
+  impersonate: { description: "curl-impersonate browser parrots" }
+  builtins: { description: "metacubex/utls Hello*_Auto / version pins" }
+  libs: { description: "TLS libraries and language stacks" }
+  wishlist: { description: "Deferred targets" }
+
+targets:
+  # --- browsers ---
+  - id: chromium-stable
+    group: browsers
+    kind: compose
+    service: chromium-stable
+    status: active
+    needs_dns_alias: true
+    utls_ready: true
+    notes: "zenika/alpine-chrome:124"
+
+  - id: firefox-release
+    group: browsers
+    kind: compose
+    service: firefox-release
+    status: active
+    needs_dns_alias: true
+    utls_ready: true
+    notes: "debian firefox-esr"
+
+  # --- curl-impersonate ---
+  - id: curl-imp-chrome146
+    group: impersonate
+    kind: curl-impersonate
+    wrapper: curl_chrome146
+    status: active
+    utls_ready: true
+  - id: curl-imp-chrome145
+    group: impersonate
+    kind: curl-impersonate
+    wrapper: curl_chrome145
+    status: active
+    utls_ready: true
+  - id: curl-imp-chrome142
+    group: impersonate
+    kind: curl-impersonate
+    wrapper: curl_chrome142
+    status: active
+    utls_ready: true
+  - id: curl-imp-chrome136
+    group: impersonate
+    kind: curl-impersonate
+    wrapper: curl_chrome136
+    status: active
+    utls_ready: true
+  - id: curl-imp-chrome131
+    group: impersonate
+    kind: curl-impersonate
+    wrapper: curl_chrome131
+    status: active
+    utls_ready: true
+  - id: curl-imp-chrome124
+    group: impersonate
+    kind: curl-impersonate
+    wrapper: curl_chrome124
+    status: active
+    utls_ready: true
+  - id: curl-imp-chrome131-android
+    group: impersonate
+    kind: curl-impersonate
+    wrapper: curl_chrome131_android
+    status: active
+    utls_ready: true
+  - id: curl-imp-firefox147
+    group: impersonate
+    kind: curl-impersonate
+    wrapper: curl_firefox147
+    status: active
+    utls_ready: true
+  - id: curl-imp-firefox144
+    group: impersonate
+    kind: curl-impersonate
+    wrapper: curl_firefox144
+    status: active
+    utls_ready: true
+  - id: curl-imp-firefox135
+    group: impersonate
+    kind: curl-impersonate
+    wrapper: curl_firefox135
+    status: active
+    utls_ready: true
+  - id: curl-imp-firefox133
+    group: impersonate
+    kind: curl-impersonate
+    wrapper: curl_firefox133
+    status: active
+    utls_ready: true
+  - id: curl-imp-safari260
+    group: impersonate
+    kind: curl-impersonate
+    wrapper: curl_safari260
+    status: active
+    utls_ready: true
+  - id: curl-imp-safari260-ios
+    group: impersonate
+    kind: curl-impersonate
+    wrapper: curl_safari260_ios
+    status: active
+    utls_ready: true
+  - id: curl-imp-safari184
+    group: impersonate
+    kind: curl-impersonate
+    wrapper: curl_safari184
+    status: active
+    utls_ready: true
+  - id: curl-imp-safari184-ios
+    group: impersonate
+    kind: curl-impersonate
+    wrapper: curl_safari184_ios
+    status: active
+    utls_ready: true
+  - id: curl-imp-safari180
+    group: impersonate
+    kind: curl-impersonate
+    wrapper: curl_safari180
+    status: active
+    utls_ready: true
+  - id: curl-imp-edge101
+    group: impersonate
+    kind: curl-impersonate
+    wrapper: curl_edge101
+    status: active
+    utls_ready: true
+  - id: curl-imp-tor145
+    group: impersonate
+    kind: curl-impersonate
+    wrapper: curl_tor145
+    status: active
+    utls_ready: true
+
+  # --- uTLS builtins ---
+  - id: builtin-chrome
+    group: builtins
+    kind: emit-builtin
+    emit_id: chrome
+    status: active
+    utls_ready: true
+  - id: builtin-chrome-120
+    group: builtins
+    kind: emit-builtin
+    emit_id: chrome_120
+    status: active
+    utls_ready: true
+  - id: builtin-chrome-131
+    group: builtins
+    kind: emit-builtin
+    emit_id: chrome_131
+    status: active
+    utls_ready: true
+  - id: builtin-chrome-133
+    group: builtins
+    kind: emit-builtin
+    emit_id: chrome_133
+    status: active
+    utls_ready: true
+  - id: builtin-firefox
+    group: builtins
+    kind: emit-builtin
+    emit_id: firefox
+    status: active
+    utls_ready: true
+  - id: builtin-firefox-120
+    group: builtins
+    kind: emit-builtin
+    emit_id: firefox_120
+    status: active
+    utls_ready: true
+  - id: builtin-edge
+    group: builtins
+    kind: emit-builtin
+    emit_id: edge
+    status: active
+    utls_ready: true
+  - id: builtin-safari
+    group: builtins
+    kind: emit-builtin
+    emit_id: safari
+    status: active
+    utls_ready: true
+  - id: builtin-ios
+    group: builtins
+    kind: emit-builtin
+    emit_id: ios
+    status: active
+    utls_ready: true
+  - id: builtin-android
+    group: builtins
+    kind: emit-builtin
+    emit_id: android
+    status: active
+    utls_ready: true
+  - id: builtin-360
+    group: builtins
+    kind: emit-builtin
+    emit_id: 360
+    status: active
+    utls_ready: true
+  - id: builtin-qq
+    group: builtins
+    kind: emit-builtin
+    emit_id: qq
+    status: active
+    utls_ready: true
+
+  # --- libraries ---
+  - id: openssl3
+    group: libs
+    kind: compose
+    service: openssl3
+    status: active
+    needs_dns_alias: true
+    utls_ready: true
+  - id: curl-openssl
+    group: libs
+    kind: compose
+    service: curl-openssl
+    status: active
+    needs_dns_alias: true
+    utls_ready: true
+  - id: go-nethttp
+    group: libs
+    kind: compose
+    service: go-nethttp
+    status: active
+    needs_dns_alias: true
+    utls_ready: true
+  - id: python-requests
+    group: libs
+    kind: compose
+    service: python-requests
+    status: active
+    needs_dns_alias: true
+    utls_ready: true
+  - id: python-httpx
+    group: libs
+    kind: compose
+    service: python-httpx
+    status: active
+    needs_dns_alias: true
+    utls_ready: true
+  - id: node-undici
+    group: libs
+    kind: compose
+    service: node-undici
+    status: active
+    needs_dns_alias: true
+    utls_ready: true
+  - id: okhttp4
+    group: libs
+    kind: compose
+    service: okhttp4
+    status: active
+    needs_dns_alias: true
+    utls_ready: true
+  - id: java-jdk
+    group: libs
+    kind: compose
+    service: java-jdk
+    status: active
+    needs_dns_alias: true
+    utls_ready: true
+  - id: rust-rustls
+    group: libs
+    kind: compose
+    service: rust-rustls
+    status: active
+    needs_dns_alias: true
+    utls_ready: true
+  - id: gnutls-cli
+    group: libs
+    kind: compose
+    service: gnutls-cli
+    status: active
+    needs_dns_alias: true
+    utls_ready: true
+  - id: php-curl
+    group: libs
+    kind: compose
+    service: php-curl
+    status: active
+    needs_dns_alias: true
+    utls_ready: true
+  - id: dotnet-http
+    group: libs
+    kind: compose
+    service: dotnet-http
+    status: active
+    needs_dns_alias: true
+    utls_ready: true
+
+  # --- wishlist (from SPEC 062 TARGETS, not yet in lab) ---
+  - id: chromium-beta
+    group: wishlist
+    kind: wishlist
+    status: wishlist
+    utls_ready: true
+    why: "Track Chrome beta drift vs stable"
+  - id: brave
+    group: wishlist
+    kind: wishlist
+    status: wishlist
+    utls_ready: true
+    why: "Chromium-fork; check JA4 drift vs Chrome"
+  - id: edge-linux-deb
+    group: wishlist
+    kind: wishlist
+    status: wishlist
+    utls_ready: true
+    why: "Real Edge .deb (curl-imp/builtin already cover proxy)"
+  - id: okhttp5
+    group: wishlist
+    kind: wishlist
+    status: wishlist
+    utls_ready: true
+    why: "OkHttp 5.x vs okhttp4 / HelloAndroid"
+  - id: rust-native-tls
+    group: wishlist
+    kind: wishlist
+    status: wishlist
+    utls_ready: true
+    why: "Contrast with rustls"
+  - id: electron-sample
+    group: wishlist
+    kind: wishlist
+    status: wishlist
+    utls_ready: true
+    why: "Pinned Chromium inside Electron often lags stable"
+  - id: grpc-go
+    group: wishlist
+    kind: wishlist
+    status: wishlist
+    utls_ready: true
+    why: "h2 + Go TLS; common mesh fingerprint"
+  - id: grpc-java
+    group: wishlist
+    kind: wishlist
+    status: wishlist
+    utls_ready: true
+    why: "JSSE/gRPC stack"
+  - id: aws-cli
+    group: wishlist
+    kind: wishlist
+    status: wishlist
+    utls_ready: true
+    why: "botocore/urllib3 mass traffic"
+  - id: git-https
+    group: wishlist
+    kind: wishlist
+    status: wishlist
+    utls_ready: true
+    why: "libcurl via git"
+  - id: python-aiohttp
+    group: wishlist
+    kind: wishlist
+    status: wishlist
+    utls_ready: true
+    why: "async Python TLS path"
+  - id: safari-macos-host
+    group: wishlist
+    kind: wishlist
+    status: wishlist
+    utls_ready: true
+    why: "Real Safari (impersonate already; host capture later)"
+  - id: chrome-android-device
+    group: wishlist
+    kind: wishlist
+    status: wishlist
+    utls_ready: true
+    why: "Emulator/device; curl-imp android is proxy"
+  - id: yandex-linux
+    group: wishlist
+    kind: wishlist
+    status: wishlist
+    utls_ready: true
+    why: "RU Chromium-fork; install friction"
+  - id: opera
+    group: wishlist
+    kind: wishlist
+    status: wishlist
+    utls_ready: true
+    why: "Low priority Chromium-fork"

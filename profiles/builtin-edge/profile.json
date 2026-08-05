@@ -1,0 +1,20 @@
+{
+  "expected": {
+    "ja3_hash": "df84c31f188e7cac722ba946391b0ed2",
+    "ja3_hash_unstable": true,
+    "ja4": "t13d1513h2_acb858a92679_de4a06bb82e3"
+  },
+  "files": {
+    "clienthello_bin": "clienthello.bin",
+    "meta_json": "meta.json"
+  },
+  "format": "utls-raw-clienthello-v1",
+  "id": "builtin-edge",
+  "source": {
+    "capture_dir": "/captures/4-builtin-edge",
+    "captured_at": "2026-08-05T19:53:29Z"
+  },
+  "utls": {
+    "import": "Fingerprinter{AllowBluntMimicry:true}.RawClientHello(clienthello.bin) → UClient(HelloCustom).ApplyPreset(spec)"
+  }
+}

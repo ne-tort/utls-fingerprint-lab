@@ -1,0 +1,20 @@
+{
+  "expected": {
+    "ja3_hash": "5c1469b1ffe9610184d6e2c03ae68705",
+    "ja3_hash_unstable": true,
+    "ja4": "t13d1112h2_d3eabd2901df_89e9e4bb3419"
+  },
+  "files": {
+    "clienthello_bin": "clienthello.bin",
+    "meta_json": "meta.json"
+  },
+  "format": "utls-raw-clienthello-v1",
+  "id": "okhttp4",
+  "source": {
+    "capture_dir": "/captures/1-okhttp4",
+    "captured_at": "2026-08-05T19:43:46Z"
+  },
+  "utls": {
+    "import": "Fingerprinter{AllowBluntMimicry:true}.RawClientHello(clienthello.bin) → UClient(HelloCustom).ApplyPreset(spec)"
+  }
+}

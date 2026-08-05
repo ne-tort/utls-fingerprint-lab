@@ -1,0 +1,20 @@
+{
+  "expected": {
+    "ja3_hash": "9807f2d0b64389f761c71bdc6316a3b1",
+    "ja3_hash_unstable": true,
+    "ja4": "t13d1310h2_45672f90a73c_e5728521abd4"
+  },
+  "files": {
+    "clienthello_bin": "clienthello.bin",
+    "meta_json": "meta.json"
+  },
+  "format": "utls-raw-clienthello-v1",
+  "id": "go-nethttp",
+  "source": {
+    "capture_dir": "/captures/4-go-nethttp",
+    "captured_at": "2026-08-05T20:26:53Z"
+  },
+  "utls": {
+    "import": "Fingerprinter{AllowBluntMimicry:true}.RawClientHello(clienthello.bin) → UClient(HelloCustom).ApplyPreset(spec)"
+  }
+}

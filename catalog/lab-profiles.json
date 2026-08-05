@@ -1,0 +1,225 @@
+{
+  "profile_count": 44,
+  "profiles": [
+    {
+      "id": "builtin-360",
+      "ja4": "t12d2008s2_ae54550e61e1_736b2a1ed4d3",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "builtin-android",
+      "ja4": "t12d120600_f901973f4d4e_036209cd1ead",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "builtin-chrome",
+      "ja4": "t13d1514h2_acb858a92679_d8a2da3f94cd",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "builtin-chrome-120",
+      "ja4": "t13d1514h2_acb858a92679_02713d6af862",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "builtin-chrome-131",
+      "ja4": "t13d1514h2_acb858a92679_02713d6af862",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "builtin-chrome-133",
+      "ja4": "t13d1514h2_acb858a92679_d8a2da3f94cd",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "builtin-edge",
+      "ja4": "t13d1513h2_acb858a92679_de4a06bb82e3",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "builtin-firefox",
+      "ja4": "t13d1713h2_5b234860e130_5c2c66f702b0",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "builtin-firefox-120",
+      "ja4": "t13d1713h2_5b234860e130_5c2c66f702b0",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "builtin-ios",
+      "ja4": "t13d2611h2_1de9e775a572_845d286b0d67",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "builtin-qq",
+      "ja4": "t13d1514h2_acb858a92679_e5627efa2ab1",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "builtin-safari",
+      "ja4": "t13d2012h2_de3eb69493ac_14788d8d241b",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "chromium-stable",
+      "ja4": "t13d1514h2_acb858a92679_02713d6af862",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "curl-imp-chrome124",
+      "ja4": "t13d1513h1_acb858a92679_0a20fe35d3a5",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "curl-imp-chrome131",
+      "ja4": "t13d1513h1_acb858a92679_0a20fe35d3a5",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "curl-imp-chrome131-android",
+      "ja4": "t13d1513h1_acb858a92679_0a20fe35d3a5",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "curl-imp-chrome136",
+      "ja4": "t13d1513h1_acb858a92679_0a20fe35d3a5",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "curl-imp-chrome142",
+      "ja4": "t13d1513h1_acb858a92679_0a20fe35d3a5",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "curl-imp-chrome145",
+      "ja4": "t13d1513h1_acb858a92679_0a20fe35d3a5",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "curl-imp-chrome146",
+      "ja4": "t13d1513h1_acb858a92679_0a20fe35d3a5",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "curl-imp-edge101",
+      "ja4": "t13d1513h1_acb858a92679_de4a06bb82e3",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "curl-imp-firefox133",
+      "ja4": "t13d1714h1_5b234860e130_eeeea6562960",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "curl-imp-firefox135",
+      "ja4": "t13d1715h1_5b234860e130_3cbfd9057e0d",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "curl-imp-firefox144",
+      "ja4": "t13d1715h1_5b234860e130_3cbfd9057e0d",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "curl-imp-firefox147",
+      "ja4": "t13d1715h1_5b234860e130_3cbfd9057e0d",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "curl-imp-safari180",
+      "ja4": "t13d2012h1_de3eb69493ac_e42f34c56612",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "curl-imp-safari184",
+      "ja4": "t13d2012h1_de3eb69493ac_e42f34c56612",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "curl-imp-safari184-ios",
+      "ja4": "t13d2012h1_de3eb69493ac_e42f34c56612",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "curl-imp-safari260",
+      "ja4": "t13d2012h1_09fdf58d427f_d0a99439f9b1",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "curl-imp-safari260-ios",
+      "ja4": "t13d2013h1_de3eb69493ac_c258b721e490",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "curl-imp-tor145",
+      "ja4": "t13d1511h1_77608d807651_748f4c70de1c",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "curl-openssl",
+      "ja4": "t13d3110h2_d7c3e2abb617_6bebaf5329ac",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "dotnet-http",
+      "ja4": "t13d121000_3c962d0d4049_f6eeaf393d2e",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "firefox-release",
+      "ja4": "t13d1715h2_5b234860e130_3cbfd9057e0d",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "gnutls-cli",
+      "ja4": "t13d291200_7c1bf9677551_2cc26d266019",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "go-nethttp",
+      "ja4": "t13d1310h2_45672f90a73c_e5728521abd4",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "java-jdk",
+      "ja4": "t13d311100_cdf1781c2960_7e1102d2036b",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "node-undici",
+      "ja4": "t13d521000_ca35c0050d43_8e6e362c5eac",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "okhttp4",
+      "ja4": "t13d1112h2_d3eabd2901df_89e9e4bb3419",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "openssl3",
+      "ja4": "t13d310900_d7c3e2abb617_1f22a2ca17c4",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "php-curl",
+      "ja4": "t13d3011h2_8d44cdc55eec_8537cf56674e",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "python-httpx",
+      "ja4": "t13d171100_fd0eb050439a_ecd0401ec68b",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "python-requests",
+      "ja4": "t13d171100_fd0eb050439a_ecd0401ec68b",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "rust-rustls",
+      "ja4": "t13d1009h2_b9b30c653583_3a8073edd8ef",
+      "format": "utls-raw-clienthello-v1"
+    }
+  ]
+}

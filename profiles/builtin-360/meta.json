@@ -1,0 +1,70 @@
+{
+  "target_id": "builtin-360",
+  "captured_at": "2026-08-05T19:53:29Z",
+  "peer": "192.168.48.3:58842",
+  "sni": "builtin-360.fp.lab.local",
+  "alpn": [
+    "spdy/2",
+    "spdy/3",
+    "spdy/3.1",
+    "http/1.1"
+  ],
+  "tls_version_record": "0x0301",
+  "tls_version_hello": "0x0303",
+  "ja3": "771,49162-49172-57-107-53-61-49159-49161-49187-49169-49171-49191-51-103-50-5-4-47-60-10,0-65281-10-11-35-13172-16-30031-5-13,23-24-25,",
+  "ja3_hash": "d07994c645aeda82fdbc9960f44493a7",
+  "ja4": "t12d2008s2_ae54550e61e1_736b2a1ed4d3",
+  "cipher_suites": [
+    "0xc00a",
+    "0xc014",
+    "0x0039",
+    "0x006b",
+    "0x0035",
+    "0x003d",
+    "0xc007",
+    "0xc009",
+    "0xc023",
+    "0xc011",
+    "0xc013",
+    "0xc027",
+    "0x0033",
+    "0x0067",
+    "0x0032",
+    "0x0005",
+    "0x0004",
+    "0x002f",
+    "0x003c",
+    "0x000a"
+  ],
+  "extensions": [
+    "0x0000",
+    "0xff01",
+    "0x000a",
+    "0x000b",
+    "0x0023",
+    "0x3374",
+    "0x0010",
+    "0x754f",
+    "0x0005",
+    "0x000d"
+  ],
+  "supported_groups": [
+    "0x0017",
+    "0x0018",
+    "0x0019"
+  ],
+  "signature_algorithms": [
+    "0x0401",
+    "0x0501",
+    "0x0201",
+    "0x0403",
+    "0x0503",
+    "0x0203",
+    "0x0402",
+    "0x0202"
+  ],
+  "clienthello_sha256": "d9179500eaf88efcce93c4170cf1ef5267fde2a5277250ec3c78c671b619a977",
+  "clienthello_path": "clienthello.bin",
+  "utls_fingerprinter_ok": true,
+  "notes": ""
+}

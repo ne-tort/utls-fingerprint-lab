@@ -1,0 +1,20 @@
+{
+  "expected": {
+    "ja3_hash": "ccf70bec2d9c6f12a9c8486c6b5a91bb",
+    "ja3_hash_unstable": true,
+    "ja4": "t13d310900_d7c3e2abb617_1f22a2ca17c4"
+  },
+  "files": {
+    "clienthello_bin": "clienthello.bin",
+    "meta_json": "meta.json"
+  },
+  "format": "utls-raw-clienthello-v1",
+  "id": "openssl3",
+  "source": {
+    "capture_dir": "/captures/1-openssl3",
+    "captured_at": "2026-08-05T20:26:47Z"
+  },
+  "utls": {
+    "import": "Fingerprinter{AllowBluntMimicry:true}.RawClientHello(clienthello.bin) → UClient(HelloCustom).ApplyPreset(spec)"
+  }
+}
