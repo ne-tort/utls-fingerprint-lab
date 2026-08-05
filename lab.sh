@@ -5,15 +5,29 @@ ROOT="$(cd "$(dirname "$0")" && pwd)"
 cd "$ROOT"
 export DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1
 export COMPOSE_PROFILES=capture,verify,tools
+export GOOS="${GOOS:-}" GOARCH="${GOARCH:-}"
 CMD="${1:-help}"
 shift || true
 
 compose() { docker compose -f compose.yaml --project-name utls-lab "$@"; }
 
+build_host_linux_bins() {
+  echo "cross-compiling linux tools (GOCACHE on host)..."
+  mkdir -p "$ROOT/bin" "$ROOT/capture/bin" "$ROOT/tools/bin" "$ROOT/clients/go-http/bin"
+  export CGO_ENABLED=0 GOOS=linux GOARCH=amd64
+  (cd "$ROOT/capture" && go build -trimpath -ldflags='-s -w' -o "$ROOT/capture/bin/capture-linux" .)
+  (cd "$ROOT/clients/go-http" && go build -trimpath -ldflags='-s -w' -o "$ROOT/clients/go-http/bin/go-http-linux" .)
+  (cd "$ROOT/tools" && go get gopkg.in/yaml.v3@v3.0.1 >/dev/null \
+    && go build -trimpath -ldflags='-s -w' -o "$ROOT/tools/bin/verify-linux" ./cmd/verify \
+    && go build -trimpath -ldflags='-s -w' -o "$ROOT/tools/bin/emit-builtin-linux" ./cmd/emit-builtin \
+    && go build -trimpath -ldflags='-s -w' -o "$ROOT/tools/bin/labctl-linux" ./cmd/labctl \
+    && GOOS="$(go env GOHOSTOS)" GOARCH="$(go env GOHOSTARCH)" \
+       go build -trimpath -ldflags='-s -w' -o "$ROOT/bin/labctl" ./cmd/labctl)
+}
+
 ensure_labctl() {
-  mkdir -p "$ROOT/bin"
   if [[ ! -x "$ROOT/bin/labctl" ]]; then
-    (cd "$ROOT/tools" && go get gopkg.in/yaml.v3@v3.0.1 >/dev/null && go build -o "$ROOT/bin/labctl" ./cmd/labctl)
+    build_host_linux_bins
   fi
 }
 
@@ -22,21 +36,27 @@ case "$CMD" in
     cat <<EOF
 utls-fingerprint-lab
   ./lab.sh build|list|capture|verify|test|catalog|clean
-  See ./lab.ps1 help for flags (-Id / -Group via env ID= GROUP=).
+  Filters: ID=… GROUP=… STATUS=active
 EOF
     ;;
   build)
     python3 scripts/gen-compose.py
+    build_host_linux_bins
     compose build capture tools
-    ensure_labctl
+    echo build ok
     ;;
   list)
     ensure_labctl
-    "$ROOT/bin/labctl" -root "$ROOT" list ${STATUS:+-status "$STATUS"} ${GROUP:+-group "$GROUP"}
+    args=(-root "$ROOT" list)
+    [[ -n "${STATUS:-}" ]] && args+=(-status "$STATUS")
+    [[ -n "${GROUP:-}" ]] && args+=(-group "$GROUP")
+    [[ -z "${STATUS:-}" ]] && args+=(-status active)
+    "$ROOT/bin/labctl" "${args[@]}"
     ;;
   capture)
     python3 scripts/gen-compose.py
-    ensure_labctl
+    build_host_linux_bins
+    compose build capture tools
     args=(-root "$ROOT" capture)
     [[ -n "${ID:-}" ]] && args+=(-id "$ID")
     [[ -n "${GROUP:-}" ]] && args+=(-group "$GROUP")
@@ -44,7 +64,8 @@ EOF
     "$ROOT/bin/labctl" -root "$ROOT" catalog
     ;;
   verify)
-    ensure_labctl
+    build_host_linux_bins
+    compose build capture tools
     args=(-root "$ROOT" verify)
     [[ -n "${ID:-}" ]] && args+=(-id "$ID")
     "$ROOT/bin/labctl" "${args[@]}"
@@ -52,8 +73,8 @@ EOF
   catalog) ensure_labctl; "$ROOT/bin/labctl" -root "$ROOT" catalog ;;
   test)
     python3 scripts/gen-compose.py
+    build_host_linux_bins
     compose build capture tools
-    ensure_labctl
     for tid in openssl3 curl-imp-chrome146 builtin-chrome go-nethttp; do
       "$ROOT/bin/labctl" -root "$ROOT" capture -id "$tid"
       "$ROOT/bin/labctl" -root "$ROOT" verify -id "$tid"

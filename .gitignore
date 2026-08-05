@@ -3,7 +3,8 @@ capture/bin/
 tools/bin/
 bin/
 _refs/
-captures/
+captures/*
+!captures/.gitkeep
 certs/*.pem
 
 **/__pycache__/

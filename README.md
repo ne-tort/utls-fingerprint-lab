@@ -3,7 +3,8 @@
 Standalone Docker lab that captures real TLS **ClientHello** bytes, promotes them
 to importable **uTLS** profiles (`utls-raw-clienthello-v1`), and verifies replay.
 
-Designed to live as its own git repository (later: submodule of `sing-box-lx`).
+Consumed by [sing-box-lx](https://github.com/ne-tort/sing-box-lx) as submodule
+`lx-test/utls-fingerprint-docker` (SPEC 062).
 
 ## Quick start
 
@@ -25,11 +26,11 @@ Unix: `./lab.sh …` (same commands; filters via `ID=` / `GROUP=`).
 | `compose.yaml` | Generated from targets (`scripts/gen-compose.py`) |
 | `capture/` | TLS peek server → `captures/` + `profiles/` |
 | `tools/` | `labctl`, `verify`, `emit-builtin` |
-| `clients/` | Optional dedicated client images |
-| `profiles/` | Committed importable fingerprints |
+| `clients/` | Dedicated client images (Go/Java/OkHttp/rustls/…) |
+| `profiles/` | Committed importable fingerprints (44 active) |
 | `catalog/` | Reference indexes (JA4 lists, external DB mirrors) |
 | `docs/` | Architecture, extending, sing-box import |
-| `WISHLIST.md` | Deferred targets from SPEC 062 |
+| `WISHLIST.md` | Deferred targets |
 
 ## Profile contract (for sing-box / metacubex uTLS)
 
@@ -41,12 +42,18 @@ Each `profiles/<id>/`:
 
 Import: see [docs/IMPORT.md](docs/IMPORT.md).
 
+## Build model
+
+1. Host cross-compiles Linux binaries into `capture/bin`, `tools/bin`, `clients/*/bin` (uses local `GOCACHE` — reliable when Docker DNS to module proxies fails).
+2. Thin runtime Docker images `COPY` those binaries (fast layer cache).
+3. Optional full in-Docker compile: `Dockerfile.source` + BuildKit cache mounts.
+
 ## Requirements
 
 - Docker Desktop / Engine with BuildKit
-- Go 1.24+ (host) for `bin/labctl`
+- Go 1.24+ (host) for cross-compile / `labctl`
 - Python 3 (regen `compose.yaml` aliases)
 
 ## License
 
-MIT — same spirit as upstream tooling; fingerprints are observations, not browser IP.
+MIT — fingerprints are observations, not browser IP.

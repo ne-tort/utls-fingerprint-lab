@@ -25,5 +25,7 @@ clients / emit-builtin / curl-impersonate
 
 ## Isolation
 
-This directory is a **standalone repo root**. It does not import sing-box packages.
-Parent `sing-box-lx` may vendor it as a git submodule under `lx-test/utls-fingerprint-docker`.
+This directory is a **standalone git repository**
+([ne-tort/utls-fingerprint-lab](https://github.com/ne-tort/utls-fingerprint-lab)).
+It does not import sing-box packages. Parent `sing-box-lx` vendors it as submodule
+`lx-test/utls-fingerprint-docker`.

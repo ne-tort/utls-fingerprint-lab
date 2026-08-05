@@ -16,7 +16,9 @@
 package example
 
 import (
+	"net"
 	"os"
+	"path/filepath"
 
 	utls "github.com/metacubex/utls"
 )
@@ -50,10 +52,10 @@ func ApplyLabProfile(rawConn net.Conn, profileDir, sni string) (*utls.UConn, err
 
 ## sing-box future wiring (intent)
 
-1. Ship selected `profiles/<id>/` as assets or embed.
-2. Config key (proposal): `tls.utls.profile` / `fingerprint: "lab:<id>"` resolving to a lab profile pack.
-3. Runtime path: same `Fingerprinter.RawClientHello` → `HelloCustom` (already proven by `tools/cmd/verify`).
-4. Prefer **lab profiles** for ground-truth browsers (Chromium, curl-impersonate); keep stock `chrome`/`firefox` Hello*_Auto for lightweight defaults.
+1. Ship selected `profiles/<id>/` as assets or embed from this submodule.
+2. Config key (proposal): `tls.utls.profile` / `fingerprint: "lab:<id>"`.
+3. Runtime path: `Fingerprinter.RawClientHello` → `HelloCustom` (proven by `tools/cmd/verify`).
+4. Prefer **lab profiles** for ground-truth browsers; keep stock `chrome`/`firefox` Hello*_Auto as lightweight defaults.
 
 ## Verification before shipping
 
@@ -66,5 +68,5 @@ JA4 must match `profile.json` → `expected.ja4`. JA3 may drift (GREASE); marked
 
 ## Notes
 
-- Capture server forces ALPN `http/1.1` so verify can read JA4 headers. JA4 may show `h1` even when the real client prefers `h2`. Cipher/extension material remains valid for ClientHello mimicry.
+- Capture server forces ALPN `http/1.1` so verify can read JA4 response headers. JA4 may show `h1` even when the real client prefers `h2`. Cipher/extension material remains valid for ClientHello mimicry.
 - GREASE / extension shuffle: expect JA3 variance; pin on JA4 + structural verify.
