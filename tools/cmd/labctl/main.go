@@ -33,6 +33,8 @@ type target struct {
 	Status        string `yaml:"status"`
 	NeedsDNSAlias bool   `yaml:"needs_dns_alias"`
 	UTLSReady     bool   `yaml:"utls_ready"`
+	Family        string `yaml:"family"`
+	Version       int    `yaml:"version"`
 	Notes         string `yaml:"notes"`
 	Why           string `yaml:"why"`
 }
@@ -185,6 +187,10 @@ func main() {
 			fatal(err)
 		}
 		fmt.Printf("wrote %s (%d profiles)\n", path, len(rows))
+	case "export":
+		if err := runExport(labRoot, cfg); err != nil {
+			fatal(err)
+		}
 	default:
 		usage()
 		os.Exit(2)
@@ -199,6 +205,7 @@ Usage:
   labctl [-root DIR] capture [-id ID] [-group G]
   labctl [-root DIR] verify [-id ID]
   labctl [-root DIR] catalog
+  labctl [-root DIR] export
 `)
 }
 

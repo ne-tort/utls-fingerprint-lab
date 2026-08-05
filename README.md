@@ -12,10 +12,13 @@ Consumed by [sing-box-lx](https://github.com/ne-tort/sing-box-lx) as submodule
 ./lab.ps1 build
 ./lab.ps1 capture          # all active targets in targets.yaml
 ./lab.ps1 verify           # replay every profiles/*/clienthello.bin
+./lab.ps1 export           # dist/export: catalog.json + short names (chrome, chrome-1, …)
 ./lab.ps1 test             # smoke subset
 ```
 
 Unix: `./lab.sh …` (same commands; filters via `ID=` / `GROUP=`).
+
+Consumed by sing-box-lx via `make -f Makefile.lx lx-utls-sync` (FEATURE 018 / SPEC 064).
 
 ## Layout
 

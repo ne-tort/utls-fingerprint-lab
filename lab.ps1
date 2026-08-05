@@ -2,7 +2,7 @@
 # Single entry point for the uTLS fingerprint lab.
 param(
     [Parameter(Position = 0)]
-    [ValidateSet("build", "list", "capture", "verify", "test", "catalog", "clean", "help")]
+    [ValidateSet("build", "list", "capture", "verify", "test", "catalog", "export", "clean", "help")]
     [string]$Command = "help",
     [string]$Id = "",
     [string]$Group = "",
@@ -66,7 +66,7 @@ utls-fingerprint-lab
   ./lab.ps1 capture [-Id|-Group]  Capture active targets
   ./lab.ps1 verify [-Id]          Replay-verify profiles
   ./lab.ps1 test                  Smoke subset
-  ./lab.ps1 catalog|clean
+  ./lab.ps1 catalog|export|clean
 
 See docs/EXTENDING.md and docs/IMPORT.md
 "@
@@ -107,6 +107,11 @@ See docs/EXTENDING.md and docs/IMPORT.md
     "catalog" {
         $labctl = Ensure-Labctl
         & $labctl -root $Root catalog
+    }
+    "export" {
+        $labctl = Ensure-Labctl
+        & $labctl -root $Root export
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     }
     "test" {
         Write-Host "== smoke test =="

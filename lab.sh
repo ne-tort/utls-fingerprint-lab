@@ -35,7 +35,7 @@ case "$CMD" in
   help)
     cat <<EOF
 utls-fingerprint-lab
-  ./lab.sh build|list|capture|verify|test|catalog|clean
+  ./lab.sh build|list|capture|verify|test|catalog|export|clean
   Filters: ID=… GROUP=… STATUS=active
 EOF
     ;;
@@ -71,6 +71,10 @@ EOF
     "$ROOT/bin/labctl" "${args[@]}"
     ;;
   catalog) ensure_labctl; "$ROOT/bin/labctl" -root "$ROOT" catalog ;;
+  export)
+    ensure_labctl
+    "$ROOT/bin/labctl" -root "$ROOT" export
+    ;;
   test)
     python3 scripts/gen-compose.py
     build_host_linux_bins

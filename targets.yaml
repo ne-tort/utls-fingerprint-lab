@@ -12,6 +12,10 @@
 #   emit-builtin     — tools emit-builtin -id <emit_id>
 #   curl-impersonate — lexiforest wrapper inside curl-impersonate image
 #   wishlist         — not runnable yet
+#
+# family + version — short-name export (chrome, chrome-1, …).
+#   emit-builtin always ranks at the tail of its family.
+#   Higher version = newer within the same kind tier.
 
 version: 1
 
@@ -37,6 +41,8 @@ targets:
     status: active
     needs_dns_alias: true
     utls_ready: true
+    family: chrome
+    version: 124
     notes: "zenika/alpine-chrome:124"
 
   - id: firefox-release
@@ -46,6 +52,8 @@ targets:
     status: active
     needs_dns_alias: true
     utls_ready: true
+    family: firefox
+    version: 128
     notes: "debian firefox-esr"
 
   # --- curl-impersonate ---
@@ -55,182 +63,242 @@ targets:
     wrapper: curl_chrome146
     status: active
     utls_ready: true
+    family: chrome
+    version: 146
   - id: curl-imp-chrome145
     group: impersonate
     kind: curl-impersonate
     wrapper: curl_chrome145
     status: active
     utls_ready: true
+    family: chrome
+    version: 145
   - id: curl-imp-chrome142
     group: impersonate
     kind: curl-impersonate
     wrapper: curl_chrome142
     status: active
     utls_ready: true
+    family: chrome
+    version: 142
   - id: curl-imp-chrome136
     group: impersonate
     kind: curl-impersonate
     wrapper: curl_chrome136
     status: active
     utls_ready: true
+    family: chrome
+    version: 136
   - id: curl-imp-chrome131
     group: impersonate
     kind: curl-impersonate
     wrapper: curl_chrome131
     status: active
     utls_ready: true
+    family: chrome
+    version: 131
   - id: curl-imp-chrome124
     group: impersonate
     kind: curl-impersonate
     wrapper: curl_chrome124
     status: active
     utls_ready: true
+    family: chrome
+    version: 124
   - id: curl-imp-chrome131-android
     group: impersonate
     kind: curl-impersonate
     wrapper: curl_chrome131_android
     status: active
     utls_ready: true
+    family: android
+    version: 131
   - id: curl-imp-firefox147
     group: impersonate
     kind: curl-impersonate
     wrapper: curl_firefox147
     status: active
     utls_ready: true
+    family: firefox
+    version: 147
   - id: curl-imp-firefox144
     group: impersonate
     kind: curl-impersonate
     wrapper: curl_firefox144
     status: active
     utls_ready: true
+    family: firefox
+    version: 144
   - id: curl-imp-firefox135
     group: impersonate
     kind: curl-impersonate
     wrapper: curl_firefox135
     status: active
     utls_ready: true
+    family: firefox
+    version: 135
   - id: curl-imp-firefox133
     group: impersonate
     kind: curl-impersonate
     wrapper: curl_firefox133
     status: active
     utls_ready: true
+    family: firefox
+    version: 133
   - id: curl-imp-safari260
     group: impersonate
     kind: curl-impersonate
     wrapper: curl_safari260
     status: active
     utls_ready: true
+    family: safari
+    version: 260
   - id: curl-imp-safari260-ios
     group: impersonate
     kind: curl-impersonate
     wrapper: curl_safari260_ios
     status: active
     utls_ready: true
+    family: ios
+    version: 260
   - id: curl-imp-safari184
     group: impersonate
     kind: curl-impersonate
     wrapper: curl_safari184
     status: active
     utls_ready: true
+    family: safari
+    version: 184
   - id: curl-imp-safari184-ios
     group: impersonate
     kind: curl-impersonate
     wrapper: curl_safari184_ios
     status: active
     utls_ready: true
+    family: ios
+    version: 184
   - id: curl-imp-safari180
     group: impersonate
     kind: curl-impersonate
     wrapper: curl_safari180
     status: active
     utls_ready: true
+    family: safari
+    version: 180
   - id: curl-imp-edge101
     group: impersonate
     kind: curl-impersonate
     wrapper: curl_edge101
     status: active
     utls_ready: true
+    family: edge
+    version: 101
   - id: curl-imp-tor145
     group: impersonate
     kind: curl-impersonate
     wrapper: curl_tor145
     status: active
     utls_ready: true
+    family: tor
+    version: 145
 
-  # --- uTLS builtins ---
+  # --- uTLS builtins (always tail of family) ---
   - id: builtin-chrome
     group: builtins
     kind: emit-builtin
     emit_id: chrome
     status: active
     utls_ready: true
+    family: chrome
+    version: 0
   - id: builtin-chrome-120
     group: builtins
     kind: emit-builtin
     emit_id: chrome_120
     status: active
     utls_ready: true
+    family: chrome
+    version: 120
   - id: builtin-chrome-131
     group: builtins
     kind: emit-builtin
     emit_id: chrome_131
     status: active
     utls_ready: true
+    family: chrome
+    version: 131
   - id: builtin-chrome-133
     group: builtins
     kind: emit-builtin
     emit_id: chrome_133
     status: active
     utls_ready: true
+    family: chrome
+    version: 133
   - id: builtin-firefox
     group: builtins
     kind: emit-builtin
     emit_id: firefox
     status: active
     utls_ready: true
+    family: firefox
+    version: 0
   - id: builtin-firefox-120
     group: builtins
     kind: emit-builtin
     emit_id: firefox_120
     status: active
     utls_ready: true
+    family: firefox
+    version: 120
   - id: builtin-edge
     group: builtins
     kind: emit-builtin
     emit_id: edge
     status: active
     utls_ready: true
+    family: edge
+    version: 0
   - id: builtin-safari
     group: builtins
     kind: emit-builtin
     emit_id: safari
     status: active
     utls_ready: true
+    family: safari
+    version: 0
   - id: builtin-ios
     group: builtins
     kind: emit-builtin
     emit_id: ios
     status: active
     utls_ready: true
+    family: ios
+    version: 0
   - id: builtin-android
     group: builtins
     kind: emit-builtin
     emit_id: android
     status: active
     utls_ready: true
+    family: android
+    version: 0
   - id: builtin-360
     group: builtins
     kind: emit-builtin
     emit_id: 360
     status: active
     utls_ready: true
+    family: "360"
+    version: 0
   - id: builtin-qq
     group: builtins
     kind: emit-builtin
     emit_id: qq
     status: active
     utls_ready: true
+    family: qq
+    version: 0
 
   # --- libraries ---
   - id: openssl3
@@ -240,6 +308,8 @@ targets:
     status: active
     needs_dns_alias: true
     utls_ready: true
+    family: openssl
+    version: 3
   - id: curl-openssl
     group: libs
     kind: compose
@@ -247,6 +317,8 @@ targets:
     status: active
     needs_dns_alias: true
     utls_ready: true
+    family: openssl
+    version: 1
   - id: go-nethttp
     group: libs
     kind: compose
@@ -254,6 +326,8 @@ targets:
     status: active
     needs_dns_alias: true
     utls_ready: true
+    family: go
+    version: 1
   - id: python-requests
     group: libs
     kind: compose
@@ -261,6 +335,8 @@ targets:
     status: active
     needs_dns_alias: true
     utls_ready: true
+    family: python
+    version: 2
   - id: python-httpx
     group: libs
     kind: compose
@@ -268,6 +344,8 @@ targets:
     status: active
     needs_dns_alias: true
     utls_ready: true
+    family: python
+    version: 1
   - id: node-undici
     group: libs
     kind: compose
@@ -275,6 +353,8 @@ targets:
     status: active
     needs_dns_alias: true
     utls_ready: true
+    family: node
+    version: 1
   - id: okhttp4
     group: libs
     kind: compose
@@ -282,6 +362,8 @@ targets:
     status: active
     needs_dns_alias: true
     utls_ready: true
+    family: android
+    version: 4
   - id: java-jdk
     group: libs
     kind: compose
@@ -289,6 +371,8 @@ targets:
     status: active
     needs_dns_alias: true
     utls_ready: true
+    family: java
+    version: 1
   - id: rust-rustls
     group: libs
     kind: compose
@@ -296,6 +380,8 @@ targets:
     status: active
     needs_dns_alias: true
     utls_ready: true
+    family: rust
+    version: 1
   - id: gnutls-cli
     group: libs
     kind: compose
@@ -303,6 +389,8 @@ targets:
     status: active
     needs_dns_alias: true
     utls_ready: true
+    family: gnutls
+    version: 1
   - id: php-curl
     group: libs
     kind: compose
@@ -310,6 +398,8 @@ targets:
     status: active
     needs_dns_alias: true
     utls_ready: true
+    family: php
+    version: 1
   - id: dotnet-http
     group: libs
     kind: compose
@@ -317,6 +407,8 @@ targets:
     status: active
     needs_dns_alias: true
     utls_ready: true
+    family: dotnet
+    version: 1
 
   # --- wishlist (from SPEC 062 TARGETS, not yet in lab) ---
   - id: chromium-beta
@@ -324,88 +416,103 @@ targets:
     kind: wishlist
     status: wishlist
     utls_ready: true
+    family: chrome
     why: "Track Chrome beta drift vs stable"
   - id: brave
     group: wishlist
     kind: wishlist
     status: wishlist
     utls_ready: true
-    why: "Chromium-fork; check JA4 drift vs Chrome"
+    family: brave
+    why: "Chromium-fork; NOT chrome family"
   - id: edge-linux-deb
     group: wishlist
     kind: wishlist
     status: wishlist
     utls_ready: true
+    family: edge
     why: "Real Edge .deb (curl-imp/builtin already cover proxy)"
   - id: okhttp5
     group: wishlist
     kind: wishlist
     status: wishlist
     utls_ready: true
+    family: android
     why: "OkHttp 5.x vs okhttp4 / HelloAndroid"
   - id: rust-native-tls
     group: wishlist
     kind: wishlist
     status: wishlist
     utls_ready: true
+    family: rust
     why: "Contrast with rustls"
   - id: electron-sample
     group: wishlist
     kind: wishlist
     status: wishlist
     utls_ready: true
+    family: chrome
     why: "Pinned Chromium inside Electron often lags stable"
   - id: grpc-go
     group: wishlist
     kind: wishlist
     status: wishlist
     utls_ready: true
+    family: go
     why: "h2 + Go TLS; common mesh fingerprint"
   - id: grpc-java
     group: wishlist
     kind: wishlist
     status: wishlist
     utls_ready: true
+    family: java
     why: "JSSE/gRPC stack"
   - id: aws-cli
     group: wishlist
     kind: wishlist
     status: wishlist
     utls_ready: true
+    family: python
     why: "botocore/urllib3 mass traffic"
   - id: git-https
     group: wishlist
     kind: wishlist
     status: wishlist
     utls_ready: true
+    family: openssl
     why: "libcurl via git"
   - id: python-aiohttp
     group: wishlist
     kind: wishlist
     status: wishlist
     utls_ready: true
+    family: python
     why: "async Python TLS path"
   - id: safari-macos-host
     group: wishlist
     kind: wishlist
     status: wishlist
     utls_ready: true
+    family: safari
     why: "Real Safari (impersonate already; host capture later)"
   - id: chrome-android-device
     group: wishlist
     kind: wishlist
     status: wishlist
     utls_ready: true
+    family: android
     why: "Emulator/device; curl-imp android is proxy"
   - id: yandex-linux
     group: wishlist
     kind: wishlist
     status: wishlist
     utls_ready: true
-    why: "RU Chromium-fork; install friction"
+    family: yandex
+    why: "RU Chromium-fork; not chrome family"
   - id: opera
     group: wishlist
     kind: wishlist
     status: wishlist
     utls_ready: true
-    why: "Low priority Chromium-fork"
+    family: opera
+    why: "Low priority Chromium-fork; not chrome family"

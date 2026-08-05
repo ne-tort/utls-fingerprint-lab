@@ -10,58 +10,46 @@
 | `profile.json` | Manifest: id, expected JA4, format |
 | `meta.json` | Lab metadata (optional at runtime) |
 
-## Go (metacubex/utls)
+## Short names (`./lab.ps1 export`)
+
+Export writes `dist/export/`:
+
+| Artifact | Content |
+|----------|---------|
+| `catalog.json` | families, short names, aliases, JA4 |
+| `profiles/<short>/` | copies of lab profile dirs |
+| `NAMES.md` | human table short ↔ lab id |
+
+Naming rules (per `family` in `targets.yaml`):
+
+1. Sort non-`emit-builtin` by `version` desc, then `captured_at` desc.
+2. Append all `emit-builtin` (stock Hello*_Auto / pins) at the **tail**, also by version desc.
+3. Assign `family`, `family-1`, `family-2`, … — **unsuffixed = newest**.
+4. Adding a newer Chrome capture shifts previous `chrome` → `chrome-1`, etc.
+5. Brave / Edge / Tor / Yandex are **not** in the `chrome` family.
+
+Legacy aliases in export: `chrome_psk`… → `chrome`; empty fingerprint → `chrome`.
+
+## Go (metacubex/utls) — blunt mimicry
 
 ```go
-package example
-
-import (
-	"net"
-	"os"
-	"path/filepath"
-
-	utls "github.com/metacubex/utls"
-)
-
-func ApplyLabProfile(rawConn net.Conn, profileDir, sni string) (*utls.UConn, error) {
-	bin, err := os.ReadFile(filepath.Join(profileDir, "clienthello.bin"))
-	if err != nil {
-		return nil, err
-	}
-	fp := &utls.Fingerprinter{AllowBluntMimicry: true}
-	spec, err := fp.RawClientHello(bin)
-	if err != nil {
-		return nil, err
-	}
-	// Optional: rewrite SNI extension to the real destination.
-	for _, ext := range spec.Extensions {
-		if s, ok := ext.(*utls.SNIExtension); ok {
-			s.ServerName = sni
-		}
-	}
-	uconn := utls.UClient(rawConn, &utls.Config{
-		ServerName:         sni,
-		InsecureSkipVerify: false,
-	}, utls.HelloCustom)
-	if err := uconn.ApplyPreset(spec); err != nil {
-		return nil, err
-	}
-	return uconn, nil
-}
+fp := &utls.Fingerprinter{AllowBluntMimicry: true}
+spec, err := fp.RawClientHello(bin)
+uconn := utls.UClient(rawConn, &utls.Config{ServerName: sni}, utls.HelloCustom)
+err = uconn.ApplyPreset(spec)
 ```
 
-## sing-box future wiring (intent)
+## sing-box wiring (FEATURE 018 / SPEC 064)
 
-1. Ship selected `profiles/<id>/` as assets or embed from this submodule.
-2. Config key (proposal): `tls.utls.profile` / `fingerprint: "lab:<id>"`.
-3. Runtime path: `Fingerprinter.RawClientHello` → `HelloCustom` (proven by `tools/cmd/verify`).
-4. Prefer **lab profiles** for ground-truth browsers; keep stock `chrome`/`firefox` Hello*_Auto as lightweight defaults.
+1. `make -f Makefile.lx lx-utls-sync` embeds export into `common/tls/lxutls/`.
+2. Config: `tls.utls.fingerprint: "chrome"` (short name) under build-tag `with_lx_utls`.
+3. Runtime: `Lookup` → `RawClientHello` → `HelloCustom` → `ApplyPreset`.
 
 ## Verification before shipping
 
 ```powershell
 ./lab.ps1 verify -Id chromium-stable
-./lab.ps1 verify -Id curl-imp-chrome146
+./lab.ps1 export
 ```
 
 JA4 must match `profile.json` → `expected.ja4`. JA3 may drift (GREASE); marked `ja3_hash_unstable`.

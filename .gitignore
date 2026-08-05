@@ -1,7 +1,4 @@
-clients/**/bin/
-capture/bin/
-tools/bin/
-bin/
+dist/
 _refs/
 captures/*
 !captures/.gitkeep
@@ -15,4 +12,8 @@ profiles/verify-*/
 .idea/
 .vscode/
 
+clients/**/bin/
+capture/bin/
+tools/bin/
+bin/
 
