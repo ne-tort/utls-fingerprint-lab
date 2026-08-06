@@ -7,7 +7,9 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
+	"time"
 
 	"gopkg.in/yaml.v3"
 )
@@ -35,6 +37,9 @@ type target struct {
 	UTLSReady     bool   `yaml:"utls_ready"`
 	Family        string `yaml:"family"`
 	Version       int    `yaml:"version"`
+	Track         string `yaml:"track"`         // latest | pinned (default pinned)
+	Pin           string `yaml:"pin"`           // software pin label for pinned track
+	ImagePolicy   string `yaml:"image_policy"` // pull | cache
 	Notes         string `yaml:"notes"`
 	Why           string `yaml:"why"`
 }
@@ -51,20 +56,23 @@ func main() {
 	if err != nil {
 		fatal(err)
 	}
-	cfg, err := load(filepath.Join(labRoot, "targets.yaml"))
+	cfg, err := loadLab(labRoot)
 	if err != nil {
 		fatal(err)
 	}
 
 	switch args[0] {
 	case "list":
-		group, status := "", ""
+		group, status, track := "", "", ""
 		for i := 1; i < len(args); i++ {
 			if args[i] == "-group" && i+1 < len(args) {
 				group = args[i+1]
 				i++
 			} else if args[i] == "-status" && i+1 < len(args) {
 				status = args[i+1]
+				i++
+			} else if args[i] == "-track" && i+1 < len(args) {
+				track = args[i+1]
 				i++
 			}
 		}
@@ -75,10 +83,14 @@ func main() {
 			if status != "" && t.Status != status {
 				continue
 			}
-			fmt.Printf("%-32s %-16s %-12s %s\n", t.ID, t.Kind, t.Status, t.Group)
+			if track != "" && t.Track != track {
+				continue
+			}
+			fmt.Printf("%-32s %-16s %-8s %-8s %s\n", t.ID, t.Kind, t.Track, t.Status, t.Group)
 		}
 	case "capture":
 		idFilter, groupFilter := "", ""
+		trackLatestOnly := false
 		for i := 1; i < len(args); i++ {
 			if args[i] == "-id" && i+1 < len(args) {
 				idFilter = args[i+1]
@@ -86,6 +98,8 @@ func main() {
 			} else if args[i] == "-group" && i+1 < len(args) {
 				groupFilter = args[i+1]
 				i++
+			} else if args[i] == "-latest" {
+				trackLatestOnly = true
 			}
 		}
 		if err := ensureCaptureUp(labRoot); err != nil {
@@ -96,18 +110,35 @@ func main() {
 			if t.Status != "active" {
 				continue
 			}
+			if t.Kind == "wishlist" || t.Kind == "skip" {
+				continue
+			}
 			if idFilter != "" && t.ID != idFilter {
 				continue
 			}
 			if groupFilter != "" && t.Group != groupFilter {
 				continue
 			}
-			fmt.Printf("\n=== capture %s (%s) ===\n", t.ID, t.Kind)
-			if err := runCapture(labRoot, cfg, t); err != nil {
-				fmt.Fprintf(os.Stderr, "FAIL %s: %v\n", t.ID, err)
+			if trackLatestOnly && t.Track != trackLatest {
+				continue
+			}
+			fmt.Printf("\n=== capture %s (%s track=%s) ===\n", t.ID, t.Kind, t.Track)
+			before, err := snapshotProfile(filepath.Join(labRoot, "profiles", t.ID))
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "FAIL %s snapshot: %v\n", t.ID, err)
 				fail++
 				continue
 			}
+			if err := runCapture(labRoot, cfg, t); err != nil {
+				fmt.Fprintf(os.Stderr, "FAIL %s: %v\n", t.ID, err)
+				_ = os.RemoveAll(before)
+				fail++
+				continue
+			}
+			if err := maybeArchiveAfterCapture(labRoot, cfg, t, before); err != nil {
+				fmt.Fprintf(os.Stderr, "WARN archive %s: %v\n", t.ID, err)
+			}
+			updateSlotAfterCapture(labRoot, t)
 			fmt.Printf("OK %s\n", t.ID)
 		}
 		if fail > 0 {
@@ -188,7 +219,13 @@ func main() {
 		}
 		fmt.Printf("wrote %s (%d profiles)\n", path, len(rows))
 	case "export":
-		if err := runExport(labRoot, cfg); err != nil {
+		checkDedup := false
+		for i := 1; i < len(args); i++ {
+			if args[i] == "-check-dedup" || args[i] == "--check-dedup" {
+				checkDedup = true
+			}
+		}
+		if err := runExport(labRoot, cfg, checkDedup); err != nil {
 			fatal(err)
 		}
 	default:
@@ -201,11 +238,11 @@ func usage() {
 	fmt.Fprint(os.Stderr, `labctl — utls fingerprint lab controller
 
 Usage:
-  labctl [-root DIR] list [-group G] [-status S]
-  labctl [-root DIR] capture [-id ID] [-group G]
+  labctl [-root DIR] list [-group G] [-status S] [-track latest|pinned]
+  labctl [-root DIR] capture [-id ID] [-group G] [-latest]
   labctl [-root DIR] verify [-id ID]
   labctl [-root DIR] catalog
-  labctl [-root DIR] export
+  labctl [-root DIR] export [--check-dedup]
 `)
 }
 
@@ -262,6 +299,22 @@ func runCapture(labRoot string, cfg *fileRoot, t target) error {
 		if svc == "" {
 			svc = t.ID
 		}
+		if t.ImagePolicy == imagePull {
+			svcDir := filepath.Join(labRoot, "clients", svc)
+			if _, err := os.Stat(filepath.Join(svcDir, "Dockerfile")); err == nil {
+				bust := strconv.FormatInt(time.Now().Unix(), 10)
+				bcmd := compose(labRoot, "build", "--pull", "--build-arg", "CACHEBUST="+bust, svc)
+				bcmd.Stdout = os.Stdout
+				bcmd.Stderr = os.Stderr
+				if err := bcmd.Run(); err != nil {
+					return fmt.Errorf("build %s: %w", svc, err)
+				}
+			}
+			cmd := compose(labRoot, "run", "--rm", "--pull", "always", svc)
+			cmd.Stdout = os.Stdout
+			cmd.Stderr = os.Stderr
+			return cmd.Run()
+		}
 		cmd := compose(labRoot, "run", "--rm", "--build", svc)
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
@@ -279,10 +332,12 @@ func runCapture(labRoot string, cfg *fileRoot, t target) error {
 		if t.Wrapper == "" {
 			return fmt.Errorf("wrapper required")
 		}
-		cmd := compose(labRoot, "run", "--rm",
-			"-e", "TARGET_ID="+t.ID,
-			"-e", "WRAP="+t.Wrapper,
-			"curl-impersonate-one")
+		args := []string{"run", "--rm", "-e", "TARGET_ID=" + t.ID, "-e", "WRAP=" + t.Wrapper}
+		if t.ImagePolicy == imagePull {
+			args = append(args, "--pull", "always")
+		}
+		args = append(args, "curl-impersonate-one")
+		cmd := compose(labRoot, args...)
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		return cmd.Run()

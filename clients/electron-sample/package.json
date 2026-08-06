@@ -1,0 +1,8 @@
+{
+  "name": "utls-lab-electron-sample",
+  "private": true,
+  "main": "main.js",
+  "dependencies": {
+    "electron": "33.2.1"
+  }
+}

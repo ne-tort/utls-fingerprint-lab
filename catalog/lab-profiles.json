@@ -1,6 +1,11 @@
 {
-  "profile_count": 44,
+  "profile_count": 52,
   "profiles": [
+    {
+      "id": "brave",
+      "ja4": "t13d1515h2_acb858a92679_a87ad97598a9",
+      "format": "utls-raw-clienthello-v1"
+    },
     {
       "id": "builtin-360",
       "ja4": "t12d2008s2_ae54550e61e1_736b2a1ed4d3",
@@ -59,6 +64,11 @@
     {
       "id": "builtin-safari",
       "ja4": "t13d2012h2_de3eb69493ac_14788d8d241b",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "chrome-linux",
+      "ja4": "t13d1514h2_acb858a92679_806a8c22fdea",
       "format": "utls-raw-clienthello-v1"
     },
     {
@@ -167,8 +177,18 @@
       "format": "utls-raw-clienthello-v1"
     },
     {
+      "id": "electron-sample",
+      "ja4": "t13d1514h2_acb858a92679_02713d6af862",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
       "id": "firefox-release",
       "ja4": "t13d1715h2_5b234860e130_3cbfd9057e0d",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "git-https",
+      "ja4": "t13d3010h2_8d44cdc55eec_882d495ac381",
       "format": "utls-raw-clienthello-v1"
     },
     {
@@ -179,6 +199,11 @@
     {
       "id": "go-nethttp",
       "ja4": "t13d1310h2_45672f90a73c_e5728521abd4",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "grpc-go",
+      "ja4": "t13d0909h2_8e4c1465eaca_e7c285222651",
       "format": "utls-raw-clienthello-v1"
     },
     {
@@ -197,6 +222,11 @@
       "format": "utls-raw-clienthello-v1"
     },
     {
+      "id": "okhttp5",
+      "ja4": "t13d1112h2_ef63962a5e2e_89e9e4bb3419",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
       "id": "openssl3",
       "ja4": "t13d310900_d7c3e2abb617_1f22a2ca17c4",
       "format": "utls-raw-clienthello-v1"
@@ -207,6 +237,11 @@
       "format": "utls-raw-clienthello-v1"
     },
     {
+      "id": "python-aiohttp",
+      "ja4": "t13d171100_fd0eb050439a_ecd0401ec68b",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
       "id": "python-httpx",
       "ja4": "t13d171100_fd0eb050439a_ecd0401ec68b",
       "format": "utls-raw-clienthello-v1"
@@ -214,6 +249,11 @@
     {
       "id": "python-requests",
       "ja4": "t13d171100_fd0eb050439a_ecd0401ec68b",
+      "format": "utls-raw-clienthello-v1"
+    },
+    {
+      "id": "rust-native-tls",
+      "ja4": "t13d311000_d7c3e2abb617_d41ae481755e",
       "format": "utls-raw-clienthello-v1"
     },
     {

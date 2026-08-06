@@ -1,0 +1,20 @@
+{
+  "expected": {
+    "ja3_hash": "20e7551023572ebc69398b2b1d71fc08",
+    "ja3_hash_unstable": true,
+    "ja4": "t13d1515h2_acb858a92679_a87ad97598a9"
+  },
+  "files": {
+    "clienthello_bin": "clienthello.bin",
+    "meta_json": "meta.json"
+  },
+  "format": "utls-raw-clienthello-v1",
+  "id": "brave",
+  "source": {
+    "capture_dir": "/captures/6-brave",
+    "captured_at": "2026-08-05T22:32:58Z"
+  },
+  "utls": {
+    "import": "Fingerprinter{AllowBluntMimicry:true}.RawClientHello(clienthello.bin) → UClient(HelloCustom).ApplyPreset(spec)"
+  }
+}

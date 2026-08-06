@@ -16,6 +16,13 @@
 # family + version — short-name export (chrome, chrome-1, …).
 #   emit-builtin always ranks at the tail of its family.
 #   Higher version = newer within the same kind tier.
+#
+# track:
+#   latest  — floating channel; always rank head of family (version forced to 9999).
+#             capture uses image_policy=pull; on JA4 change archives previous → targets.archive.yaml
+#   pinned  — reproducible pin (default). pin: optional label ("146", "5.0.0-alpha.14")
+# image_policy: pull | cache (defaults: latest→pull, pinned→cache)
+# Auto-archived pins live in targets.archive.yaml (merged by labctl).
 
 version: 1
 
@@ -53,8 +60,10 @@ targets:
     needs_dns_alias: true
     utls_ready: true
     family: firefox
-    version: 128
-    notes: "debian firefox-esr"
+    version: 9999
+    track: latest
+    image_policy: pull
+    notes: "debian firefox-esr (floating apt)"
 
   # --- curl-impersonate ---
   - id: curl-imp-chrome146
@@ -65,6 +74,8 @@ targets:
     utls_ready: true
     family: chrome
     version: 146
+    track: pinned
+    pin: "146"
   - id: curl-imp-chrome145
     group: impersonate
     kind: curl-impersonate
@@ -327,7 +338,7 @@ targets:
     needs_dns_alias: true
     utls_ready: true
     family: go
-    version: 1
+    version: 24
   - id: python-requests
     group: libs
     kind: compose
@@ -364,6 +375,86 @@ targets:
     utls_ready: true
     family: android
     version: 4
+  - id: okhttp5
+    group: libs
+    kind: compose
+    service: okhttp5
+    status: active
+    needs_dns_alias: true
+    utls_ready: true
+    family: android
+    version: 5
+  - id: grpc-go
+    group: libs
+    kind: compose
+    service: grpc-go
+    status: active
+    utls_ready: true
+    family: go
+    version: 1
+    notes: "gRPC-Go TLS dial (h2); ranked under go after net/http"
+  - id: rust-native-tls
+    group: libs
+    kind: compose
+    service: rust-native-tls
+    status: active
+    utls_ready: true
+    family: rust
+    version: 2
+  - id: python-aiohttp
+    group: libs
+    kind: compose
+    service: python-aiohttp
+    status: active
+    utls_ready: true
+    family: python
+    version: 3
+  - id: chrome-linux
+    group: browsers
+    kind: compose
+    service: chrome-linux
+    status: active
+    needs_dns_alias: true
+    utls_ready: true
+    family: chrome
+    version: 9999
+    track: latest
+    image_policy: pull
+    notes: "google-chrome-stable current amd64 (Dockerfile; headless)"
+  - id: brave
+    group: browsers
+    kind: compose
+    service: brave
+    status: active
+    needs_dns_alias: true
+    utls_ready: true
+    family: brave
+    version: 9999
+    track: latest
+    image_policy: pull
+    notes: "brave-browser apt (Dockerfile; headless); NOT chrome family"
+  - id: electron-sample
+    group: browsers
+    kind: compose
+    service: electron-sample
+    status: active
+    needs_dns_alias: true
+    utls_ready: true
+    family: electron
+    version: 33
+    notes: "Electron 33 headless loadURL"
+  - id: git-https
+    group: libs
+    kind: compose
+    service: git-https
+    status: active
+    needs_dns_alias: true
+    utls_ready: true
+    family: openssl
+    version: 9999
+    track: latest
+    image_policy: pull
+    notes: "alpine/git:latest floating"
   - id: java-jdk
     group: libs
     kind: compose
@@ -410,21 +501,14 @@ targets:
     family: dotnet
     version: 1
 
-  # --- wishlist (from SPEC 062 TARGETS, not yet in lab) ---
+  # --- wishlist (not yet Linux-active) ---
   - id: chromium-beta
     group: wishlist
     kind: wishlist
     status: wishlist
     utls_ready: true
     family: chrome
-    why: "Track Chrome beta drift vs stable"
-  - id: brave
-    group: wishlist
-    kind: wishlist
-    status: wishlist
-    utls_ready: true
-    family: brave
-    why: "Chromium-fork; NOT chrome family"
+    why: "Track Chrome beta drift vs chrome-linux"
   - id: edge-linux-deb
     group: wishlist
     kind: wishlist
@@ -432,34 +516,6 @@ targets:
     utls_ready: true
     family: edge
     why: "Real Edge .deb (curl-imp/builtin already cover proxy)"
-  - id: okhttp5
-    group: wishlist
-    kind: wishlist
-    status: wishlist
-    utls_ready: true
-    family: android
-    why: "OkHttp 5.x vs okhttp4 / HelloAndroid"
-  - id: rust-native-tls
-    group: wishlist
-    kind: wishlist
-    status: wishlist
-    utls_ready: true
-    family: rust
-    why: "Contrast with rustls"
-  - id: electron-sample
-    group: wishlist
-    kind: wishlist
-    status: wishlist
-    utls_ready: true
-    family: chrome
-    why: "Pinned Chromium inside Electron often lags stable"
-  - id: grpc-go
-    group: wishlist
-    kind: wishlist
-    status: wishlist
-    utls_ready: true
-    family: go
-    why: "h2 + Go TLS; common mesh fingerprint"
   - id: grpc-java
     group: wishlist
     kind: wishlist
@@ -474,20 +530,6 @@ targets:
     utls_ready: true
     family: python
     why: "botocore/urllib3 mass traffic"
-  - id: git-https
-    group: wishlist
-    kind: wishlist
-    status: wishlist
-    utls_ready: true
-    family: openssl
-    why: "libcurl via git"
-  - id: python-aiohttp
-    group: wishlist
-    kind: wishlist
-    status: wishlist
-    utls_ready: true
-    family: python
-    why: "async Python TLS path"
   - id: safari-macos-host
     group: wishlist
     kind: wishlist

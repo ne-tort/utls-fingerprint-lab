@@ -1,0 +1,20 @@
+{
+  "expected": {
+    "ja3_hash": "e9413c509eb250b9f4ba2a75a191a436",
+    "ja3_hash_unstable": true,
+    "ja4": "t13d0909h2_8e4c1465eaca_e7c285222651"
+  },
+  "files": {
+    "clienthello_bin": "clienthello.bin",
+    "meta_json": "meta.json"
+  },
+  "format": "utls-raw-clienthello-v1",
+  "id": "grpc-go",
+  "source": {
+    "capture_dir": "/captures/13-grpc-go",
+    "captured_at": "2026-08-05T22:21:18Z"
+  },
+  "utls": {
+    "import": "Fingerprinter{AllowBluntMimicry:true}.RawClientHello(clienthello.bin) → UClient(HelloCustom).ApplyPreset(spec)"
+  }
+}

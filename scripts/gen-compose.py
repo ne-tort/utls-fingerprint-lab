@@ -3,6 +3,9 @@ import re
 
 root = Path(__file__).resolve().parent.parent
 text = (root / "targets.yaml").read_text(encoding="utf-8")
+arch = root / "targets.archive.yaml"
+if arch.exists():
+    text += "\n" + arch.read_text(encoding="utf-8")
 ids = []
 cur = None
 for line in text.splitlines():
@@ -11,7 +14,8 @@ for line in text.splitlines():
         cur = m.group(1)
         continue
     if cur and re.match(r"\s+status:\s+active\b", line):
-        ids.append(cur)
+        if cur not in ids:
+            ids.append(cur)
         cur = None
 
 aliases = ["fp.lab.local"]
@@ -200,6 +204,91 @@ services:
   okhttp4:
     build: ./clients/okhttp4
     depends_on: [capture]
+    profiles: ["capture"]
+
+  okhttp5:
+    build: ./clients/okhttp5
+    depends_on: [capture]
+    profiles: ["capture"]
+
+  grpc-go:
+    build: ./clients/grpc-go
+    depends_on: [capture]
+    environment:
+      - TARGET_ID=grpc-go
+      - DIAL_HOST=capture:8443
+    profiles: ["capture"]
+
+  rust-native-tls:
+    build: ./clients/rust-native-tls
+    depends_on: [capture]
+    environment:
+      - TARGET_ID=rust-native-tls
+      - DIAL_HOST=capture:8443
+    profiles: ["capture"]
+
+  python-aiohttp:
+    image: python:3.12-slim
+    depends_on: [capture]
+    entrypoint: ["bash", "-lc"]
+    command:
+      - |
+        set -e
+        pip install -q aiohttp
+        python - <<'PY'
+        import asyncio, aiohttp, ssl, socket
+        id = "python-aiohttp"
+        sni = id + ".fp.lab.local"
+        class CapResolver(aiohttp.abc.AbstractResolver):
+          async def resolve(self, host, port=0, family=socket.AF_INET):
+            return [{{"hostname": host, "host": socket.gethostbyname("capture"), "port": 8443, "family": socket.AF_INET, "proto": 0, "flags": 0}}]
+          async def close(self):
+            pass
+        async def main():
+          ctx = ssl.create_default_context()
+          ctx.check_hostname = False
+          ctx.verify_mode = ssl.CERT_NONE
+          connector = aiohttp.TCPConnector(ssl=ctx, resolver=CapResolver())
+          async with aiohttp.ClientSession(connector=connector) as session:
+            async with session.get(f"https://{{sni}}/", headers={{"X-Target-Id": id}}) as resp:
+              body = await resp.text()
+              print(resp.status, body[:200])
+        asyncio.run(main())
+        PY
+    profiles: ["capture"]
+
+  chrome-linux:
+    build: ./clients/chrome-linux
+    depends_on: [capture]
+    shm_size: "2gb"
+    profiles: ["capture"]
+
+  brave:
+    build: ./clients/brave
+    depends_on: [capture]
+    shm_size: "2gb"
+    profiles: ["capture"]
+
+  electron-sample:
+    build: ./clients/electron-sample
+    depends_on: [capture]
+    shm_size: "2gb"
+    profiles: ["capture"]
+
+  git-https:
+    image: alpine/git:latest
+    depends_on: [capture]
+    entrypoint: ["sh", "-c"]
+    command:
+      - |
+        set -e
+        IP=$$(getent hosts capture | awk '{{print $$1; exit}}')
+        echo "$$IP git-https.fp.lab.local" >> /etc/hosts
+        export GIT_SSL_NO_VERIFY=1
+        git ls-remote https://git-https.fp.lab.local:8443/ 2>/dev/null || true
+        # Force a TLS GET via git's curl even if ls-remote fails (no repo)
+        git -c http.extraHeader="X-Target-Id: git-https" ls-remote https://git-https.fp.lab.local:8443/dummy.git || true
+        echo "git-https done"
     profiles: ["capture"]
 
   node-undici:

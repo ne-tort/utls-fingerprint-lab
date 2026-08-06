@@ -1,0 +1,6 @@
+# Auto-generated pinned archives from track=latest captures.
+# labctl appends here when a latest target's JA4 changes.
+# Merged with targets.yaml by labctl / gen-compose.py.
+
+version: 1
+targets:

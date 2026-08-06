@@ -119,8 +119,10 @@ func handle(c net.Conn, cert tls.Certificate) {
 	replay := &prefixConn{Conn: c, prefix: append(rawHello, rest...)}
 	tlsCfg := &tls.Config{
 		Certificates: []tls.Certificate{cert},
-		// Prefer HTTP/1.1 so capture can return JA4 headers to verify clients.
-		NextProtos: []string{"http/1.1"},
+		// Prefer HTTP/1.1 when offered; advertise h2 so h2-only ClientHellos
+		// (gRPC, some HTTP/2 stacks) still complete. Lab then speaks HTTP/1.1
+		// framing either way so verify can read X-Captured-JA4 headers.
+		NextProtos: []string{"http/1.1", "h2"},
 		MinVersion: tls.VersionTLS12,
 	}
 	sc := tls.Server(replay, tlsCfg)

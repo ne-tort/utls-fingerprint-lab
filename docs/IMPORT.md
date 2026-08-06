@@ -8,7 +8,7 @@
 |------|-----|
 | `clienthello.bin` | Full TLS record containing ClientHello — **source of truth** |
 | `profile.json` | Manifest: id, expected JA4, format |
-| `meta.json` | Lab metadata (optional at runtime) |
+| `meta.json` / `slot.json` | Lab metadata (optional at runtime) |
 
 ## Short names (`./lab.ps1 export`)
 
@@ -16,19 +16,21 @@ Export writes `dist/export/`:
 
 | Artifact | Content |
 |----------|---------|
-| `catalog.json` | families, short names, aliases, JA4 |
-| `profiles/<short>/` | copies of lab profile dirs |
+| `catalog.json` | families, short names, aliases, JA4, track |
+| `profiles/<short>/` | copies of **unique** lab profile dirs (JA4-deduped) |
 | `NAMES.md` | human table short ↔ lab id |
 
 Naming rules (per `family` in `targets.yaml`):
 
-1. Sort non-`emit-builtin` by `version` desc, then `captured_at` desc.
+1. Prefer `track: latest`, then non-`emit-builtin` by `version` desc, then `captured_at` desc.
 2. Append all `emit-builtin` (stock Hello*_Auto / pins) at the **tail**, also by version desc.
-3. Assign `family`, `family-1`, `family-2`, … — **unsuffixed = newest**.
-4. Adding a newer Chrome capture shifts previous `chrome` → `chrome-1`, etc.
+3. **Dedup**: within a family, identical JA4 → one short name; other lab IDs → `aliases`.
+4. Assign `family`, `family-1`, … only over unique JA4 — **unsuffixed = newest** (usually the latest track).
 5. Brave / Edge / Tor / Yandex are **not** in the `chrome` family.
 
 Legacy aliases in export: `chrome_psk`… → `chrome`; empty fingerprint → `chrome`.
+
+Refresh floating channels: `./lab.ps1 refresh-latest` (pull + archive-on-JA4-change + export `--check-dedup`).
 
 ## Go (metacubex/utls) — blunt mimicry
 
@@ -44,6 +46,7 @@ err = uconn.ApplyPreset(spec)
 1. `make -f Makefile.lx lx-utls-sync` embeds export into `common/tls/lxutls/`.
 2. Config: `tls.utls.fingerprint: "chrome"` (short name) under build-tag `with_lx_utls`.
 3. Runtime: `Lookup` → `RawClientHello` → `HelloCustom` → `ApplyPreset`.
+4. Embed stores one blob per unique short name; catalog aliases resolve duplicates.
 
 ## Verification before shipping
 
@@ -56,5 +59,5 @@ JA4 must match `profile.json` → `expected.ja4`. JA3 may drift (GREASE); marked
 
 ## Notes
 
-- Capture server forces ALPN `http/1.1` so verify can read JA4 response headers. JA4 may show `h1` even when the real client prefers `h2`. Cipher/extension material remains valid for ClientHello mimicry.
+- Capture advertises ALPN `http/1.1` and `h2` so h2-only ClientHellos (gRPC) complete; verify still speaks HTTP/1.1 for JA4 headers.
 - GREASE / extension shuffle: expect JA3 variance; pin on JA4 + structural verify.

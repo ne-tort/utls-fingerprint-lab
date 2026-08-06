@@ -2,11 +2,12 @@
 # Single entry point for the uTLS fingerprint lab.
 param(
     [Parameter(Position = 0)]
-    [ValidateSet("build", "list", "capture", "verify", "test", "catalog", "export", "clean", "help")]
+    [ValidateSet("build", "list", "capture", "verify", "test", "catalog", "export", "refresh-latest", "clean", "help")]
     [string]$Command = "help",
     [string]$Id = "",
     [string]$Group = "",
-    [string]$Status = "active"
+    [string]$Status = "active",
+    [string]$Track = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -52,7 +53,8 @@ function Build-HostLinuxBins {
 
 function Ensure-Labctl {
     $exe = Join-Path $Root "bin\labctl.exe"
-    if (-not (Test-Path $exe)) { Build-HostLinuxBins }
+    # Always rebuild labctl so track/dedup/archive changes are picked up.
+    Build-HostLinuxBins
     return $exe
 }
 
@@ -61,14 +63,15 @@ switch ($Command) {
         Write-Host @"
 utls-fingerprint-lab
 
-  ./lab.ps1 build                 Host-cross-compile + runtime images
-  ./lab.ps1 list [-Status active] List targets from targets.yaml
-  ./lab.ps1 capture [-Id|-Group]  Capture active targets
-  ./lab.ps1 verify [-Id]          Replay-verify profiles
-  ./lab.ps1 test                  Smoke subset
+  ./lab.ps1 build                      Host-cross-compile + runtime images
+  ./lab.ps1 list [-Status] [-Track]    List targets (track=latest|pinned)
+  ./lab.ps1 capture [-Id|-Group]       Capture active targets
+  ./lab.ps1 refresh-latest             Capture all track=latest with pull/no-cache
+  ./lab.ps1 verify [-Id]               Replay-verify profiles
+  ./lab.ps1 test                       Smoke subset
   ./lab.ps1 catalog|export|clean
 
-See docs/EXTENDING.md and docs/IMPORT.md
+Export dedupes identical JA4 within a family. See docs/EXTENDING.md and docs/IMPORT.md
 "@
     }
     "build" {
@@ -81,13 +84,13 @@ See docs/EXTENDING.md and docs/IMPORT.md
         $labctl = Ensure-Labctl
         $a = @("-root", $Root, "list", "-status", $Status)
         if ($Group) { $a += @("-group", $Group) }
+        if ($Track) { $a += @("-track", $Track) }
         & $labctl @a
     }
     "capture" {
         python (Join-Path $Root "scripts\gen-compose.py")
-        Build-HostLinuxBins
-        Invoke-Compose build capture tools
         $labctl = Ensure-Labctl
+        Invoke-Compose build capture tools
         $a = @("-root", $Root, "capture")
         if ($Id) { $a += @("-id", $Id) }
         if ($Group) { $a += @("-group", $Group) }
@@ -95,10 +98,21 @@ See docs/EXTENDING.md and docs/IMPORT.md
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
         & $labctl -root $Root catalog
     }
-    "verify" {
-        Build-HostLinuxBins
-        Invoke-Compose build capture tools
+    "refresh-latest" {
+        Write-Host "== refresh track=latest (pull) =="
+        python (Join-Path $Root "scripts\gen-compose.py")
         $labctl = Ensure-Labctl
+        Invoke-Compose build capture tools
+        & $labctl -root $Root capture -latest
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+        & $labctl -root $Root catalog
+        & $labctl -root $Root export --check-dedup
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+        Write-Host "REFRESH LATEST OK"
+    }
+    "verify" {
+        $labctl = Ensure-Labctl
+        Invoke-Compose build capture tools
         $a = @("-root", $Root, "verify")
         if ($Id) { $a += @("-id", $Id) }
         & $labctl @a
@@ -110,15 +124,14 @@ See docs/EXTENDING.md and docs/IMPORT.md
     }
     "export" {
         $labctl = Ensure-Labctl
-        & $labctl -root $Root export
+        & $labctl -root $Root export --check-dedup
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     }
     "test" {
         Write-Host "== smoke test =="
         python (Join-Path $Root "scripts\gen-compose.py")
-        Build-HostLinuxBins
-        Invoke-Compose build capture tools
         $labctl = Ensure-Labctl
+        Invoke-Compose build capture tools
         foreach ($tid in @("openssl3", "curl-imp-chrome146", "builtin-chrome", "go-nethttp")) {
             Write-Host "--- capture $tid ---"
             & $labctl -root $Root capture -id $tid
@@ -130,6 +143,8 @@ See docs/EXTENDING.md and docs/IMPORT.md
             if ($LASTEXITCODE -ne 0) { throw "verify failed: $tid" }
         }
         & $labctl -root $Root catalog
+        & $labctl -root $Root export --check-dedup
+        if ($LASTEXITCODE -ne 0) { throw "export dedup failed" }
         Write-Host "SMOKE OK"
     }
     "clean" {
