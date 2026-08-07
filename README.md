@@ -3,8 +3,10 @@
 Standalone Docker lab that captures real TLS **ClientHello** bytes, promotes them
 to importable **uTLS** profiles (`utls-raw-clienthello-v1`), and verifies replay.
 
-Consumed by [sing-box-lx](https://github.com/ne-tort/sing-box-lx) as submodule
-`lx-test/utls-fingerprint-docker` (SPEC 062 / FEATURE 018).
+**Product feature:** [FEATURE 018 — UTLS_PROFILES](../../SPECS/FEATURES/018-UTLS_PROFILES/FEATURE.md)
+(`with_lx_utls`). This lab is the **source of truth** for catalog short names
+consumed by [sing-box-lx](https://github.com/ne-tort/sing-box-lx) as submodule
+`lx-test/utls-fingerprint-docker`.
 
 ## Quick start
 
@@ -19,7 +21,7 @@ Consumed by [sing-box-lx](https://github.com/ne-tort/sing-box-lx) as submodule
 
 Unix: `./lab.sh …` (same commands; filters via `ID=` / `GROUP=`).
 
-sing-box-lx: `make -f Makefile.lx lx-utls-sync` (SPEC 064).
+sing-box-lx: `make -f Makefile.lx lx-utls-sync` ([FEATURE 018](../../SPECS/FEATURES/018-UTLS_PROFILES/FEATURE.md) / SPEC 064).
 
 ## Layout
 
