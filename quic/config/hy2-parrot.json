@@ -1,0 +1,26 @@
+{
+  "log": { "level": "warn" },
+  "inbounds": [
+    {
+      "type": "mixed",
+      "tag": "mixed-in",
+      "listen": "0.0.0.0",
+      "listen_port": 1080
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "hysteria2",
+      "tag": "hy2",
+      "server": "capture",
+      "server_port": 4433,
+      "password": "lab-unused",
+      "tls": {
+        "enabled": true,
+        "server_name": "hy2parrot.fp.lab",
+        "insecure": true
+      }
+    }
+  ],
+  "route": { "final": "hy2" }
+}

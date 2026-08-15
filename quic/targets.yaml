@@ -1,6 +1,8 @@
 # QUIC Initial fingerprint targets (sibling to parent targets.yaml).
 # status: active | wishlist | skip
-# Many browser/H3 compose runners are wishlist until phase 2 (docs/CAPTURE.md).
+#
+# Matrix emitters (compose --profile matrix) are the reproducible baseline.
+# Live browsers / full hy2 outbound JSON — wishlist (see docs/ECOSYSTEM_DESIGN.md).
 
 version: 1
 
@@ -9,20 +11,61 @@ defaults:
   profile_format: "quic-raw-initial-v1"
 
 groups:
+  matrix: { description: "Docker matrix emitters (lab.ps1 matrix)" }
   browsers: { description: "Real browsers H3" }
-  parrot: { description: "sing-box-lx ChromeParrot / plain quic-go" }
-  libraries: { description: "quic-go / quiche / aioquic / uquic presets" }
-  wishlist: { description: "Deferred" }
+  parrot: { description: "sing-box-lx hy2 / tuic outbound (optional parity)" }
+  libraries: { description: "quiche / aioquic / …" }
 
 targets:
-  # --- parrot (phase 1: host-driven) ---
+  # --- active via compose matrix ---
+  - id: chromeparrot
+    group: matrix
+    status: active
+    family: chrome
+    version: 0
+    track: pinned
+    notes: "emit-chromeparrot = sagernet ChromeParrot ≈ hy2 default; fixtures/matrix-20260815"
+
+  - id: quicgo
+    group: matrix
+    status: active
+    family: quic-go
+    version: 0
+    track: pinned
+    notes: "emit-quicgo-plain; hy2 disable_chrome_parrot twin"
+
+  - id: uquic-chrome-146
+    group: matrix
+    status: active
+    family: chrome
+    version: 146
+    track: pinned
+    notes: "uquic QUICChrome_146 (ML-KEM, 2 dg); NOT drop-in for our parrot (no 0x11)"
+
+  - id: uquic-chrome-115
+    group: matrix
+    status: active
+    family: chrome
+    version: 115
+    track: pinned
+    notes: "stale vs 146; regression / observatory compare only"
+
+  - id: uquic-firefox-116
+    group: matrix
+    status: active
+    family: firefox
+    version: 116
+    track: pinned
+    notes: "uquic QUICFirefox_116 reference emit"
+
+  # --- optional hy2 outbound (sing-box binary mount; pattern from demux-quic-auth) ---
   - id: hy2-parrot
     group: parrot
     status: wishlist
     family: chrome
     version: 0
     track: pinned
-    notes: "sing-box-lx hy2 outbound ChromeParrot on → lab UDP; fresh parrot baseline"
+    notes: "full hy2 outbound → capture:4433; expect ≈ chromeparrot wire; no quic_auth needed for dump"
 
   - id: hy2-plain
     group: parrot
@@ -30,7 +73,7 @@ targets:
     family: quic-go
     version: 0
     track: pinned
-    notes: "hy2 disable_chrome_parrot; library persona"
+    notes: "hy2 disable_chrome_parrot: true"
 
   - id: tuic-parrot
     group: parrot
@@ -46,7 +89,7 @@ targets:
     family: chrome
     version: 9999
     track: latest
-    notes: "Chromium/Chrome H3 → capture:4433; freshness vs hy2-parrot"
+    notes: "live Chromium H3 freshness vs chromeparrot"
 
   - id: firefox-h3-latest
     group: browsers
@@ -54,7 +97,7 @@ targets:
     family: firefox
     version: 9999
     track: latest
-    notes: "Firefox Necko QUIC"
+    notes: "live Firefox vs uquic-firefox-116"
 
   - id: edge-h3
     group: browsers
@@ -62,7 +105,7 @@ targets:
     family: chrome
     notes: "expect alias to chrome unless TP/CH differs"
 
-  # --- libraries (phase 3) ---
+  # --- libraries ---
   - id: curl-quiche
     group: libraries
     status: wishlist
@@ -74,17 +117,3 @@ targets:
     status: wishlist
     family: aioquic
     notes: "python-aioquic H3 client"
-
-  - id: uquic-firefox-116
-    group: libraries
-    status: wishlist
-    family: firefox
-    version: 116
-    notes: "reference emit from refraction uquic; not product dep"
-
-  - id: uquic-chrome-115
-    group: libraries
-    status: wishlist
-    family: chrome
-    version: 115
-    notes: "stale vs ML-KEM ChromeParrot; regression only"

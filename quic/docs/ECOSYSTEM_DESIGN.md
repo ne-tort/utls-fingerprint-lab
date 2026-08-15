@@ -35,9 +35,15 @@
 
 ## Next lab steps
 
-1. Commit representative `profiles/*` snapshots for CI compare fixtures.
-2. Chromium/Firefox H3 docker clients → live freshness vs chromeparrot.
-3. Optional hy2 outbound container (mount prebuilt sing-box) for end-to-end
-   parity check vs chromeparrot probe.
-4. JA4q computation in capture promote.
-5. Export shorts + (later) `lxquicfp` sync — still no sing-box code in this phase.
+**Done (matrix):** capture promote fills `clienthello.bin`, `tp.json`, `tp_id_set`,
+SNI→id; Docker emitters chromeparrot/quicgo/uquic; fixtures + RESULTS_MATRIX;
+clienthellod deadline fix.
+
+1. Optional **hy2 outbound** parity service (thin sing-box image + mixed inbound —
+   pattern from demux-quic-auth; dump only, no `quic_auth`).
+2. Live Chromium/Firefox H3 docker clients → freshness vs chromeparrot /
+   uquic-firefox-116.
+3. JA4 `q…` fill (`expected.ja4`) — FoxIO BSD path via tshark/python sidecar;
+   do **not** vendor JA4+ into product.
+4. Export shorts + (later) `lxquicfp` sync — still no sing-box code in this phase.
+5. Write raw `transport_parameters.bin` if clienthellod exposes extension payload.
