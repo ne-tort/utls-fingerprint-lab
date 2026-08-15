@@ -1,0 +1,63 @@
+{
+  "max_idle_timeout": [
+    0,
+    0,
+    117,
+    48
+  ],
+  "initial_max_data": [
+    1,
+    128,
+    0,
+    0
+  ],
+  "initial_max_stream_data_bidi_local": [
+    0,
+    192,
+    0,
+    0
+  ],
+  "initial_max_stream_data_bidi_remote": [
+    0,
+    16,
+    0,
+    0
+  ],
+  "initial_max_stream_data_uni": [
+    0,
+    16,
+    0,
+    0
+  ],
+  "initial_max_streams_bidi": [
+    16
+  ],
+  "initial_max_streams_uni": [
+    16
+  ],
+  "max_ack_delay": [
+    20
+  ],
+  "active_connection_id_limit": [
+    8
+  ],
+  "tpids": [
+    1,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    11,
+    12,
+    14,
+    15,
+    27,
+    32,
+    10930,
+    16741339
+  ],
+  "hex_id": "e9ce934bbe5bcee3",
+  "num_id": 16847565209565122275
+}

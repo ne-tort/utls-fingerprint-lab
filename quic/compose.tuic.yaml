@@ -1,0 +1,57 @@
+# Overlay: tuic outbound Initial dump (same parrot stack as hy2; no quic_auth).
+# Usage: ./lab.ps1 tuic
+# Requires quic/bin/sing-box (linux).
+
+services:
+  capture:
+    networks:
+      fpnet:
+        aliases:
+          - tuicparrot.fp.lab
+          - tuicplain.fp.lab
+
+  tuic-parrot:
+    image: debian:bookworm-slim
+    depends_on: [capture]
+    volumes:
+      - ./bin/sing-box:/usr/local/bin/sing-box:ro
+      - ./config/tuic-parrot.json:/etc/sing-box/config.json:ro
+    networks: [fpnet]
+    entrypoint: ["sing-box"]
+    command: ["run", "-c", "/etc/sing-box/config.json"]
+    profiles: ["tuic"]
+
+  tuic-plain:
+    image: debian:bookworm-slim
+    depends_on: [capture]
+    volumes:
+      - ./bin/sing-box:/usr/local/bin/sing-box:ro
+      - ./config/tuic-plain.json:/etc/sing-box/config.json:ro
+    networks: [fpnet]
+    entrypoint: ["sing-box"]
+    command: ["run", "-c", "/etc/sing-box/config.json"]
+    profiles: ["tuic"]
+
+  trigger-tuic-parrot:
+    image: curlimages/curl:8.5.0
+    depends_on: [tuic-parrot]
+    networks: [fpnet]
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - >-
+        sleep 2;
+        curl -sS -x http://tuic-parrot:1080 --connect-timeout 3 --max-time 6
+        http://example.com/ || true
+    profiles: ["tuic"]
+
+  trigger-tuic-plain:
+    image: curlimages/curl:8.5.0
+    depends_on: [tuic-plain]
+    networks: [fpnet]
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - >-
+        sleep 2;
+        curl -sS -x http://tuic-plain:1080 --connect-timeout 3 --max-time 6
+        http://example.com/ || true
+    profiles: ["tuic"]

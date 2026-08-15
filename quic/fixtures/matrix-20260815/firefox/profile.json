@@ -1,0 +1,48 @@
+{
+  "emit": {
+    "emit_kind": "match_only",
+    "notes": "live Firefox H3"
+  },
+  "expected": {
+    "clienthellod_id": "cc85355b67f9196a",
+    "dcid_len": null,
+    "header": {
+      "raw": {
+        "version": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "dest_conn_id_len": 8,
+        "source_conn_id_len": 3,
+        "packet_number": [
+          28
+        ]
+      }
+    },
+    "ja4": "q12d039900_55b375c5d22e_000000000000",
+    "scid_len": null,
+    "tp_id_set": [
+      "0x1",
+      "0x4",
+      "0x5",
+      "0x6",
+      "0x7",
+      "0x8",
+      "0x9",
+      "0xb",
+      "0xe",
+      "0xf",
+      "0x11",
+      "GREASE",
+      "0x20"
+    ]
+  },
+  "family": "firefox",
+  "format": "quic-raw-initial-v1",
+  "id": "firefox",
+  "notes": "auto-promoted from capture; review family/expected/emit (docs/REPLAY_AND_EMIT.md)",
+  "track": "pinned",
+  "version": 0
+}

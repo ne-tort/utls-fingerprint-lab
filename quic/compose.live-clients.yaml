@@ -1,5 +1,5 @@
 # Overlay for live library+browser Initial capture.
-# Usage: ./lab.ps1 live -Client aioquic|curl|chromium|all
+# Usage: ./lab.ps1 live -Client aioquic|curl|chromium|chromiumfresh|firefox|all
 #
 # Capture stays Go clienthellod (compose.yaml). These services only emit Initials.
 
@@ -12,6 +12,8 @@ services:
           - aioquic.fp.lab
           - curlquiche.fp.lab
           - chromium.fp.lab
+          - chromiumfresh.fp.lab
+          - firefox.fp.lab
 
   emit-aioquic:
     build:
@@ -58,3 +60,27 @@ services:
         --ignore-certificate-errors
         https://chromium.fp.lab:4433/ || true
     profiles: ["live", "chromium"]
+
+  # Newer Chromium (chromedp headless-shell) for freshness vs zenika alpine.
+  emit-chromium-fresh:
+    image: chromedp/headless-shell:latest
+    depends_on: [capture]
+    networks: [fpnet]
+    shm_size: "256mb"
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - >-
+        timeout 30 headless-shell --no-sandbox --disable-gpu
+        --enable-quic --quic-version=h3
+        --origin-to-force-quic-on=chromiumfresh.fp.lab:4433
+        --ignore-certificate-errors
+        https://chromiumfresh.fp.lab:4433/ || true
+    profiles: ["live", "chromiumfresh"]
+
+  emit-firefox-h3:
+    build:
+      context: ./emitters/firefox
+    depends_on: [capture]
+    networks: [fpnet]
+    shm_size: "1gb"
+    profiles: ["live", "firefox"]

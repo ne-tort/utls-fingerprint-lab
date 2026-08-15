@@ -1,9 +1,9 @@
 # QUIC Initial fingerprint targets (sibling to parent targets.yaml).
 # status: active | wishlist | skip
 #
-# Matrix emitters (compose --profile matrix) are the reproducible baseline.
-# Live clients: ./lab.ps1 live -Client aioquic|curl|chromium|all
-#   (compose.yaml + compose.live-clients.yaml)
+# Matrix: ./lab.ps1 matrix | matrix-ext
+# Live:   ./lab.ps1 live -Client aioquic|curl|chromium|chromiumfresh|firefox|all
+# Product: ./lab.ps1 hy2 | tuic
 
 version: 1
 
@@ -13,22 +13,30 @@ defaults:
 
 groups:
   matrix: { description: "Docker matrix emitters (lab.ps1 matrix)" }
+  matrix_ext: { description: "Extended emitters (lab.ps1 matrix-ext)" }
   live: { description: "compose.live-clients library/browser clients" }
-  browsers: { description: "Real browsers H3 (wishlist)" }
-  parrot: { description: "sing-box-lx hy2 / tuic outbound (optional parity)" }
+  browsers: { description: "Real browsers H3" }
+  parrot: { description: "sing-box-lx hy2 / tuic outbound" }
+  libs: { description: "Other QUIC stacks (wishlist)" }
 
 targets:
   - id: chromeparrot
     group: matrix
     status: active
     family: chrome
-    notes: "emit-chromeparrot ≈ hy2 default; fixtures/matrix-20260815"
+    notes: "emit-chromeparrot ≈ hy2/tuic default; fixtures/matrix-20260815"
 
   - id: quicgo
     group: matrix
     status: active
     family: quic-go
-    notes: "emit-quicgo-plain"
+    notes: "emit-quicgo-plain; NO 0x20 (no EnableDatagrams)"
+
+  - id: quicgodg
+    group: matrix_ext
+    status: active
+    family: quic-go
+    notes: "EnableDatagrams; expect ≡ hy2plain; see F-HY2PLAIN_DATAGRAM_0x20"
 
   - id: uquic-chrome-146
     group: matrix
@@ -51,6 +59,27 @@ targets:
     version: 116
     notes: "uquic QUICFirefox_116 reference"
 
+  - id: uquic-firefox-116a
+    group: matrix_ext
+    status: active
+    family: firefox
+    version: 116
+    notes: "QUICFirefox_116A"
+
+  - id: uquic-firefox-116b
+    group: matrix_ext
+    status: active
+    family: firefox
+    version: 116
+    notes: "QUICFirefox_116B"
+
+  - id: uquic-firefox-116c
+    group: matrix_ext
+    status: active
+    family: firefox
+    version: 116
+    notes: "QUICFirefox_116C"
+
   - id: aioquic
     group: live
     status: active
@@ -68,35 +97,66 @@ targets:
     status: active
     family: chrome
     track: latest
-    notes: "lab.ps1 live -Client chromium; zenika alpine ≠ chromeparrot (0x4752, no 0x11/0x3128)"
+    notes: "zenika alpine; ≠ chromeparrot (0x4752, no 0x11/0x3128)"
 
-  - id: firefox-h3-latest
+  - id: chromiumfresh
+    group: live
+    status: active
+    family: chrome
+    track: latest
+    notes: "chromedp/headless-shell; freshness vs zenika + parrot"
+
+  - id: firefox
     group: browsers
-    status: wishlist
+    status: active
     family: firefox
     track: latest
-    notes: "live Firefox vs uquic-firefox-116"
+    notes: "lab.ps1 live -Client firefox; vs uquicff"
 
   - id: edge-h3
     group: browsers
     status: wishlist
     family: chrome
-    notes: "expect alias to chrome unless TP differs"
+    notes: "expect alias to chromiumfresh unless TP differs"
 
   - id: hy2-parrot
     group: parrot
     status: active
     family: chrome
-    notes: "lab.ps1 hy2; SNI hy2parrot.fp.lab; structural ≡ chromeparrot"
+    notes: "lab.ps1 hy2; ≡ chromeparrot"
 
   - id: hy2-plain
     group: parrot
     status: active
     family: quic-go
-    notes: "lab.ps1 hy2; disable_chrome_parrot; +0x20 vs matrix quicgo"
+    notes: "+0x20 datagram; study F-HY2PLAIN_DATAGRAM_0x20; ≡ quicgodg"
 
   - id: tuic-parrot
     group: parrot
-    status: wishlist
+    status: active
     family: chrome
-    notes: "same parrot stack as hy2"
+    notes: "lab.ps1 tuic; expect ≡ chromeparrot/hy2parrot"
+
+  - id: tuic-plain
+    group: parrot
+    status: active
+    family: quic-go
+    notes: "lab.ps1 tuic; expect ≡ hy2plain"
+
+  - id: ngtcp2
+    group: libs
+    status: wishlist
+    family: ngtcp2
+    notes: "interop image experiment"
+
+  - id: msquic
+    group: libs
+    status: wishlist
+    family: msquic
+    notes: "heavy; optional"
+
+  - id: safari-h3
+    group: browsers
+    status: wishlist
+    family: safari
+    notes: "macOS host capture only"

@@ -1,0 +1,30 @@
+{
+  "log": { "level": "warn" },
+  "inbounds": [
+    {
+      "type": "mixed",
+      "tag": "mixed-in",
+      "listen": "0.0.0.0",
+      "listen_port": 1080
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "tuic",
+      "tag": "tuic",
+      "server": "capture",
+      "server_port": 4433,
+      "uuid": "00000000-0000-0000-0000-000000000001",
+      "password": "lab-unused",
+      "congestion_control": "cubic",
+      "disable_chrome_parrot": true,
+      "tls": {
+        "enabled": true,
+        "server_name": "tuicplain.fp.lab",
+        "alpn": ["h3"],
+        "insecure": true
+      }
+    }
+  ],
+  "route": { "final": "tuic" }
+}

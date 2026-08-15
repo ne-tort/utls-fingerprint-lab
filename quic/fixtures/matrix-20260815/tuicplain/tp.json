@@ -1,0 +1,73 @@
+{
+  "max_idle_timeout": [
+    0,
+    0,
+    117,
+    48
+  ],
+  "max_udp_payload_size": [
+    5,
+    172
+  ],
+  "initial_max_data": [
+    0,
+    48,
+    0,
+    0
+  ],
+  "initial_max_stream_data_bidi_local": [
+    0,
+    32,
+    0,
+    0
+  ],
+  "initial_max_stream_data_bidi_remote": [
+    0,
+    32,
+    0,
+    0
+  ],
+  "initial_max_stream_data_uni": [
+    0,
+    32,
+    0,
+    0
+  ],
+  "initial_max_streams_bidi": [
+    0,
+    100
+  ],
+  "initial_max_streams_uni": [
+    16,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "max_ack_delay": [
+    26
+  ],
+  "active_connection_id_limit": [
+    4
+  ],
+  "tpids": [
+    1,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    11,
+    14,
+    15,
+    27,
+    32
+  ],
+  "hex_id": "29b94d4d69afd5af",
+  "num_id": 3006519221127468463
+}

@@ -20,6 +20,7 @@ func main() {
 	port := flag.Int("port", 4433, "capture UDP port")
 	sni := flag.String("sni", "fp.lab.local", "TLS SNI")
 	parrot := flag.Bool("chrome-parrot", true, "enable ChromeParrot (false = plain quic-go)")
+	datagrams := flag.Bool("datagrams", false, "EnableDatagrams (RFC 9221 max_datagram_frame_size 0x20; hy2/tuic)")
 	flag.Parse()
 
 	raddr, err := net.ResolveUDPAddr("udp", fmt.Sprintf("%s:%d", *host, *port))
@@ -48,7 +49,7 @@ func main() {
 		ServerName:         *sni,
 		InsecureSkipVerify: true,
 		NextProtos:         []string{"h3"},
-	}, &quic.Config{ChromeParrot: *parrot})
+	}, &quic.Config{ChromeParrot: *parrot, EnableDatagrams: *datagrams})
 	time.Sleep(400 * time.Millisecond)
-	fmt.Printf("ok chrome-parrot=%v\n", *parrot)
+	fmt.Printf("ok chrome-parrot=%v datagrams=%v\n", *parrot, *datagrams)
 }

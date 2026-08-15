@@ -41,10 +41,9 @@
 SNI→id; Docker emitters chromeparrot/quicgo/uquic; fixtures + RESULTS_MATRIX;
 clienthellod deadline fix.
 
-1. ~~Optional **hy2 outbound** parity~~ — `./lab.ps1 hy2` (`compose.hy2.yaml`);
-   hy2parrot ≡ chromeparrot; hy2plain ≈ quicgo (+`0x20`).
-2. ~~Live Chromium~~ — done; ≠ parrot (see RESULTS). Firefox H3 still wishlist.
+1. ~~Optional **hy2 outbound** parity~~ — done; tuic also ≡ hy2.
+2. ~~Live Chromium~~ — zenika stale; **chromedp ≡ parrot**. Firefox live done (≠ uquic).
 3. ~~JA4 `q…` fill~~ — `./lab.ps1 ja4`.
 4. Export shorts + (later) `lxquicfp` sync — still no sing-box code in this phase.
-5. Write raw `transport_parameters.bin` if clienthellod exposes extension payload.
-6. Optional newer Chromium image / Firefox live H3 for freshness.
+5. Study F: product shorts `quic-go` vs `quic-go-datagram` / demux policy for `0x20`.
+6. Wishlist: Edge, ngtcp2, Safari (host), msquic — see [CAPTURE_SOURCES.md](CAPTURE_SOURCES.md).

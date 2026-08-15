@@ -1,0 +1,50 @@
+{
+  "emit": {
+    "emit_kind": "uquic_preset",
+    "uquic_preset": "firefox-116c"
+  },
+  "expected": {
+    "clienthellod_id": "84d4cb75bfaaff53",
+    "dcid_len": null,
+    "header": {
+      "raw": {
+        "version": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "dest_conn_id_len": 15,
+        "source_conn_id_len": 3,
+        "packet_number": [
+          6
+        ]
+      }
+    },
+    "ja4": "q13d0314h3_55b375c5d22e_2d2a40a25571",
+    "scid_len": null,
+    "tp_id_set": [
+      "0x1",
+      "0x4",
+      "0x5",
+      "0x6",
+      "0x7",
+      "0x8",
+      "0x9",
+      "0xb",
+      "0xc",
+      "0xe",
+      "0xf",
+      "GREASE",
+      "0x20",
+      "0x2ab2",
+      "0xff73db"
+    ]
+  },
+  "family": "firefox",
+  "format": "quic-raw-initial-v1",
+  "id": "uquicffc",
+  "notes": "auto-promoted from capture; review family/expected/emit (docs/REPLAY_AND_EMIT.md)",
+  "track": "pinned",
+  "version": 0
+}

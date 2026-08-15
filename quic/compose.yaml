@@ -73,6 +73,48 @@ services:
     command: ["-host", "capture", "-port", "4433", "-sni", "uquicff.fp.lab", "-preset", "firefox-116"]
     profiles: ["emit", "uquic", "matrix"]
 
+  # uquic Firefox 116A/B/C variants (TP/CH noise slots)
+  emit-uquic-firefox116a:
+    image: debian:bookworm-slim
+    depends_on: [capture]
+    volumes:
+      - ./bin/emit-uquic:/emit:ro
+    networks: [fpnet]
+    entrypoint: ["/emit"]
+    command: ["-host", "capture", "-port", "4433", "-sni", "uquicffa.fp.lab", "-preset", "firefox-116a"]
+    profiles: ["emit", "uquic", "matrix-ext"]
+
+  emit-uquic-firefox116b:
+    image: debian:bookworm-slim
+    depends_on: [capture]
+    volumes:
+      - ./bin/emit-uquic:/emit:ro
+    networks: [fpnet]
+    entrypoint: ["/emit"]
+    command: ["-host", "capture", "-port", "4433", "-sni", "uquicffb.fp.lab", "-preset", "firefox-116b"]
+    profiles: ["emit", "uquic", "matrix-ext"]
+
+  emit-uquic-firefox116c:
+    image: debian:bookworm-slim
+    depends_on: [capture]
+    volumes:
+      - ./bin/emit-uquic:/emit:ro
+    networks: [fpnet]
+    entrypoint: ["/emit"]
+    command: ["-host", "capture", "-port", "4433", "-sni", "uquicffc.fp.lab", "-preset", "firefox-116c"]
+    profiles: ["emit", "uquic", "matrix-ext"]
+
+  # Plain quic-go + RFC 9221 datagrams (= hy2/tuic without parrot)
+  emit-quicgo-datagram:
+    image: debian:bookworm-slim
+    depends_on: [capture]
+    volumes:
+      - ./bin/emit-chromeparrot:/emit:ro
+    networks: [fpnet]
+    entrypoint: ["/emit"]
+    command: ["-host", "capture", "-port", "4433", "-sni", "quicgodg.fp.lab", "-chrome-parrot=false", "-datagrams"]
+    profiles: ["emit", "quicgo", "matrix-ext"]
+
   # Python aioquic library persona
   emit-aioquic:
     build:

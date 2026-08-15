@@ -18,9 +18,15 @@ Date: 2026-08-15 · stack: sagernet ChromeParrot emitter + `_refs/uquic` tip
 | **uquicff** | firefox | 1 | n | n | +`0x2ab2`; different base set |
 | **aioquic** | aioquic | 1 | **Y** | **n** | has `0x11` but **no** `0x3128`; SCID len 8; `match_only` |
 | **curlquiche** | quiche | 1 | n | n | DCID=16 SCID=20; no google ids; `match_only` |
-| **chromium** | chrome (live) | **2** | **n** | **n** | `0x4752`+`0xff73db`; **≠ parrot**; zenika alpine image |
-| **hy2parrot** | chrome | **2** | **Y** | **Y** | real hy2 outbound; **≡ chromeparrot** |
-| **hy2plain** | quic-go | 2 | n | n | `disable_chrome_parrot`; +`0x20` vs matrix quicgo |
+| **chromium** | chrome (live) | **2** | **n** | **n** | zenika alpine; `0x4752`+`0xff73db`; **≠ parrot** |
+| **chromiumfresh** | chrome (live) | **2** | **Y** | **Y** | chromedp headless-shell; **≡ chromeparrot** |
+| **firefox** | firefox (live) | **2** | **Y** | **n** | ≠ uquicff (no `0x2ab2`; has `0x11`; 2 dg) |
+| **hy2parrot** | chrome | **2** | **Y** | **Y** | real hy2; **≡ chromeparrot** |
+| **hy2plain** | quic-go | 2 | n | n | +`0x20` datagram; **≡ quicgodg** |
+| **quicgodg** | quic-go | 2 | n | n | `EnableDatagrams`; control for hy2/tuic plain |
+| **tuicparrot** | chrome | **2** | **Y** | **Y** | **≡ chromeparrot** |
+| **tuicplain** | quic-go | 2 | n | n | **≡ hy2plain** |
+| **uquicffa/b/c** | firefox | 1 | n | n | same TP set as uquicff in this run |
 
 ## JA4 (`expected.ja4`, ja4plus)
 
@@ -30,20 +36,21 @@ Filled with `./lab.ps1 ja4` (wraps `initials/*.bin` → UDP → ja4plus). Prefix
 |----|-----|
 | chromeparrot | `q12d039900_55b375c5d22e_5cae79f3dfec` |
 | chromium | `q13d0311h3_55b375c5d22e_5a1f323ef56d` |
+| chromiumfresh | `q12d039900_55b375c5d22e_893e9c6f0878` |
+| firefox | `q12d039900_55b375c5d22e_000000000000` (check decrypt completeness) |
 | uquic146 | `q13d0311h3_55b375c5d22e_653d80c3fe9d` |
 | uquic115 | `q13d0310h3_55b375c5d22e_cd85d2d88918` |
-| uquicff | `q13d0314h3_55b375c5d22e_2d2a40a25571` |
-| quicgo | `q13d0313h3_55b375c5d22e_f902b76752af` |
+| uquicff / A/B/C | `q13d0314h3_55b375c5d22e_2d2a40a25571` |
+| quicgo / quicgodg / hy2plain / tuicplain | `q13d0313h3_55b375c5d22e_f902b76752af` |
 | aioquic | `q13d0307h3_55b375c5d22e_1cecd519fee8` |
 | curlquiche | `q13d0308h3_55b375c5d22e_f0736a66fa6b` |
 | hy2parrot | `q13d039900_55b375c5d22e_441c618b2280` |
-| hy2plain | `q13d0313h3_55b375c5d22e_f902b76752af` (= quicgo JA4) |
+| tuicparrot | `q12d039900_55b375c5d22e_5200bcdcd354` |
 
-Notes: chromeparrot shows ALPN `00` in this capture (ja4plus reading); live chromium /
-uquic146 share the middle hash (`55b375c5d22e`) but differ on the third. Roundtrip
-`uquic146`/`uquic146-b` share identical JA4; chromeparrot×2 can differ (GREASE / CH
-noise) — structural compare stays GREASE-tolerant, JA4 does not. **hy2plain JA4 equals
-quicgo** even when TP id-set differs by `0x20` (JA4 is CH-based).
+Notes: chromeparrot/chromiumfresh/tuicparrot share ALPN `00` reading in some runs;
+structural TP match is authoritative for parrot identity. Roundtrip uquic146 JA4
+stable; chromeparrot JA4 can differ across runs (GREASE). **hy2plain/tuicplain/quicgodg
+share JA4 with quicgo** (CH same; TP differs only by `0x20` when datagrams on).
 
 ## Roundtrip
 
@@ -72,9 +79,15 @@ See [REPLAY_AND_EMIT.md](REPLAY_AND_EMIT.md).
    uquic115 shape than to sagernet parrot). Freshness ≠ “parrot is current Chrome”;
    parrot remains a **fixed emit persona**. Image age matters — bump Chromium image
    when re-checking freshness.
-9. **hy2 outbound parity** (`./lab.ps1 hy2`): **hy2parrot ≡ chromeparrot** structurally
-   (`0x11`+`0x3128`). **hy2plain ≈ quicgo** but hy2 adds `0x20` (active_connection_id_limit)
-   that the matrix `emit-quicgo-plain` profile lacked — soft warning, not hard fail.
+9. **hy2 outbound parity** (`./lab.ps1 hy2`): **hy2parrot ≡ chromeparrot**.
+   **hy2plain ≠ bare quicgo**: extra TP **`0x20` = `max_datagram_frame_size`** (RFC 9221),
+   because hy2 sets `EnableDatagrams` — see
+   [F-HY2PLAIN_DATAGRAM_0x20](../../../../SPECS/TASKS/090-QUIC_FINGERPRINT_PROFILES/modules/F-HY2PLAIN_DATAGRAM_0x20.md).
+   Matrix `quicgodg` (`-datagrams`) is the matching plain control. **Do not strip `0x20` from hy2.**
+10. **tuic ≡ hy2** on TP id-set (parrot and plain) with current sing-box-lx build.
+11. **Fresh Chromium (chromedp) ≡ chromeparrot**; zenika alpine Chromium is stale (≠ parrot).
+12. **Live Firefox ≠ uquic Firefox_116**: live has `0x11` + 2 datagrams; uquic has `0x2ab2` /
+    `0xff73db` + 1 datagram — uquic is a fixed reference, not “current Firefox”.
 
 ## Reproduce
 

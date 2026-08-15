@@ -263,7 +263,16 @@ func promoteProfile(profileDir, id string, datagrams [][]byte, gather *clienthel
 	case id == "chromeparrot" || strings.Contains(id, "hy2parrot") || strings.HasPrefix(id, "chromeparrot"):
 		emit = map[string]any{"emit_kind": "sagernet_chrome_parrot"}
 		family = "chrome"
-	case id == "quicgo" || strings.Contains(id, "hy2plain") || strings.Contains(id, "plain"):
+	case strings.Contains(id, "tuicparrot"):
+		emit = map[string]any{"emit_kind": "sagernet_chrome_parrot"}
+		family = "chrome"
+	case strings.Contains(id, "quicgodg") || strings.Contains(id, "quicgo-datagram"):
+		emit = map[string]any{"emit_kind": "sagernet_plain", "notes": "EnableDatagrams; expect ≡ hy2plain"}
+		family = "quic-go"
+	case strings.Contains(id, "hy2plain") || strings.Contains(id, "tuicplain"):
+		emit = map[string]any{"emit_kind": "sagernet_plain", "notes": "product plain + datagrams (0x20); see F-HY2PLAIN_DATAGRAM_0x20"}
+		family = "quic-go"
+	case id == "quicgo" || strings.HasPrefix(id, "quicgo"):
 		emit = map[string]any{"emit_kind": "sagernet_plain"}
 		family = "quic-go"
 	case strings.Contains(id, "uquic146"):
@@ -272,7 +281,16 @@ func promoteProfile(profileDir, id string, datagrams [][]byte, gather *clienthel
 	case strings.Contains(id, "uquic115"):
 		emit = map[string]any{"emit_kind": "uquic_preset", "uquic_preset": "chrome-115"}
 		family = "chrome"
-	case strings.Contains(id, "uquicff") || strings.Contains(id, "firefox"):
+	case strings.Contains(id, "uquicffa"):
+		emit = map[string]any{"emit_kind": "uquic_preset", "uquic_preset": "firefox-116a"}
+		family = "firefox"
+	case strings.Contains(id, "uquicffb"):
+		emit = map[string]any{"emit_kind": "uquic_preset", "uquic_preset": "firefox-116b"}
+		family = "firefox"
+	case strings.Contains(id, "uquicffc"):
+		emit = map[string]any{"emit_kind": "uquic_preset", "uquic_preset": "firefox-116c"}
+		family = "firefox"
+	case strings.Contains(id, "uquicff"):
 		emit = map[string]any{"emit_kind": "uquic_preset", "uquic_preset": "firefox-116"}
 		family = "firefox"
 	case strings.Contains(id, "aioquic"):
@@ -281,12 +299,21 @@ func promoteProfile(profileDir, id string, datagrams [][]byte, gather *clienthel
 	case strings.Contains(id, "curlquiche") || strings.Contains(id, "curl"):
 		emit = map[string]any{"emit_kind": "match_only", "notes": "curl+quiche"}
 		family = "quiche"
+	case strings.Contains(id, "chromiumfresh") || strings.Contains(id, "chromefresh"):
+		emit = map[string]any{
+			"emit_kind": "match_only",
+			"notes":     "chromedp/headless-shell live H3; freshness vs zenika chromium + chromeparrot",
+		}
+		family = "chrome"
 	case strings.Contains(id, "chromium"):
 		emit = map[string]any{
 			"emit_kind": "match_only",
 			"notes":     "live zenika/alpine-chrome H3; TP has 0x4752/0xff73db, no 0x11/0x3128 — not chromeparrot",
 		}
 		family = "chrome"
+	case id == "firefox" || strings.HasPrefix(id, "firefox"):
+		emit = map[string]any{"emit_kind": "match_only", "notes": "live Firefox H3"}
+		family = "firefox"
 	}
 
 	prof := map[string]any{
