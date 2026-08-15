@@ -305,10 +305,19 @@ func promoteProfile(profileDir, id string, datagrams [][]byte, gather *clienthel
 			"notes":     "chromedp/headless-shell live H3; freshness vs zenika chromium + chromeparrot",
 		}
 		family = "chrome"
+	case id == "winchrome" || strings.HasPrefix(id, "winchrome"):
+		emit = map[string]any{"emit_kind": "match_only", "notes": "Windows host Google Chrome H3"}
+		family = "chrome"
+	case id == "winedge" || strings.HasPrefix(id, "winedge"):
+		emit = map[string]any{"emit_kind": "match_only", "notes": "Windows host Microsoft Edge H3"}
+		family = "chrome"
+	case id == "winyandex" || strings.HasPrefix(id, "winyandex"):
+		emit = map[string]any{"emit_kind": "match_only", "notes": "Windows host Yandex Browser H3"}
+		family = "chrome"
 	case strings.Contains(id, "yandex"):
 		emit = map[string]any{
 			"emit_kind": "match_only",
-			"notes":     "live Yandex Browser H3; compare vs chromeparrot/chromiumfresh",
+			"notes":     "live Yandex Browser H3 (Docker); compare vs chromeparrot/chromiumfresh",
 		}
 		family = "chrome"
 	case strings.Contains(id, "chromium"):

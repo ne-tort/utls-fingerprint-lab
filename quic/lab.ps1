@@ -2,7 +2,7 @@
 # Single entry for QUIC Initial fingerprint lab (Docker-first).
 param(
     [Parameter(Position = 0)]
-    [ValidateSet("build", "build-emitters", "capture-listen", "parse", "list", "up", "matrix", "matrix-ext", "roundtrip", "live", "ja4", "hy2", "tuic", "compare", "help")]
+    [ValidateSet("build", "build-emitters", "capture-listen", "parse", "list", "up", "matrix", "matrix-ext", "roundtrip", "live", "ja4", "hy2", "tuic", "host-browsers", "compare", "help")]
     [string]$Action = "help",
     [string]$Path = "",
     [string]$Listen = ":4433",
@@ -74,6 +74,7 @@ quic lab (Docker-first):
   ja4              annotate expected.ja4 via ja4plus (compose.ja4.yaml)
   hy2              real hy2 outbound Initial vs chromeparrot/quicgo
   tuic             real tuic outbound Initial vs hy2 / chromeparrot
+  host-browsers    Windows Chrome / Edge / Yandex on :4433
   compare          TP table over profiles/
   capture-listen   host UDP peek (dev)
   parse -Path f    offline parse
@@ -266,6 +267,9 @@ Docs: docs/REPLAY_AND_EMIT.md · docs/PYTHON_VS_GO_CAPTURE.md
         }
         Invoke-Docker @("compose", "-f", "compose.yaml", "-f", "compose.tuic.yaml", "--profile", "tuic", "down")
         Write-Host "tuic parity done"
+    }
+    "host-browsers" {
+        & (Join-Path $Root "scripts\host-browsers.ps1")
     }
     "compare" {
         python (Join-Path $Root "scripts\compare_profiles.py")

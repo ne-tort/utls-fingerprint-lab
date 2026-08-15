@@ -113,6 +113,24 @@ targets:
     track: latest
     notes: "lab.ps1 live -Client yandex; 0x11 no 0x3128; ≠ chromeparrot"
 
+  - id: winchrome
+    group: browsers
+    status: active
+    family: chrome
+    notes: "lab.ps1 host-browsers; Windows Chrome ≡ chromeparrot"
+
+  - id: winedge
+    group: browsers
+    status: active
+    family: chrome
+    notes: "lab.ps1 host-browsers; Windows Edge ≡ chromeparrot"
+
+  - id: winyandex
+    group: browsers
+    status: active
+    family: chrome
+    notes: "lab.ps1 host-browsers; ≡ docker yandex (no 0x3128)"
+
   - id: firefox
     group: browsers
     status: active
@@ -122,9 +140,9 @@ targets:
 
   - id: edge-h3
     group: browsers
-    status: wishlist
+    status: skip
     family: chrome
-    notes: "expect alias to chromiumfresh unless TP differs"
+    notes: "covered by winedge (host) ≡ chromeparrot"
 
   - id: hy2-parrot
     group: parrot
