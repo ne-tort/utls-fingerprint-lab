@@ -42,19 +42,19 @@ services:
       - "https://curlquiche.fp.lab:4433/"
     profiles: ["live", "curl"]
 
+  # Headless Chromium hangs on failed H3 (capture is dump-only). Wrap with timeout.
+  # zenika/alpine-chrome is often older Chromium — TP ≠ chromeparrot (see RESULTS_MATRIX).
   emit-chromium-h3:
     image: zenika/alpine-chrome:latest
     depends_on: [capture]
     networks: [fpnet]
     shm_size: "256mb"
-    entrypoint: ["chromium-browser"]
+    entrypoint: ["/bin/sh", "-c"]
     command:
-      - "--headless=new"
-      - "--no-sandbox"
-      - "--disable-gpu"
-      - "--enable-quic"
-      - "--quic-version=h3"
-      - "--origin-to-force-quic-on=chromium.fp.lab:4433"
-      - "--ignore-certificate-errors"
-      - "https://chromium.fp.lab:4433/"
+      - >-
+        timeout 25 chromium-browser --headless=new --no-sandbox --disable-gpu
+        --enable-quic --quic-version=h3
+        --origin-to-force-quic-on=chromium.fp.lab:4433
+        --ignore-certificate-errors
+        https://chromium.fp.lab:4433/ || true
     profiles: ["live", "chromium"]

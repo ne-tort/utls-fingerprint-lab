@@ -65,10 +65,10 @@ targets:
 
   - id: chromium
     group: live
-    status: wishlist
+    status: active
     family: chrome
     track: latest
-    notes: "lab.ps1 live -Client chromium; may need image tweaks; freshness vs chromeparrot"
+    notes: "lab.ps1 live -Client chromium; zenika alpine ≠ chromeparrot (0x4752, no 0x11/0x3128)"
 
   - id: firefox-h3-latest
     group: browsers

@@ -16,6 +16,21 @@ $Root = $PSScriptRoot
 Set-Location $Root
 $env:DOCKER_BUILDKIT = "1"
 
+# Docker writes progress to stderr; under Stop that becomes a terminating error.
+function Invoke-Docker {
+    param([Parameter(Mandatory, ValueFromRemainingArguments)][string[]]$DockerArgs)
+    $prev = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
+    try {
+        & docker @DockerArgs 2>&1 | ForEach-Object { "$_" }
+        if ($LASTEXITCODE -ne 0) {
+            throw "docker $($DockerArgs -join ' ') failed (exit $LASTEXITCODE)"
+        }
+    } finally {
+        $ErrorActionPreference = $prev
+    }
+}
+
 function Build-CaptureHost {
     $bin = Join-Path $Root "capture\bin"
     New-Item -ItemType Directory -Force -Path $bin | Out-Null
@@ -71,12 +86,12 @@ Docs: docs/REPLAY_AND_EMIT.md · docs/PYTHON_VS_GO_CAPTURE.md
     }
     "up" {
         Ensure-LinuxBins
-        docker compose -f compose.yaml up --build -d capture
+        Invoke-Docker compose -f compose.yaml up --build -d capture
     }
     "matrix" {
         Ensure-LinuxBins
         New-Item -ItemType Directory -Force -Path (Join-Path $Root "captures"), (Join-Path $Root "profiles") | Out-Null
-        docker compose -f compose.yaml up --build -d capture
+        Invoke-Docker compose -f compose.yaml up --build -d capture
         Start-Sleep -Seconds 2
         foreach ($svc in @(
             "emit-chromeparrot",
@@ -87,7 +102,7 @@ Docs: docs/REPLAY_AND_EMIT.md · docs/PYTHON_VS_GO_CAPTURE.md
             "emit-aioquic"
         )) {
             Write-Host "=== $svc ==="
-            docker compose -f compose.yaml --profile matrix run --rm --build $svc
+            Invoke-Docker compose -f compose.yaml --profile matrix run --rm --build $svc
             Start-Sleep -Milliseconds 1500
         }
         Start-Sleep -Seconds 2
@@ -101,15 +116,15 @@ Docs: docs/REPLAY_AND_EMIT.md · docs/PYTHON_VS_GO_CAPTURE.md
             $p = Join-Path $Root "profiles\$id"
             if (Test-Path $p) { Remove-Item -Recurse -Force $p }
         }
-        docker compose -f compose.yaml up --build -d capture
+        Invoke-Docker compose -f compose.yaml up --build -d capture
         Start-Sleep -Seconds 2
-        docker compose -f compose.yaml --profile matrix run --rm emit-chromeparrot
+        Invoke-Docker compose -f compose.yaml --profile matrix run --rm emit-chromeparrot
         Start-Sleep -Seconds 1
-        docker compose -f compose.yaml --profile roundtrip run --rm emit-chromeparrot-b
+        Invoke-Docker compose -f compose.yaml --profile roundtrip run --rm emit-chromeparrot-b
         Start-Sleep -Seconds 1
-        docker compose -f compose.yaml --profile matrix run --rm emit-uquic-chrome146
+        Invoke-Docker compose -f compose.yaml --profile matrix run --rm emit-uquic-chrome146
         Start-Sleep -Seconds 1
-        docker compose -f compose.yaml --profile roundtrip run --rm emit-uquic146-b
+        Invoke-Docker compose -f compose.yaml --profile roundtrip run --rm emit-uquic146-b
         Start-Sleep -Seconds 2
         Write-Host "=== structural chromeparrot vs chromeparrot-b ==="
         python (Join-Path $Root "scripts\compare_structural.py") `
@@ -127,7 +142,7 @@ Docs: docs/REPLAY_AND_EMIT.md · docs/PYTHON_VS_GO_CAPTURE.md
     "live" {
         Ensure-LinuxBins
         New-Item -ItemType Directory -Force -Path (Join-Path $Root "captures"), (Join-Path $Root "profiles") | Out-Null
-        docker compose -f compose.yaml -f compose.live-clients.yaml up --build -d capture
+        Invoke-Docker compose -f compose.yaml -f compose.live-clients.yaml up --build -d capture
         Start-Sleep -Seconds 2
         $svcs = switch ($Client) {
             "aioquic" { @("emit-aioquic") }
@@ -137,7 +152,8 @@ Docs: docs/REPLAY_AND_EMIT.md · docs/PYTHON_VS_GO_CAPTURE.md
         }
         foreach ($svc in $svcs) {
             Write-Host "=== live $svc ==="
-            docker compose -f compose.yaml -f compose.live-clients.yaml --profile live run --rm --build $svc
+            # Chromium has in-container `timeout 25`; capture is dump-only so H3 fails.
+            Invoke-Docker compose -f compose.yaml -f compose.live-clients.yaml --profile live run --rm --build $svc
             Start-Sleep -Seconds 2
         }
         python (Join-Path $Root "scripts\compare_profiles.py")

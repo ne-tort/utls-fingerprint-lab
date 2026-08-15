@@ -1,0 +1,47 @@
+{
+  "emit": {
+    "emit_kind": "match_only",
+    "notes": "live chromium H3; freshness vs chromeparrot"
+  },
+  "expected": {
+    "clienthellod_id": "3fc221e0b3f490c6",
+    "dcid_len": null,
+    "header": {
+      "raw": {
+        "version": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "dest_conn_id_len": 8,
+        "packet_number": [
+          4
+        ]
+      }
+    },
+    "ja4": "",
+    "scid_len": null,
+    "tp_id_set": [
+      "0x1",
+      "0x3",
+      "0x4",
+      "0x5",
+      "0x6",
+      "0x7",
+      "0x8",
+      "0x9",
+      "0xf",
+      "GREASE",
+      "0x20",
+      "0x4752",
+      "0xff73db"
+    ]
+  },
+  "family": "chrome",
+  "format": "quic-raw-initial-v1",
+  "id": "chromium",
+  "notes": "auto-promoted from capture; review family/expected/emit (docs/REPLAY_AND_EMIT.md)",
+  "track": "pinned",
+  "version": 0
+}

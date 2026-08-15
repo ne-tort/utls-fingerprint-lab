@@ -282,7 +282,10 @@ func promoteProfile(profileDir, id string, datagrams [][]byte, gather *clienthel
 		emit = map[string]any{"emit_kind": "match_only", "notes": "curl+quiche"}
 		family = "quiche"
 	case strings.Contains(id, "chromium"):
-		emit = map[string]any{"emit_kind": "match_only", "notes": "live chromium H3; freshness vs chromeparrot"}
+		emit = map[string]any{
+			"emit_kind": "match_only",
+			"notes":     "live zenika/alpine-chrome H3; TP has 0x4752/0xff73db, no 0x11/0x3128 — not chromeparrot",
+		}
 		family = "chrome"
 	}
 

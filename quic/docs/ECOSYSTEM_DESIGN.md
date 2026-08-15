@@ -9,7 +9,7 @@
 │  chromeparrot = sagernet ChromeParrot ≈ hy2 default   │
 │  quicgo-plain = parrot off                            │
 │  uquic presets = reference mimics (not product dep)   │
-│  (next) live browsers H3 / curl-quiche / aioquic      │
+│  live: aioquic / curl-quiche / chromium (match_only)  │
 ├─ Compare / catalog ───────────────────────────────────┤
 │  TP id-set + clienthellod HexID + dg count (+ JA4q)   │
 ├─ Product (sing-box later) ────────────────────────────┤
@@ -43,8 +43,8 @@ clienthellod deadline fix.
 
 1. Optional **hy2 outbound** parity service (thin sing-box image + mixed inbound —
    pattern from demux-quic-auth; dump only, no `quic_auth`).
-2. Live Chromium/Firefox H3 (`./lab.ps1 live -Client chromium`) — image/flag polish;
-   curl+quiche and aioquic already work via live overlay.
+2. ~~Live Chromium~~ — done (`lab.ps1 live -Client chromium`); ≠ parrot (see RESULTS).
+   Firefox H3 still wishlist; optional newer Chromium image for freshness re-check.
 3. JA4 `q…` fill (`expected.ja4`) — FoxIO BSD / `ja4plus` sidecar; not JA4+ in product.
 4. Export shorts + (later) `lxquicfp` sync — still no sing-box code in this phase.
 5. Write raw `transport_parameters.bin` if clienthellod exposes extension payload.

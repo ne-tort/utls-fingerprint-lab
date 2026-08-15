@@ -18,6 +18,7 @@ Date: 2026-08-15 · stack: sagernet ChromeParrot emitter + `_refs/uquic` tip
 | **uquicff** | firefox | 1 | n | n | +`0x2ab2`; different base set |
 | **aioquic** | aioquic | 1 | **Y** | **n** | has `0x11` but **no** `0x3128`; SCID len 8; `match_only` |
 | **curlquiche** | quiche | 1 | n | n | DCID=16 SCID=20; no google ids; `match_only` |
+| **chromium** | chrome (live) | **2** | **n** | **n** | `0x4752`+`0xff73db`; **≠ parrot**; zenika alpine image |
 
 ## Roundtrip
 
@@ -41,6 +42,11 @@ See [REPLAY_AND_EMIT.md](REPLAY_AND_EMIT.md).
    firefox/uquic115/aioquic fit in one UDP datagram in this run.
 6. **aioquic ≠ chromeparrot** despite sharing `0x11` — needs `0x3128` for parrot match.
 7. **curl+quiche** — distinct CID lengths (16/20) and TP set; live via `./lab.ps1 live -Client curl`.
+8. **Live Chromium (zenika/alpine-chrome) ≠ chromeparrot.** Same 2-datagram size class,
+   but TP has `0x4752`/`0xff73db` and **lacks** `0x11`/`0x3128` (closer to old Chrome /
+   uquic115 shape than to sagernet parrot). Freshness ≠ “parrot is current Chrome”;
+   parrot remains a **fixed emit persona**. Image age matters — bump Chromium image
+   when re-checking freshness.
 
 ## Reproduce
 
