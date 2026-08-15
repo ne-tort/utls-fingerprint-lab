@@ -81,7 +81,7 @@ func main() {
 		st := v.(*peerState)
 		st.mu.Lock()
 		if st.gather == nil {
-			st.gather = clienthellod.GatherClientInitials()
+			st.gather = clienthellod.GatherClientInitialsWithDeadline(time.Now().Add(30 * time.Second))
 			st.datagram = nil
 		}
 		st.datagram = append(st.datagram, pkt)
@@ -127,7 +127,7 @@ func parseFile(path string) error {
 	if err != nil {
 		return fmt.Errorf("unmarshal: %w", err)
 	}
-	gci := clienthellod.GatherClientInitials()
+	gci := clienthellod.GatherClientInitialsWithDeadline(time.Now().Add(30 * time.Second))
 	if err := gci.AddPacket(ci); err != nil {
 		return err
 	}
@@ -148,6 +148,11 @@ func parseFile(path string) error {
 
 func finishPeer(peer, hint, outDir, profileDir string, promote bool, datagrams [][]byte, gather *clienthellod.GatheredClientInitials) error {
 	id := sanitize(hint)
+	if gather != nil && gather.ClientHello != nil && gather.ClientHello.ServerName != "" {
+		if fromSNI := targetFromSNI(gather.ClientHello.ServerName); fromSNI != "" {
+			id = fromSNI
+		}
+	}
 	if id == "" || id == "unknown" {
 		id = "peer-" + sanitize(strings.ReplaceAll(peer, ":", "-"))
 	}
@@ -216,6 +221,8 @@ func promoteProfile(profileDir, id string, datagrams [][]byte, gather *clienthel
 	header := map[string]any{}
 	tpIDs := []string{}
 	hexID := ""
+	family := "unknown"
+	var dcidLen, scidLen any
 	if gather != nil && len(gather.Packets) > 0 && gather.Packets[0].Header != nil {
 		h := gather.Packets[0].Header
 		headerBytes, _ := json.MarshalIndent(h, "", "  ")
@@ -223,32 +230,58 @@ func promoteProfile(profileDir, id string, datagrams [][]byte, gather *clienthel
 		header["raw"] = h
 	}
 	if gather != nil && gather.TransportParameters != nil {
-		tpBytes, _ := json.MarshalIndent(gather.TransportParameters, "", "  ")
+		tp := gather.TransportParameters
+		tpBytes, _ := json.MarshalIndent(tp, "", "  ")
 		_ = os.WriteFile(filepath.Join(dir, "tp.json"), tpBytes, 0o644)
+		for _, idn := range tp.QTPIDs {
+			if idn == clienthellod.QTP_GREASE {
+				tpIDs = append(tpIDs, "GREASE")
+				continue
+			}
+			tpIDs = append(tpIDs, fmt.Sprintf("0x%x", idn))
+		}
+		if hasTP(tpIDs, "0x11") && hasTP(tpIDs, "0x3128") {
+			family = "chrome"
+		}
+	}
+	if gather != nil && gather.ClientHello != nil {
+		raw := gather.ClientHello.Raw()
+		if len(raw) > 0 {
+			_ = os.WriteFile(filepath.Join(dir, "clienthello.bin"), raw, 0o644)
+		}
 	}
 	if gather != nil && gather.Completed() {
 		if fp, err := clienthellod.GenerateQUICFingerprint(gather); err == nil && fp != nil {
 			hexID = fp.HexID
 		}
-		hexIDGather := gather.HexID
 		if hexID == "" {
-			hexID = hexIDGather
+			hexID = gather.HexID
 		}
+	}
+	switch {
+	case strings.Contains(id, "firefox") || strings.Contains(id, "uquicff"):
+		family = "firefox"
+	case strings.Contains(id, "quicgo") || strings.Contains(id, "plain"):
+		family = "quic-go"
+	case strings.Contains(id, "chrome") || strings.Contains(id, "parrot") || strings.Contains(id, "uquic"):
+		family = "chrome"
 	}
 
 	prof := map[string]any{
 		"format":  "quic-raw-initial-v1",
 		"id":      id,
-		"family":  "unknown",
+		"family":  family,
 		"version": 0,
 		"track":   "pinned",
 		"expected": map[string]any{
 			"ja4":             "",
 			"clienthellod_id": hexID,
 			"tp_id_set":       tpIDs,
+			"dcid_len":        dcidLen,
+			"scid_len":        scidLen,
 			"header":          header,
 		},
-		"notes": "auto-promoted; set family/expected.ja4/tp_id_set after review (docs/CONTRACT.md)",
+		"notes": "auto-promoted from capture; review family/expected (docs/CONTRACT.md)",
 	}
 	pb, _ := json.MarshalIndent(prof, "", "  ")
 	return os.WriteFile(filepath.Join(dir, "profile.json"), pb, 0o644)
@@ -265,4 +298,22 @@ func sanitize(s string) string {
 		}
 	}, s)
 	return strings.Trim(s, "-")
+}
+
+// targetFromSNI maps "chromeparrot.fp.lab" → "chromeparrot".
+func targetFromSNI(sni string) string {
+	sni = strings.ToLower(strings.TrimSpace(sni))
+	if i := strings.IndexByte(sni, '.'); i > 0 {
+		sni = sni[:i]
+	}
+	return sanitize(sni)
+}
+
+func hasTP(ids []string, want string) bool {
+	for _, id := range ids {
+		if id == want {
+			return true
+		}
+	}
+	return false
 }

@@ -1,0 +1,44 @@
+{
+  "expected": {
+    "clienthellod_id": "0e75780dce5229fa",
+    "dcid_len": null,
+    "header": {
+      "raw": {
+        "version": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "dest_conn_id_len": 12,
+        "source_conn_id_len": 4,
+        "packet_number": [
+          0,
+          6
+        ]
+      }
+    },
+    "ja4": "",
+    "scid_len": null,
+    "tp_id_set": [
+      "0x1",
+      "0x3",
+      "0x4",
+      "0x5",
+      "0x6",
+      "0x7",
+      "0x8",
+      "0x9",
+      "0xb",
+      "0xe",
+      "0xf",
+      "GREASE"
+    ]
+  },
+  "family": "quic-go",
+  "format": "quic-raw-initial-v1",
+  "id": "quicgo",
+  "notes": "auto-promoted from capture; review family/expected (docs/CONTRACT.md)",
+  "track": "pinned",
+  "version": 0
+}

@@ -1,0 +1,44 @@
+{
+  "expected": {
+    "clienthellod_id": "c6b5695048348d83",
+    "dcid_len": null,
+    "header": {
+      "raw": {
+        "version": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "dest_conn_id_len": 8,
+        "packet_number": [
+          7
+        ]
+      }
+    },
+    "ja4": "",
+    "scid_len": null,
+    "tp_id_set": [
+      "0x1",
+      "0x3",
+      "0x4",
+      "0x5",
+      "0x6",
+      "0x7",
+      "0x8",
+      "0x9",
+      "0xf",
+      "GREASE",
+      "0x20",
+      "0x3128",
+      "0x4752",
+      "0xff73db"
+    ]
+  },
+  "family": "unknown",
+  "format": "quic-raw-initial-v1",
+  "id": "uquic115",
+  "notes": "auto-promoted from capture; review family/expected (docs/CONTRACT.md)",
+  "track": "pinned",
+  "version": 0
+}

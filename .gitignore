@@ -4,6 +4,11 @@ captures/*
 !captures/.gitkeep
 quic/captures/*
 !quic/captures/.gitkeep
+quic/bin/
+quic/profiles/*/
+!quic/profiles/.gitkeep
+!quic/fixtures/
+quic/fixtures/**/initials/
 certs/*.pem
 
 **/__pycache__/

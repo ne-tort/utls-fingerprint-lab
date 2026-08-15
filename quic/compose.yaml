@@ -1,0 +1,78 @@
+# QUIC Initial fingerprint lab — reproducible Docker matrix.
+# Prerequisites: ./scripts/build-emitters.ps1 (from Windows/Linux host with Go).
+
+name: quic-fp-lab
+
+services:
+  capture:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.capture
+    volumes:
+      - ./captures:/captures
+      - ./profiles:/profiles
+    ports:
+      - "4433:4433/udp"
+    networks: [fpnet]
+    command:
+      - "-listen=:4433"
+      - "-out=/captures"
+      - "-profiles=/profiles"
+      - "-default-target=unknown"
+      - "-promote=true"
+      - "-gather-idle=1200ms"
+
+  # sagernet ChromeParrot (same stack as hy2 default parrot)
+  emit-chromeparrot:
+    image: debian:bookworm-slim
+    depends_on: [capture]
+    volumes:
+      - ./bin/emit-chromeparrot:/emit:ro
+    networks: [fpnet]
+    entrypoint: ["/emit"]
+    command: ["-host", "capture", "-port", "4433", "-sni", "chromeparrot.fp.lab", "-chrome-parrot"]
+    profiles: ["emit", "chromeparrot", "matrix"]
+
+  emit-quicgo-plain:
+    image: debian:bookworm-slim
+    depends_on: [capture]
+    volumes:
+      - ./bin/emit-chromeparrot:/emit:ro
+    networks: [fpnet]
+    entrypoint: ["/emit"]
+    command: ["-host", "capture", "-port", "4433", "-sni", "quicgo.fp.lab", "-chrome-parrot=false"]
+    profiles: ["emit", "quicgo", "matrix"]
+
+  emit-uquic-chrome146:
+    image: debian:bookworm-slim
+    depends_on: [capture]
+    volumes:
+      - ./bin/emit-uquic:/emit:ro
+    networks: [fpnet]
+    entrypoint: ["/emit"]
+    command: ["-host", "capture", "-port", "4433", "-sni", "uquic146.fp.lab", "-preset", "chrome-146"]
+    profiles: ["emit", "uquic", "matrix"]
+
+  emit-uquic-chrome115:
+    image: debian:bookworm-slim
+    depends_on: [capture]
+    volumes:
+      - ./bin/emit-uquic:/emit:ro
+    networks: [fpnet]
+    entrypoint: ["/emit"]
+    command: ["-host", "capture", "-port", "4433", "-sni", "uquic115.fp.lab", "-preset", "chrome-115"]
+    profiles: ["emit", "uquic", "matrix"]
+
+  emit-uquic-firefox116:
+    image: debian:bookworm-slim
+    depends_on: [capture]
+    volumes:
+      - ./bin/emit-uquic:/emit:ro
+    networks: [fpnet]
+    entrypoint: ["/emit"]
+    command: ["-host", "capture", "-port", "4433", "-sni", "uquicff.fp.lab", "-preset", "firefox-116"]
+    profiles: ["emit", "uquic", "matrix"]
+
+networks:
+  fpnet:
+    driver: bridge
