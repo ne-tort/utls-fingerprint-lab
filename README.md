@@ -27,7 +27,7 @@ sing-box-lx: `make -f Makefile.lx lx-utls-sync` ([FEATURE 018](../../SPECS/FEATU
 
 | Path | Role |
 |------|------|
-| `lab.ps1` / `lab.sh` | **Single entry point** |
+| `lab.ps1` / `lab.sh` | **Single entry point** (TCP / uTLS) |
 | `targets.yaml` | Registry (`family`, `version`, `track`, `pin`, `image_policy`) |
 | `targets.archive.yaml` | Auto-archived pins from latest JA4 changes |
 | `compose.yaml` | Generated (`scripts/gen-compose.py`) |
@@ -37,6 +37,22 @@ sing-box-lx: `make -f Makefile.lx lx-utls-sync` ([FEATURE 018](../../SPECS/FEATU
 | `profiles/` | Committed fingerprints (+ `slot.json` for latest) |
 | `docs/` | EXTENDING, IMPORT, VERSIONING, LINUX_WAVE |
 | `WISHLIST.md` | Deferred / host-only targets |
+| **`quic/`** | **QUIC Initial lab** (`quic-raw-initial-v1`) — see [quic/README.md](quic/README.md) |
+
+## QUIC fingerprints (separate contour)
+
+TCP ClientHello (this root) ≠ QUIC Initial. For ChromeParrot-class / browser /
+library QUIC personas use the sibling lab:
+
+```powershell
+cd quic
+./lab.ps1 build
+./lab.ps1 capture-listen -Target hy2-parrot
+```
+
+Contract `quic-raw-initial-v1`, ecosystem (clienthellod, uquic, observatory),
+and apply path (`quic.fingerprint` / future `lxquicfp`) are documented under
+`quic/docs/`. Product tracking: sing-box-lx SPEC 090.
 
 ## Profile contract
 

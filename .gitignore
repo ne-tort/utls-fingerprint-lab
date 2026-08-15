@@ -2,6 +2,8 @@ dist/
 _refs/
 captures/*
 !captures/.gitkeep
+quic/captures/*
+!quic/captures/.gitkeep
 certs/*.pem
 
 **/__pycache__/
@@ -15,5 +17,6 @@ profiles/verify-*/
 clients/**/bin/
 capture/bin/
 tools/bin/
+quic/capture/bin/
 bin/
 

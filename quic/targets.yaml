@@ -1,0 +1,90 @@
+# QUIC Initial fingerprint targets (sibling to parent targets.yaml).
+# status: active | wishlist | skip
+# Many browser/H3 compose runners are wishlist until phase 2 (docs/CAPTURE.md).
+
+version: 1
+
+defaults:
+  dial_udp: "capture:4433"
+  profile_format: "quic-raw-initial-v1"
+
+groups:
+  browsers: { description: "Real browsers H3" }
+  parrot: { description: "sing-box-lx ChromeParrot / plain quic-go" }
+  libraries: { description: "quic-go / quiche / aioquic / uquic presets" }
+  wishlist: { description: "Deferred" }
+
+targets:
+  # --- parrot (phase 1: host-driven) ---
+  - id: hy2-parrot
+    group: parrot
+    status: wishlist
+    family: chrome
+    version: 0
+    track: pinned
+    notes: "sing-box-lx hy2 outbound ChromeParrot on → lab UDP; fresh parrot baseline"
+
+  - id: hy2-plain
+    group: parrot
+    status: wishlist
+    family: quic-go
+    version: 0
+    track: pinned
+    notes: "hy2 disable_chrome_parrot; library persona"
+
+  - id: tuic-parrot
+    group: parrot
+    status: wishlist
+    family: chrome
+    version: 0
+    notes: "same parrot stack as hy2"
+
+  # --- browsers (phase 2) ---
+  - id: chromium-h3-latest
+    group: browsers
+    status: wishlist
+    family: chrome
+    version: 9999
+    track: latest
+    notes: "Chromium/Chrome H3 → capture:4433; freshness vs hy2-parrot"
+
+  - id: firefox-h3-latest
+    group: browsers
+    status: wishlist
+    family: firefox
+    version: 9999
+    track: latest
+    notes: "Firefox Necko QUIC"
+
+  - id: edge-h3
+    group: browsers
+    status: wishlist
+    family: chrome
+    notes: "expect alias to chrome unless TP/CH differs"
+
+  # --- libraries (phase 3) ---
+  - id: curl-quiche
+    group: libraries
+    status: wishlist
+    family: quiche
+    notes: "curl linked with quiche"
+
+  - id: aioquic
+    group: libraries
+    status: wishlist
+    family: aioquic
+    notes: "python-aioquic H3 client"
+
+  - id: uquic-firefox-116
+    group: libraries
+    status: wishlist
+    family: firefox
+    version: 116
+    notes: "reference emit from refraction uquic; not product dep"
+
+  - id: uquic-chrome-115
+    group: libraries
+    status: wishlist
+    family: chrome
+    version: 115
+    notes: "stale vs ML-KEM ChromeParrot; regression only"
