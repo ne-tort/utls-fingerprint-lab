@@ -2,11 +2,13 @@
 # Single entry for QUIC Initial fingerprint lab (Docker-first).
 param(
     [Parameter(Position = 0)]
-    [ValidateSet("build", "build-emitters", "capture-listen", "parse", "list", "up", "matrix", "roundtrip", "compare", "help")]
+    [ValidateSet("build", "build-emitters", "capture-listen", "parse", "list", "up", "matrix", "roundtrip", "live", "compare", "help")]
     [string]$Command = "help",
     [string]$Path = "",
     [string]$Listen = ":4433",
-    [string]$Target = "unknown"
+    [string]$Target = "unknown",
+    [ValidateSet("aioquic", "curl", "chromium", "all")]
+    [string]$Client = "aioquic"
 )
 
 $ErrorActionPreference = "Stop"
@@ -43,13 +45,14 @@ quic lab (Docker-first):
   up               docker compose up capture
   matrix           emitters: parrot/uquic/aioquic + compare
   roundtrip        prove emit recipes reproduce structural identity
+  live -Client X   live clients overlay (aioquic|curl|chromium|all)
   compare          TP table over profiles/
   capture-listen   host UDP peek (dev)
   parse -Path f    offline parse
   list             targets.yaml ids
   build            host capture exe only
 
-Docs: docs/REPLAY_AND_EMIT.md , docs/PYTHON_VS_GO.md
+Docs: docs/REPLAY_AND_EMIT.md · docs/PYTHON_VS_GO_CAPTURE.md
 "@
     }
     "build" { Build-CaptureHost; Write-Host "ok" }
@@ -120,6 +123,24 @@ Docs: docs/REPLAY_AND_EMIT.md , docs/PYTHON_VS_GO.md
         $c2 = $LASTEXITCODE
         if ($c1 -ne 0 -or $c2 -ne 0) { throw "roundtrip structural mismatch" }
         Write-Host "roundtrip OK"
+    }
+    "live" {
+        Ensure-LinuxBins
+        New-Item -ItemType Directory -Force -Path (Join-Path $Root "captures"), (Join-Path $Root "profiles") | Out-Null
+        docker compose -f compose.yaml -f compose.live-clients.yaml up --build -d capture
+        Start-Sleep -Seconds 2
+        $svcs = switch ($Client) {
+            "aioquic" { @("emit-aioquic") }
+            "curl" { @("emit-curl-quiche") }
+            "chromium" { @("emit-chromium-h3") }
+            "all" { @("emit-aioquic", "emit-curl-quiche", "emit-chromium-h3") }
+        }
+        foreach ($svc in $svcs) {
+            Write-Host "=== live $svc ==="
+            docker compose -f compose.yaml -f compose.live-clients.yaml --profile live run --rm --build $svc
+            Start-Sleep -Seconds 2
+        }
+        python (Join-Path $Root "scripts\compare_profiles.py")
     }
     "compare" {
         python (Join-Path $Root "scripts\compare_profiles.py")

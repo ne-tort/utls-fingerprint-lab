@@ -17,6 +17,7 @@ Date: 2026-08-15 · stack: sagernet ChromeParrot emitter + `_refs/uquic` tip
 | **uquic115** | chrome | 1 | **n** | Y | +`0x4752` google_quic_version; no `0x11` |
 | **uquicff** | firefox | 1 | n | n | +`0x2ab2`; different base set |
 | **aioquic** | aioquic | 1 | **Y** | **n** | has `0x11` but **no** `0x3128`; SCID len 8; `match_only` |
+| **curlquiche** | quiche | 1 | n | n | DCID=16 SCID=20; no google ids; `match_only` |
 
 ## Roundtrip
 
@@ -39,6 +40,7 @@ See [REPLAY_AND_EMIT.md](REPLAY_AND_EMIT.md).
 5. Multi-datagram (2) correlates with ML-KEM-sized CH (chromeparrot, uquic146);
    firefox/uquic115/aioquic fit in one UDP datagram in this run.
 6. **aioquic ≠ chromeparrot** despite sharing `0x11` — needs `0x3128` for parrot match.
+7. **curl+quiche** — distinct CID lengths (16/20) and TP set; live via `./lab.ps1 live -Client curl`.
 
 ## Reproduce
 

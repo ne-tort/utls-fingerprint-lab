@@ -25,10 +25,9 @@
 | hy2 outbound JSON | `config/hy2-*.json` + sing-box bin | should ≈ parrot/plain |
 | Live Chromium/Firefox | wishlist phase 2 | observation → later emit |
 
-```powershell
-./lab.ps1 matrix      # includes aioquic
-./lab.ps1 roundtrip   # prove recipes reproduce
-```
+**Детали и live compose:** [PYTHON_VS_GO_CAPTURE.md](PYTHON_VS_GO_CAPTURE.md)
+(`compose.live-clients.yaml`: aioquic / curl-quiche / chromium).
+Команда: `./lab.ps1 live -Client aioquic|curl|chromium|all`.
 
 ## Why not “one universal raw bin import”?
 

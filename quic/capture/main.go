@@ -278,6 +278,12 @@ func promoteProfile(profileDir, id string, datagrams [][]byte, gather *clienthel
 	case strings.Contains(id, "aioquic"):
 		emit = map[string]any{"emit_kind": "match_only", "notes": "python aioquic"}
 		family = "aioquic"
+	case strings.Contains(id, "curlquiche") || strings.Contains(id, "curl"):
+		emit = map[string]any{"emit_kind": "match_only", "notes": "curl+quiche"}
+		family = "quiche"
+	case strings.Contains(id, "chromium"):
+		emit = map[string]any{"emit_kind": "match_only", "notes": "live chromium H3; freshness vs chromeparrot"}
+		family = "chrome"
 	}
 
 	prof := map[string]any{

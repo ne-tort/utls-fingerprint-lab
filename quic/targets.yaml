@@ -2,7 +2,8 @@
 # status: active | wishlist | skip
 #
 # Matrix emitters (compose --profile matrix) are the reproducible baseline.
-# Live browsers / full hy2 outbound JSON — wishlist (see docs/ECOSYSTEM_DESIGN.md).
+# Live clients: ./lab.ps1 live -Client aioquic|curl|chromium|all
+#   (compose.yaml + compose.live-clients.yaml)
 
 version: 1
 
@@ -12,96 +13,67 @@ defaults:
 
 groups:
   matrix: { description: "Docker matrix emitters (lab.ps1 matrix)" }
-  browsers: { description: "Real browsers H3" }
+  live: { description: "compose.live-clients library/browser clients" }
+  browsers: { description: "Real browsers H3 (wishlist)" }
   parrot: { description: "sing-box-lx hy2 / tuic outbound (optional parity)" }
-  libraries: { description: "quiche / aioquic / …" }
 
 targets:
-  # --- active via compose matrix ---
   - id: chromeparrot
     group: matrix
     status: active
     family: chrome
-    version: 0
-    track: pinned
-    notes: "emit-chromeparrot = sagernet ChromeParrot ≈ hy2 default; fixtures/matrix-20260815"
+    notes: "emit-chromeparrot ≈ hy2 default; fixtures/matrix-20260815"
 
   - id: quicgo
     group: matrix
     status: active
     family: quic-go
-    version: 0
-    track: pinned
-    notes: "emit-quicgo-plain; hy2 disable_chrome_parrot twin"
+    notes: "emit-quicgo-plain"
 
   - id: uquic-chrome-146
     group: matrix
     status: active
     family: chrome
     version: 146
-    track: pinned
-    notes: "uquic QUICChrome_146 (ML-KEM, 2 dg); NOT drop-in for our parrot (no 0x11)"
+    notes: "uquic QUICChrome_146; not drop-in for sagernet parrot (no 0x11)"
 
   - id: uquic-chrome-115
     group: matrix
     status: active
     family: chrome
     version: 115
-    track: pinned
-    notes: "stale vs 146; regression / observatory compare only"
+    notes: "stale vs 146; regression only"
 
   - id: uquic-firefox-116
     group: matrix
     status: active
     family: firefox
     version: 116
-    track: pinned
-    notes: "uquic QUICFirefox_116 reference emit"
+    notes: "uquic QUICFirefox_116 reference"
 
   - id: aioquic
-    group: matrix
+    group: live
     status: active
     family: aioquic
-    notes: "Python aioquic emitter; emit_kind=match_only; has 0x11 without 0x3128"
+    notes: "lab.ps1 live -Client aioquic; match_only; 0x11 without 0x3128"
 
-  # --- optional hy2 outbound (sing-box binary mount; pattern from demux-quic-auth) ---
-  - id: hy2-parrot
-    group: parrot
+  - id: curlquiche
+    group: live
+    status: active
+    family: quiche
+    notes: "lab.ps1 live -Client curl; SNI curlquiche.fp.lab; match_only"
+
+  - id: chromium
+    group: live
     status: wishlist
     family: chrome
-    version: 0
-    track: pinned
-    notes: "full hy2 outbound → capture:4433; expect ≈ chromeparrot wire; no quic_auth needed for dump"
-
-  - id: hy2-plain
-    group: parrot
-    status: wishlist
-    family: quic-go
-    version: 0
-    track: pinned
-    notes: "hy2 disable_chrome_parrot: true"
-
-  - id: tuic-parrot
-    group: parrot
-    status: wishlist
-    family: chrome
-    version: 0
-    notes: "same parrot stack as hy2"
-
-  # --- browsers (phase 2) ---
-  - id: chromium-h3-latest
-    group: browsers
-    status: wishlist
-    family: chrome
-    version: 9999
     track: latest
-    notes: "live Chromium H3 freshness vs chromeparrot"
+    notes: "lab.ps1 live -Client chromium; may need image tweaks; freshness vs chromeparrot"
 
   - id: firefox-h3-latest
     group: browsers
     status: wishlist
     family: firefox
-    version: 9999
     track: latest
     notes: "live Firefox vs uquic-firefox-116"
 
@@ -109,17 +81,22 @@ targets:
     group: browsers
     status: wishlist
     family: chrome
-    notes: "expect alias to chrome unless TP/CH differs"
+    notes: "expect alias to chrome unless TP differs"
 
-  # --- libraries ---
-  - id: curl-quiche
-    group: libraries
+  - id: hy2-parrot
+    group: parrot
     status: wishlist
-    family: quiche
-    notes: "curl linked with quiche"
+    family: chrome
+    notes: "config/hy2-parrot.json + sing-box bin; expect ≈ chromeparrot"
 
-  - id: aioquic
-    group: libraries
+  - id: hy2-plain
+    group: parrot
     status: wishlist
-    family: aioquic
-    notes: "python-aioquic H3 client"
+    family: quic-go
+    notes: "config/hy2-plain.json"
+
+  - id: tuic-parrot
+    group: parrot
+    status: wishlist
+    family: chrome
+    notes: "same parrot stack as hy2"

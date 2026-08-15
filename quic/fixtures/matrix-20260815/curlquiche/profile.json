@@ -1,0 +1,47 @@
+{
+  "emit": {
+    "emit_kind": "match_only",
+    "notes": "curl+quiche"
+  },
+  "expected": {
+    "clienthellod_id": "9ee4841bc9902087",
+    "dcid_len": null,
+    "header": {
+      "raw": {
+        "version": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "dest_conn_id_len": 16,
+        "source_conn_id_len": 20,
+        "packet_number": [
+          1
+        ]
+      }
+    },
+    "ja4": "",
+    "scid_len": null,
+    "tp_id_set": [
+      "0x1",
+      "0x3",
+      "0x4",
+      "0x5",
+      "0x6",
+      "0x7",
+      "0x8",
+      "0x9",
+      "0xa",
+      "0xb",
+      "0xc",
+      "0xf"
+    ]
+  },
+  "family": "quiche",
+  "format": "quic-raw-initial-v1",
+  "id": "curlquiche",
+  "notes": "auto-promoted from capture; review family/expected/emit (docs/REPLAY_AND_EMIT.md)",
+  "track": "pinned",
+  "version": 0
+}
