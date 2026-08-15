@@ -19,6 +19,8 @@ Date: 2026-08-15 · stack: sagernet ChromeParrot emitter + `_refs/uquic` tip
 | **aioquic** | aioquic | 1 | **Y** | **n** | has `0x11` but **no** `0x3128`; SCID len 8; `match_only` |
 | **curlquiche** | quiche | 1 | n | n | DCID=16 SCID=20; no google ids; `match_only` |
 | **chromium** | chrome (live) | **2** | **n** | **n** | `0x4752`+`0xff73db`; **≠ parrot**; zenika alpine image |
+| **hy2parrot** | chrome | **2** | **Y** | **Y** | real hy2 outbound; **≡ chromeparrot** |
+| **hy2plain** | quic-go | 2 | n | n | `disable_chrome_parrot`; +`0x20` vs matrix quicgo |
 
 ## JA4 (`expected.ja4`, ja4plus)
 
@@ -34,11 +36,14 @@ Filled with `./lab.ps1 ja4` (wraps `initials/*.bin` → UDP → ja4plus). Prefix
 | quicgo | `q13d0313h3_55b375c5d22e_f902b76752af` |
 | aioquic | `q13d0307h3_55b375c5d22e_1cecd519fee8` |
 | curlquiche | `q13d0308h3_55b375c5d22e_f0736a66fa6b` |
+| hy2parrot | `q13d039900_55b375c5d22e_441c618b2280` |
+| hy2plain | `q13d0313h3_55b375c5d22e_f902b76752af` (= quicgo JA4) |
 
 Notes: chromeparrot shows ALPN `00` in this capture (ja4plus reading); live chromium /
 uquic146 share the middle hash (`55b375c5d22e`) but differ on the third. Roundtrip
 `uquic146`/`uquic146-b` share identical JA4; chromeparrot×2 can differ (GREASE / CH
-noise) — structural compare stays GREASE-tolerant, JA4 does not.
+noise) — structural compare stays GREASE-tolerant, JA4 does not. **hy2plain JA4 equals
+quicgo** even when TP id-set differs by `0x20` (JA4 is CH-based).
 
 ## Roundtrip
 
@@ -67,6 +72,9 @@ See [REPLAY_AND_EMIT.md](REPLAY_AND_EMIT.md).
    uquic115 shape than to sagernet parrot). Freshness ≠ “parrot is current Chrome”;
    parrot remains a **fixed emit persona**. Image age matters — bump Chromium image
    when re-checking freshness.
+9. **hy2 outbound parity** (`./lab.ps1 hy2`): **hy2parrot ≡ chromeparrot** structurally
+   (`0x11`+`0x3128`). **hy2plain ≈ quicgo** but hy2 adds `0x20` (active_connection_id_limit)
+   that the matrix `emit-quicgo-plain` profile lacked — soft warning, not hard fail.
 
 ## Reproduce
 

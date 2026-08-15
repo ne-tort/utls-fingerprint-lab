@@ -85,15 +85,15 @@ targets:
 
   - id: hy2-parrot
     group: parrot
-    status: wishlist
+    status: active
     family: chrome
-    notes: "config/hy2-parrot.json + sing-box bin; expect ≈ chromeparrot"
+    notes: "lab.ps1 hy2; SNI hy2parrot.fp.lab; structural ≡ chromeparrot"
 
   - id: hy2-plain
     group: parrot
-    status: wishlist
+    status: active
     family: quic-go
-    notes: "config/hy2-plain.json"
+    notes: "lab.ps1 hy2; disable_chrome_parrot; +0x20 vs matrix quicgo"
 
   - id: tuic-parrot
     group: parrot

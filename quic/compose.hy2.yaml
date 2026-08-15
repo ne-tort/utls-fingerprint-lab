@@ -1,0 +1,58 @@
+# Overlay: real sing-box-lx hy2 outbound → capture (Initial dump only).
+# Usage: ./lab.ps1 hy2
+# Requires quic/bin/sing-box (linux) from build-emitters.ps1 / Ensure-SingBox.
+
+services:
+  capture:
+    networks:
+      fpnet:
+        aliases:
+          - hy2parrot.fp.lab
+          - hy2plain.fp.lab
+
+  hy2-parrot:
+    image: debian:bookworm-slim
+    depends_on: [capture]
+    volumes:
+      - ./bin/sing-box:/usr/local/bin/sing-box:ro
+      - ./config/hy2-parrot.json:/etc/sing-box/config.json:ro
+    networks: [fpnet]
+    entrypoint: ["sing-box"]
+    command: ["run", "-c", "/etc/sing-box/config.json"]
+    profiles: ["hy2"]
+
+  hy2-plain:
+    image: debian:bookworm-slim
+    depends_on: [capture]
+    volumes:
+      - ./bin/sing-box:/usr/local/bin/sing-box:ro
+      - ./config/hy2-plain.json:/etc/sing-box/config.json:ro
+    networks: [fpnet]
+    entrypoint: ["sing-box"]
+    command: ["run", "-c", "/etc/sing-box/config.json"]
+    profiles: ["hy2"]
+
+  # Handshake to capture fails (dump-only); Initial is enough.
+  trigger-hy2-parrot:
+    image: curlimages/curl:8.5.0
+    depends_on: [hy2-parrot]
+    networks: [fpnet]
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - >-
+        sleep 2;
+        curl -sS -x http://hy2-parrot:1080 --connect-timeout 3 --max-time 6
+        http://example.com/ || true
+    profiles: ["hy2"]
+
+  trigger-hy2-plain:
+    image: curlimages/curl:8.5.0
+    depends_on: [hy2-plain]
+    networks: [fpnet]
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - >-
+        sleep 2;
+        curl -sS -x http://hy2-plain:1080 --connect-timeout 3 --max-time 6
+        http://example.com/ || true
+    profiles: ["hy2"]

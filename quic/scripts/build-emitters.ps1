@@ -33,6 +33,15 @@ try {
   go build -trimpath -ldflags "-s -w" -o (Join-Path $Out "emit-uquic") .
 } finally { Pop-Location }
 
+Write-Host "building sing-box (linux, hy2 parity)..."
+$SBTags = "with_gvisor,with_quic,with_wireguard,with_utls"
+Push-Location $RepoRoot.Path
+try {
+  go build -trimpath -ldflags "-s -w -checklinkname=0" -tags $SBTags `
+    -o (Join-Path $Out "sing-box") `
+    ./cmd/sing-box
+} finally { Pop-Location }
+
 Remove-Item Env:GOOS, Env:GOARCH, Env:CGO_ENABLED -ErrorAction SilentlyContinue
 Write-Host "ok → $Out"
 Get-ChildItem $Out | Format-Table Name, Length

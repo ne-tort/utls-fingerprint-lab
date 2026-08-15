@@ -1,0 +1,47 @@
+{
+  "emit": {
+    "emit_kind": "sagernet_chrome_parrot"
+  },
+  "expected": {
+    "clienthellod_id": "47b1bf23245a2d3c",
+    "dcid_len": null,
+    "header": {
+      "raw": {
+        "version": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "dest_conn_id_len": 8,
+        "packet_number": [
+          0,
+          13
+        ]
+      }
+    },
+    "ja4": "q13d039900_55b375c5d22e_441c618b2280",
+    "scid_len": null,
+    "tp_id_set": [
+      "0x1",
+      "0x3",
+      "0x4",
+      "0x5",
+      "0x6",
+      "0x7",
+      "0x8",
+      "0x9",
+      "0xf",
+      "0x11",
+      "GREASE",
+      "0x20",
+      "0x3128"
+    ]
+  },
+  "family": "chrome",
+  "format": "quic-raw-initial-v1",
+  "id": "hy2parrot",
+  "notes": "auto-promoted from capture; review family/expected/emit (docs/REPLAY_AND_EMIT.md)",
+  "track": "pinned",
+  "version": 0
+}

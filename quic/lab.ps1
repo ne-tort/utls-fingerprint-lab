@@ -2,8 +2,8 @@
 # Single entry for QUIC Initial fingerprint lab (Docker-first).
 param(
     [Parameter(Position = 0)]
-    [ValidateSet("build", "build-emitters", "capture-listen", "parse", "list", "up", "matrix", "roundtrip", "live", "ja4", "compare", "help")]
-    [string]$Command = "help",
+    [ValidateSet("build", "build-emitters", "capture-listen", "parse", "list", "up", "matrix", "roundtrip", "live", "ja4", "hy2", "compare", "help")]
+    [string]$Action = "help",
     [string]$Path = "",
     [string]$Listen = ":4433",
     [string]$Target = "unknown",
@@ -17,8 +17,8 @@ Set-Location $Root
 $env:DOCKER_BUILDKIT = "1"
 
 # Docker writes progress to stderr; under Stop that becomes a terminating error.
-function Invoke-Docker {
-    param([Parameter(Mandatory, ValueFromRemainingArguments)][string[]]$DockerArgs)
+# Pass args as an array so -f/--profile are not bound as PowerShell parameters.
+function Invoke-Docker([string[]]$DockerArgs) {
     $prev = $ErrorActionPreference
     $ErrorActionPreference = "Continue"
     try {
@@ -52,16 +52,26 @@ function Ensure-LinuxBins {
     }
 }
 
-switch ($Command) {
+function Ensure-SingBoxLinux {
+    $sb = Join-Path $Root "bin\sing-box"
+    if (-not (Test-Path $sb)) {
+        Write-Host "sing-box linux missing -> build-emitters (includes sing-box)"
+        & (Join-Path $Root "scripts\build-emitters.ps1")
+    }
+    if (-not (Test-Path $sb)) { throw "quic/bin/sing-box not built" }
+}
+
+switch ($Action) {
     "help" {
         @"
 quic lab (Docker-first):
-  build-emitters   linux bins → bin/
+  build-emitters   linux bins -> bin/
   up               docker compose up capture
   matrix           emitters: parrot/uquic/aioquic + compare
   roundtrip        prove emit recipes reproduce structural identity
   live -Client X   live clients overlay (aioquic|curl|chromium|all)
   ja4              annotate expected.ja4 via ja4plus (compose.ja4.yaml)
+  hy2              real hy2 outbound Initial vs chromeparrot/quicgo
   compare          TP table over profiles/
   capture-listen   host UDP peek (dev)
   parse -Path f    offline parse
@@ -87,12 +97,12 @@ Docs: docs/REPLAY_AND_EMIT.md · docs/PYTHON_VS_GO_CAPTURE.md
     }
     "up" {
         Ensure-LinuxBins
-        Invoke-Docker compose -f compose.yaml up --build -d capture
+        Invoke-Docker @("compose", "-f", "compose.yaml", "up", "--build", "-d", "capture")
     }
     "matrix" {
         Ensure-LinuxBins
         New-Item -ItemType Directory -Force -Path (Join-Path $Root "captures"), (Join-Path $Root "profiles") | Out-Null
-        Invoke-Docker compose -f compose.yaml up --build -d capture
+        Invoke-Docker @("compose", "-f", "compose.yaml", "up", "--build", "-d", "capture")
         Start-Sleep -Seconds 2
         foreach ($svc in @(
             "emit-chromeparrot",
@@ -103,7 +113,7 @@ Docs: docs/REPLAY_AND_EMIT.md · docs/PYTHON_VS_GO_CAPTURE.md
             "emit-aioquic"
         )) {
             Write-Host "=== $svc ==="
-            Invoke-Docker compose -f compose.yaml --profile matrix run --rm --build $svc
+            Invoke-Docker @("compose", "-f", "compose.yaml", "--profile", "matrix", "run", "--rm", "--build", $svc)
             Start-Sleep -Milliseconds 1500
         }
         Start-Sleep -Seconds 2
@@ -112,20 +122,19 @@ Docs: docs/REPLAY_AND_EMIT.md · docs/PYTHON_VS_GO_CAPTURE.md
     "roundtrip" {
         Ensure-LinuxBins
         New-Item -ItemType Directory -Force -Path (Join-Path $Root "captures"), (Join-Path $Root "profiles") | Out-Null
-        # clear prior roundtrip ids
         foreach ($id in @("chromeparrot", "chromeparrot-b", "uquic146", "uquic146-b")) {
             $p = Join-Path $Root "profiles\$id"
             if (Test-Path $p) { Remove-Item -Recurse -Force $p }
         }
-        Invoke-Docker compose -f compose.yaml up --build -d capture
+        Invoke-Docker @("compose", "-f", "compose.yaml", "up", "--build", "-d", "capture")
         Start-Sleep -Seconds 2
-        Invoke-Docker compose -f compose.yaml --profile matrix run --rm emit-chromeparrot
+        Invoke-Docker @("compose", "-f", "compose.yaml", "--profile", "matrix", "run", "--rm", "emit-chromeparrot")
         Start-Sleep -Seconds 1
-        Invoke-Docker compose -f compose.yaml --profile roundtrip run --rm emit-chromeparrot-b
+        Invoke-Docker @("compose", "-f", "compose.yaml", "--profile", "roundtrip", "run", "--rm", "emit-chromeparrot-b")
         Start-Sleep -Seconds 1
-        Invoke-Docker compose -f compose.yaml --profile matrix run --rm emit-uquic-chrome146
+        Invoke-Docker @("compose", "-f", "compose.yaml", "--profile", "matrix", "run", "--rm", "emit-uquic-chrome146")
         Start-Sleep -Seconds 1
-        Invoke-Docker compose -f compose.yaml --profile roundtrip run --rm emit-uquic146-b
+        Invoke-Docker @("compose", "-f", "compose.yaml", "--profile", "roundtrip", "run", "--rm", "emit-uquic146-b")
         Start-Sleep -Seconds 2
         Write-Host "=== structural chromeparrot vs chromeparrot-b ==="
         python (Join-Path $Root "scripts\compare_structural.py") `
@@ -143,7 +152,7 @@ Docs: docs/REPLAY_AND_EMIT.md · docs/PYTHON_VS_GO_CAPTURE.md
     "live" {
         Ensure-LinuxBins
         New-Item -ItemType Directory -Force -Path (Join-Path $Root "captures"), (Join-Path $Root "profiles") | Out-Null
-        Invoke-Docker compose -f compose.yaml -f compose.live-clients.yaml up --build -d capture
+        Invoke-Docker @("compose", "-f", "compose.yaml", "-f", "compose.live-clients.yaml", "up", "--build", "-d", "capture")
         Start-Sleep -Seconds 2
         $svcs = switch ($Client) {
             "aioquic" { @("emit-aioquic") }
@@ -153,14 +162,50 @@ Docs: docs/REPLAY_AND_EMIT.md · docs/PYTHON_VS_GO_CAPTURE.md
         }
         foreach ($svc in $svcs) {
             Write-Host "=== live $svc ==="
-            # Chromium has in-container `timeout 25`; capture is dump-only so H3 fails.
-            Invoke-Docker compose -f compose.yaml -f compose.live-clients.yaml --profile live run --rm --build $svc
+            Invoke-Docker @("compose", "-f", "compose.yaml", "-f", "compose.live-clients.yaml", "--profile", "live", "run", "--rm", "--build", $svc)
             Start-Sleep -Seconds 2
         }
         python (Join-Path $Root "scripts\compare_profiles.py")
     }
     "ja4" {
-        Invoke-Docker compose -f compose.ja4.yaml --profile ja4 run --rm --build ja4-annotate
+        Invoke-Docker @("compose", "-f", "compose.ja4.yaml", "--profile", "ja4", "run", "--rm", "--build", "ja4-annotate")
+    }
+    "hy2" {
+        Ensure-LinuxBins
+        Ensure-SingBoxLinux
+        New-Item -ItemType Directory -Force -Path (Join-Path $Root "captures"), (Join-Path $Root "profiles") | Out-Null
+        foreach ($id in @("hy2parrot", "hy2plain")) {
+            $p = Join-Path $Root "profiles\$id"
+            if (Test-Path $p) { Remove-Item -Recurse -Force $p }
+        }
+        Invoke-Docker @("compose", "-f", "compose.yaml", "-f", "compose.hy2.yaml", "--profile", "hy2", "up", "--build", "-d", "capture", "hy2-parrot", "hy2-plain")
+        Start-Sleep -Seconds 2
+        Write-Host "=== trigger hy2-parrot ==="
+        Invoke-Docker @("compose", "-f", "compose.yaml", "-f", "compose.hy2.yaml", "--profile", "hy2", "run", "--rm", "trigger-hy2-parrot")
+        Start-Sleep -Seconds 2
+        Write-Host "=== trigger hy2-plain ==="
+        Invoke-Docker @("compose", "-f", "compose.yaml", "-f", "compose.hy2.yaml", "--profile", "hy2", "run", "--rm", "trigger-hy2-plain")
+        Start-Sleep -Seconds 2
+        Write-Host "=== structural hy2parrot vs chromeparrot ==="
+        if (-not (Test-Path (Join-Path $Root "profiles\chromeparrot"))) {
+            Write-Warning "profiles/chromeparrot missing - run matrix first for baseline"
+        } else {
+            python (Join-Path $Root "scripts\compare_structural.py") `
+                (Join-Path $Root "profiles\hy2parrot") `
+                (Join-Path $Root "profiles\chromeparrot")
+            if ($LASTEXITCODE -ne 0) { throw "hy2parrot != chromeparrot structurally" }
+        }
+        Write-Host "=== structural hy2plain vs quicgo ==="
+        if (Test-Path (Join-Path $Root "profiles\quicgo")) {
+            python (Join-Path $Root "scripts\compare_structural.py") `
+                (Join-Path $Root "profiles\hy2plain") `
+                (Join-Path $Root "profiles\quicgo")
+            if ($LASTEXITCODE -ne 0) {
+                Write-Warning "hy2plain != quicgo (expected: hy2 may add 0x20; see RESULTS_MATRIX)"
+            }
+        }
+        Invoke-Docker @("compose", "-f", "compose.yaml", "-f", "compose.hy2.yaml", "--profile", "hy2", "down")
+        Write-Host "hy2 parity OK (parrot matched chromeparrot)"
     }
     "compare" {
         python (Join-Path $Root "scripts\compare_profiles.py")

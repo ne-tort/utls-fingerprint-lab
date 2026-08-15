@@ -1,20 +1,12 @@
-# Optional hy2 outbound configs (wishlist)
+# hy2 outbound configs for Initial dump parity
 
-JSON under this directory mirrors demux-quic-auth client pattern for **Initial
-dump only** (no `quic_auth`). Wire shape should ≈ matrix `chromeparrot` /
-`quicgo` emitters.
+JSON mirrors demux-quic-auth client pattern (**no `quic_auth`**). Capture is
+dump-only; handshake fails — Initial is enough.
 
-Requires a prebuilt linux `sing-box` (e.g. from
-`lx-test/demux-quic-auth-docker/build-bin.ps1`) — not built by `lab.ps1 matrix`.
-
-```text
-# capture already up
-docker run --rm --network quic-fp-lab_fpnet \
-  -v $PWD/config/hy2-parrot.json:/etc/sing-box/config.json:ro \
-  -v /path/to/sing-box:/usr/local/bin/sing-box:ro \
-  debian:bookworm-slim \
-  sing-box run -c /etc/sing-box/config.json
-# then: curl -x http://<container>:1080 http://example.com/
+```powershell
+./lab.ps1 build-emitters   # builds quic/bin/sing-box (linux) among other bins
+./lab.ps1 hy2              # compose.hy2.yaml → profiles/hy2parrot + hy2plain
 ```
 
-Handshake to capture may fail (blackhole); Initial dump is enough.
+Expect: `hy2parrot` ≡ matrix `chromeparrot`; `hy2plain` ≈ `quicgo` (may include
+extra `0x20`).
