@@ -20,19 +20,20 @@
     },
     "structured": {
       "type": "object",
-      "description": "Future universal QUICSpec-like recipe for sagernet emit",
+      "description": "Universal QUICSpec-like recipe; canonical nested form lives in quic-utls-profile-v1.emit.structured",
       "properties": {
         "src_conn_id_length": { "type": "integer" },
         "dest_conn_id_length": { "type": "integer" },
         "init_packet_number": { "type": "integer" },
         "udp_datagram_min_size": { "type": "integer" },
+        "initial": { "type": "object" },
         "transport_parameters": {
           "type": "object",
-          "description": "id hex → value encoding hint; grease policy separate"
+          "description": "id_order + grease + value_policy (see quic-utls-profile-v1)"
         },
         "client_hello": {
           "type": "object",
-          "description": "TLS1.3-only CH recipe: curves, key_shares, alpn, alps, ech grease…"
+          "description": "TLS1.3-only CH recipe or engine_default"
         },
         "frame_policy": {
           "type": "string",

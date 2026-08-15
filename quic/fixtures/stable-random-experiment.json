@@ -1,0 +1,666 @@
+{
+  "experiment": "stable-vs-random",
+  "version": 1,
+  "catalog_random_slots": [
+    {
+      "short": "aioquic",
+      "unstable_slots": [
+        "initial_scid"
+      ],
+      "stable_slots": [],
+      "auth_capable": false,
+      "auth_overlay_slots": []
+    },
+    {
+      "short": "chrome",
+      "unstable_slots": [
+        "tp_grease_value",
+        "tp_0x11_version_grease",
+        "ch_ech_grease",
+        "ch_ext_shuffle",
+        "initial_dcid",
+        "initial_pn"
+      ],
+      "stable_slots": [
+        "tp_grease_id",
+        "tp_order"
+      ],
+      "auth_capable": true,
+      "auth_overlay_slots": [
+        "tp_grease_value"
+      ]
+    },
+    {
+      "short": "chromium-stale",
+      "unstable_slots": [
+        "tp_grease_value"
+      ],
+      "stable_slots": [],
+      "auth_capable": false,
+      "auth_overlay_slots": []
+    },
+    {
+      "short": "curl-quiche",
+      "unstable_slots": [
+        "initial_scid"
+      ],
+      "stable_slots": [],
+      "auth_capable": false,
+      "auth_overlay_slots": []
+    },
+    {
+      "short": "firefox",
+      "unstable_slots": [
+        "tp_grease_value",
+        "initial_scid"
+      ],
+      "stable_slots": [],
+      "auth_capable": false,
+      "auth_overlay_slots": []
+    },
+    {
+      "short": "quic-go-datagram",
+      "unstable_slots": [
+        "tp_grease_value",
+        "initial_dcid",
+        "initial_scid",
+        "initial_pn",
+        "ch_keyshare_secrets"
+      ],
+      "stable_slots": [
+        "tp_grease_id",
+        "ch_ext_order",
+        "initial_frame_layout"
+      ],
+      "auth_capable": false,
+      "auth_overlay_slots": []
+    },
+    {
+      "short": "quic-go",
+      "unstable_slots": [
+        "tp_grease_value",
+        "initial_dcid",
+        "initial_scid",
+        "initial_pn",
+        "ch_keyshare_secrets"
+      ],
+      "stable_slots": [
+        "tp_grease_id",
+        "ch_ext_order",
+        "initial_frame_layout"
+      ],
+      "auth_capable": false,
+      "auth_overlay_slots": []
+    },
+    {
+      "short": "uquic-chrome-115",
+      "unstable_slots": [
+        "tp_grease_value"
+      ],
+      "stable_slots": [],
+      "auth_capable": false,
+      "auth_overlay_slots": []
+    },
+    {
+      "short": "uquic-chrome-146",
+      "unstable_slots": [
+        "tp_grease_value"
+      ],
+      "stable_slots": [],
+      "auth_capable": false,
+      "auth_overlay_slots": []
+    },
+    {
+      "short": "uquic-firefox-116",
+      "unstable_slots": [
+        "tp_grease_value"
+      ],
+      "stable_slots": [],
+      "auth_capable": false,
+      "auth_overlay_slots": []
+    },
+    {
+      "short": "yandex",
+      "unstable_slots": [
+        "tp_grease_value",
+        "initial_dcid"
+      ],
+      "stable_slots": [],
+      "auth_capable": false,
+      "auth_overlay_slots": []
+    }
+  ],
+  "same_short_stable": [
+    {
+      "short": "chrome",
+      "a": "chromeparrot",
+      "b": "chromeparrot-b",
+      "tp_set": true,
+      "markers": true,
+      "datagram_class": true,
+      "scid": true,
+      "tp_named_values": true,
+      "tp_hex_id_eq": true
+    },
+    {
+      "short": "chrome",
+      "a": "chromeparrot",
+      "b": "chromiumfresh",
+      "tp_set": true,
+      "markers": true,
+      "datagram_class": true,
+      "scid": true,
+      "tp_named_values": true,
+      "tp_hex_id_eq": true
+    },
+    {
+      "short": "chrome",
+      "a": "chromeparrot",
+      "b": "winchrome",
+      "tp_set": true,
+      "markers": true,
+      "datagram_class": true,
+      "scid": true,
+      "tp_named_values": true,
+      "tp_hex_id_eq": true
+    },
+    {
+      "short": "chrome",
+      "a": "chromeparrot",
+      "b": "winedge",
+      "tp_set": true,
+      "markers": true,
+      "datagram_class": true,
+      "scid": true,
+      "tp_named_values": true,
+      "tp_hex_id_eq": true
+    },
+    {
+      "short": "chrome",
+      "a": "chromeparrot",
+      "b": "hy2parrot",
+      "tp_set": true,
+      "markers": true,
+      "datagram_class": true,
+      "scid": true,
+      "tp_named_values": true,
+      "tp_hex_id_eq": true
+    },
+    {
+      "short": "chrome",
+      "a": "chromeparrot",
+      "b": "tuicparrot",
+      "tp_set": true,
+      "markers": true,
+      "datagram_class": true,
+      "scid": true,
+      "tp_named_values": true,
+      "tp_hex_id_eq": true
+    },
+    {
+      "short": "quic-go-datagram",
+      "a": "quicgodg",
+      "b": "hy2plain",
+      "tp_set": true,
+      "markers": true,
+      "datagram_class": true,
+      "scid": true,
+      "tp_named_values": true,
+      "tp_hex_id_eq": false
+    },
+    {
+      "short": "quic-go-datagram",
+      "a": "quicgodg",
+      "b": "tuicplain",
+      "tp_set": true,
+      "markers": true,
+      "datagram_class": true,
+      "scid": true,
+      "tp_named_values": true,
+      "tp_hex_id_eq": false
+    },
+    {
+      "short": "uquic-chrome-146",
+      "a": "uquic146",
+      "b": "uquic146-b",
+      "tp_set": true,
+      "markers": true,
+      "datagram_class": true,
+      "scid": true,
+      "tp_named_values": true,
+      "tp_hex_id_eq": true
+    },
+    {
+      "short": "uquic-firefox-116",
+      "a": "uquicff",
+      "b": "uquicffa",
+      "tp_set": true,
+      "markers": true,
+      "datagram_class": true,
+      "scid": true,
+      "tp_named_values": true,
+      "tp_hex_id_eq": true
+    },
+    {
+      "short": "uquic-firefox-116",
+      "a": "uquicff",
+      "b": "uquicffb",
+      "tp_set": true,
+      "markers": true,
+      "datagram_class": true,
+      "scid": true,
+      "tp_named_values": true,
+      "tp_hex_id_eq": true
+    },
+    {
+      "short": "uquic-firefox-116",
+      "a": "uquicff",
+      "b": "uquicffc",
+      "tp_set": true,
+      "markers": true,
+      "datagram_class": true,
+      "scid": true,
+      "tp_named_values": true,
+      "tp_hex_id_eq": true
+    },
+    {
+      "short": "yandex",
+      "a": "yandex",
+      "b": "winyandex",
+      "tp_set": true,
+      "markers": true,
+      "datagram_class": true,
+      "scid": true,
+      "tp_named_values": true,
+      "tp_hex_id_eq": true
+    }
+  ],
+  "roundtrip_random": [
+    {
+      "pair": [
+        "chromeparrot",
+        "chromeparrot-b"
+      ],
+      "expect_random": {
+        "initials_sha": true,
+        "clienthello_bin": true,
+        "ch_raw_hex_id": true,
+        "ch_ext_order": true,
+        "frame_chaos": true
+      },
+      "stable": {
+        "tp_set": true,
+        "markers": true,
+        "datagrams": true,
+        "tp_hex_id": true,
+        "ch_norm_hex_id": true,
+        "ch_ext_normalized": true,
+        "ciphers": true,
+        "groups": true
+      },
+      "random": {
+        "initials_sha": true,
+        "clienthello_bin": true,
+        "ch_raw_hex_id": true,
+        "ch_ext_order": true,
+        "frame_chaos": true
+      },
+      "evidence": {
+        "tp_hex": [
+          "2f750907435c203d",
+          "2f750907435c203d"
+        ],
+        "ch_norm": [
+          "f82151be15528273",
+          "f82151be15528273"
+        ],
+        "ch_raw": [
+          "9dbe3355b52c647b",
+          "641e106cc4ff7ec9"
+        ],
+        "init_sha": [
+          [
+            "1768f3658eb140dd",
+            "c04e63acd0424774"
+          ],
+          [
+            "f79f357676487962",
+            "ea119da52b0af70b"
+          ]
+        ]
+      }
+    },
+    {
+      "pair": [
+        "uquic146",
+        "uquic146-b"
+      ],
+      "expect_random": {
+        "initials_sha": true,
+        "clienthello_bin": true,
+        "ch_raw_hex_id": true,
+        "ch_ext_order": true,
+        "frame_chaos": true
+      },
+      "stable": {
+        "tp_set": true,
+        "markers": true,
+        "datagrams": true,
+        "tp_hex_id": true,
+        "ch_norm_hex_id": true,
+        "ch_ext_normalized": true,
+        "ciphers": true,
+        "groups": true
+      },
+      "random": {
+        "initials_sha": true,
+        "clienthello_bin": true,
+        "ch_raw_hex_id": true,
+        "ch_ext_order": true,
+        "frame_chaos": true
+      },
+      "evidence": {
+        "tp_hex": [
+          "df82d53bd23e4a71",
+          "df82d53bd23e4a71"
+        ],
+        "ch_norm": [
+          "f82151be15528273",
+          "f82151be15528273"
+        ],
+        "ch_raw": [
+          "f86e71ea9c9c9376",
+          "cea05c269d8b1588"
+        ],
+        "init_sha": [
+          [
+            "712f53b10fe4efa9",
+            "b887f615f049c526"
+          ],
+          [
+            "6eaf4766107079f2",
+            "070222eb8deb2c14"
+          ]
+        ]
+      }
+    },
+    {
+      "pair": [
+        "exp-chrome-a",
+        "exp-chrome-b"
+      ],
+      "expect_random": {
+        "initials_sha": true,
+        "clienthello_bin": true,
+        "ch_raw_hex_id": true,
+        "ch_ext_order": true,
+        "frame_chaos": true
+      },
+      "stable": {
+        "tp_set": true,
+        "markers": true,
+        "datagrams": true,
+        "tp_hex_id": true,
+        "ch_norm_hex_id": true,
+        "ch_ext_normalized": true,
+        "ciphers": true,
+        "groups": true
+      },
+      "random": {
+        "initials_sha": true,
+        "clienthello_bin": true,
+        "ch_raw_hex_id": true,
+        "ch_ext_order": true,
+        "frame_chaos": true
+      },
+      "evidence": {
+        "tp_hex": [
+          "2f750907435c203d",
+          "2f750907435c203d"
+        ],
+        "ch_norm": [
+          "f82151be15528273",
+          "f82151be15528273"
+        ],
+        "ch_raw": [
+          "02dc151face98b14",
+          "17c0cb10551c57fc"
+        ],
+        "init_sha": [
+          [
+            "0b23f3ae9df101e9",
+            "30dca03c85a6e34e"
+          ],
+          [
+            "f919df9aa8a13056",
+            "d8ab0ab11ae97d38"
+          ]
+        ]
+      }
+    },
+    {
+      "pair": [
+        "exp-quic-go-a",
+        "exp-quic-go-b"
+      ],
+      "expect_random": {
+        "initials_sha": true,
+        "clienthello_bin": true,
+        "ch_raw_hex_id": false,
+        "ch_ext_order": false,
+        "frame_chaos": false
+      },
+      "stable": {
+        "tp_set": true,
+        "markers": true,
+        "datagrams": true,
+        "tp_hex_id": true,
+        "ch_norm_hex_id": true,
+        "ch_ext_normalized": true,
+        "ciphers": true,
+        "groups": true
+      },
+      "random": {
+        "initials_sha": true,
+        "clienthello_bin": true,
+        "ch_raw_hex_id": false,
+        "ch_ext_order": false,
+        "frame_chaos": false
+      },
+      "evidence": {
+        "tp_hex": [
+          "5019cf1c55ba85be",
+          "5019cf1c55ba85be"
+        ],
+        "ch_norm": [
+          "c87b89555f4c932b",
+          "c87b89555f4c932b"
+        ],
+        "ch_raw": [
+          "4e40c67f07861dd6",
+          "4e40c67f07861dd6"
+        ],
+        "init_sha": [
+          [
+            "d920a27da9156f87",
+            "b98bdb55de7fb328"
+          ],
+          [
+            "04057a156485c379",
+            "c0b8869f015c31b8"
+          ]
+        ]
+      }
+    },
+    {
+      "pair": [
+        "exp-quic-go-datagram-a",
+        "exp-quic-go-datagram-b"
+      ],
+      "expect_random": {
+        "initials_sha": true,
+        "clienthello_bin": true,
+        "ch_raw_hex_id": false,
+        "ch_ext_order": false,
+        "frame_chaos": false
+      },
+      "stable": {
+        "tp_set": true,
+        "markers": true,
+        "datagrams": true,
+        "tp_hex_id": true,
+        "ch_norm_hex_id": true,
+        "ch_ext_normalized": true,
+        "ciphers": true,
+        "groups": true
+      },
+      "random": {
+        "initials_sha": true,
+        "clienthello_bin": true,
+        "ch_raw_hex_id": false,
+        "ch_ext_order": false,
+        "frame_chaos": false
+      },
+      "evidence": {
+        "tp_hex": [
+          "c060c13d7ce71fc6",
+          "c060c13d7ce71fc6"
+        ],
+        "ch_norm": [
+          "c87b89555f4c932b",
+          "c87b89555f4c932b"
+        ],
+        "ch_raw": [
+          "4e40c67f07861dd6",
+          "4e40c67f07861dd6"
+        ],
+        "init_sha": [
+          [
+            "844a18896b1da09b",
+            "c484a838ed4241fe"
+          ],
+          [
+            "9fa319c58ec45d31",
+            "bc89e95a8b779799"
+          ]
+        ]
+      }
+    }
+  ],
+  "cross_short": [
+    {
+      "lab_id": "aioquic",
+      "expected": "aioquic",
+      "got": "aioquic",
+      "ok": true
+    },
+    {
+      "lab_id": "chromeparrot",
+      "expected": "chrome",
+      "got": "chrome",
+      "ok": true
+    },
+    {
+      "lab_id": "chromium",
+      "expected": "chromium-stale",
+      "got": "chromium-stale",
+      "ok": true
+    },
+    {
+      "lab_id": "curlquiche",
+      "expected": "curl-quiche",
+      "got": "curl-quiche",
+      "ok": true
+    },
+    {
+      "lab_id": "firefox",
+      "expected": "firefox",
+      "got": "firefox",
+      "ok": true
+    },
+    {
+      "lab_id": "quicgodg",
+      "expected": "quic-go-datagram",
+      "got": "quic-go-datagram",
+      "ok": true
+    },
+    {
+      "lab_id": "quicgo",
+      "expected": "quic-go",
+      "got": "quic-go",
+      "ok": true
+    },
+    {
+      "lab_id": "uquic115",
+      "expected": "uquic-chrome-115",
+      "got": "uquic-chrome-115",
+      "ok": true
+    },
+    {
+      "lab_id": "uquic146",
+      "expected": "uquic-chrome-146",
+      "got": "uquic-chrome-146",
+      "ok": true
+    },
+    {
+      "lab_id": "uquicff",
+      "expected": "uquic-firefox-116",
+      "got": "uquic-firefox-116",
+      "ok": true
+    },
+    {
+      "lab_id": "yandex",
+      "expected": "yandex",
+      "got": "yandex",
+      "ok": true
+    }
+  ],
+  "auth_identity": {
+    "tp_hex_stable": true,
+    "tp_set_stable": true,
+    "initials_vary": true,
+    "auth_channel": "tp_grease_value",
+    "requires_demux_fingerprint": false,
+    "note": "clienthellod TP hex_id ignores grease value entropy; identity match uses GREASE token + markers"
+  },
+  "live_classify": [
+    {
+      "lab_id": "exp-chrome-a",
+      "expected": "chrome",
+      "got": "chrome",
+      "ok": true
+    },
+    {
+      "lab_id": "exp-chrome-b",
+      "expected": "chrome",
+      "got": "chrome",
+      "ok": true
+    },
+    {
+      "lab_id": "exp-quic-go-a",
+      "expected": "quic-go",
+      "got": "quic-go",
+      "ok": true
+    },
+    {
+      "lab_id": "exp-quic-go-b",
+      "expected": "quic-go",
+      "got": "quic-go",
+      "ok": true
+    },
+    {
+      "lab_id": "exp-quic-go-datagram-a",
+      "expected": "quic-go-datagram",
+      "got": "quic-go-datagram",
+      "ok": true
+    },
+    {
+      "lab_id": "exp-quic-go-datagram-b",
+      "expected": "quic-go-datagram",
+      "got": "quic-go-datagram",
+      "ok": true
+    }
+  ],
+  "failures": [],
+  "ok": true
+}

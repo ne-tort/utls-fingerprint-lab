@@ -1,0 +1,156 @@
+{
+  "short": "quic-go",
+  "family": "quic-go",
+  "aliases": [
+    "quicgo",
+    "plain"
+  ],
+  "status": "emit_ready",
+  "identity": {
+    "tp_id_set": [
+      "0x1",
+      "0x3",
+      "0x4",
+      "0x5",
+      "0x6",
+      "0x7",
+      "0x8",
+      "0x9",
+      "0xb",
+      "0xe",
+      "0xf",
+      "GREASE"
+    ],
+    "tp_id_set_match": "set",
+    "markers": {
+      "has_0x11": false,
+      "has_0x3128": false,
+      "has_0x20": false,
+      "has_0x2ab2": false
+    },
+    "scid_len": null,
+    "dcid_len": null,
+    "datagram_count_class": 2,
+    "ja4_hint": null
+  },
+  "emit": {
+    "emit_kind": "sagernet_plain",
+    "engine": {
+      "chrome_parrot": false,
+      "enable_datagrams": false,
+      "zero_length_scid": false
+    },
+    "structured": {
+      "initial": {
+        "frame_policy": "engine_default"
+      },
+      "transport_parameters": {
+        "id_order": [
+          "0x1",
+          "0x3",
+          "0x4",
+          "0x5",
+          "0x6",
+          "0x7",
+          "0x8",
+          "0x9",
+          "0xb",
+          "0xe",
+          "0xf",
+          "GREASE"
+        ],
+        "grease": {
+          "policy": "random_0_15"
+        },
+        "value_policy": "quic_go_defaults"
+      },
+      "client_hello": {
+        "policy": "engine_default",
+        "alpn": [
+          "h3"
+        ]
+      }
+    }
+  },
+  "random": {
+    "slots": [
+      {
+        "id": "tp_grease_id",
+        "layer": "transport_parameters",
+        "stable_for_identity": true,
+        "policy": "token_GREASE",
+        "notes": "Stock quic-go: short-ish 31*N+27 id; still GREASE token in identity"
+      },
+      {
+        "id": "tp_grease_value",
+        "layer": "transport_parameters",
+        "stable_for_identity": false,
+        "policy": "random_0_15",
+        "auth_overlay": false,
+        "notes": "Value entropy present; demux could verify HMAC (len 8..15) but emit hook today is parrot-only"
+      },
+      {
+        "id": "initial_dcid",
+        "layer": "initial",
+        "stable_for_identity": false,
+        "policy": "random_bytes"
+      },
+      {
+        "id": "initial_scid",
+        "layer": "initial",
+        "stable_for_identity": false,
+        "policy": "random_len_nonzero",
+        "notes": "scid_len not pinned for quic-go shorts"
+      },
+      {
+        "id": "initial_pn",
+        "layer": "initial",
+        "stable_for_identity": false,
+        "policy": "engine_pn"
+      },
+      {
+        "id": "ch_keyshare_secrets",
+        "layer": "client_hello",
+        "stable_for_identity": false,
+        "policy": "ephemeral_keys",
+        "notes": "CH bytes change; extension ORDER is deterministic (no shuffle)"
+      },
+      {
+        "id": "ch_ext_order",
+        "layer": "client_hello",
+        "stable_for_identity": true,
+        "policy": "fixed",
+        "notes": "Plain quic-go does NOT shuffle extensions — must stay stable across runs"
+      },
+      {
+        "id": "initial_frame_layout",
+        "layer": "initial",
+        "stable_for_identity": true,
+        "policy": "fixed",
+        "notes": "No Chrome chaos frames on plain path"
+      }
+    ]
+  },
+  "auth": {
+    "capable": false,
+    "channel": "tp_grease_value",
+    "crypto": "demux-quic-v1",
+    "value_len_min": 8,
+    "value_len_max": 15,
+    "emit_hook": null,
+    "demux_match": {
+      "quic": {
+        "auth": true
+      }
+    },
+    "requires_demux_fingerprint": false,
+    "requires_emit_style": null,
+    "notes": "Has RFC GREASE slot; demux verify is fingerprint-agnostic. Emit overlay not wired (would need non-parrot ChromeGREASEValue or structured apply)."
+  },
+  "observation_refs": [
+    "quicgo"
+  ],
+  "notes": "Stock quic-go without DATAGRAM. Auth latent in GREASE value; product forbids quic_auth without parrot.",
+  "format": "quic-utls-profile-v1",
+  "version": 1
+}

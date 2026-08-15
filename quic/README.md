@@ -22,35 +22,39 @@ TCP short names **нельзя** импортировать как QUIC-проф
 ```powershell
 cd quic
 ./lab.ps1 build-emitters
+./lab.ps1 unify            # quic-utls catalog match (stable identity)
 ./lab.ps1 matrix           # parrot / uquic / aioquic → compare
 ./lab.ps1 roundtrip        # prove emit recipes reproduce structurally
 ./lab.ps1 compare
 ```
 
-Docs: [REPLAY_AND_EMIT](docs/REPLAY_AND_EMIT.md) · [PYTHON_VS_GO](docs/PYTHON_VS_GO.md) ·
-[RESULTS_MATRIX](docs/RESULTS_MATRIX.md).
+Docs: [STATUS](docs/STATUS.md) · [UTLS_PROFILE](docs/UTLS_PROFILE.md) · [IMPORT](docs/IMPORT.md) ·
+[REPLAY_AND_EMIT](docs/REPLAY_AND_EMIT.md).
 
 ## Emit vs observation
 
-Raw `initials/*.bin` = observation (match/diff). Dial in sing-box needs
-`emit` recipes (`quic-emit-spec-v1`) — see catalog/`emit_templates.json`.
-ChromeParrot/hy2 → `sagernet_chrome_parrot`; uquic → lab `uquic_preset` until
-ported; aioquic → `match_only`.
+Raw `initials/*.bin` = observation (match/diff). Dial needs a **unified**
+profile (`quic-utls-profile-v1` in `catalog/utls/`) with `emit.engine` and/or
+`emit.structured` — see [UTLS_PROFILE](docs/UTLS_PROFILE.md).
+ChromeParrot/hy2 → short `chrome`; plain+datagrams → `quic-go-datagram`;
+uquic → lab `uquic_preset` until structured port; aioquic → unmatched / match_only.
 
 ## Layout
 
 | Path | Role |
 |------|------|
-| `lab.ps1` / `lab.sh` | Entry (`matrix`, `compare`, …) |
+| `lab.ps1` / `lab.sh` | Entry (`unify`, `matrix`, `compare`, …) |
+| `catalog/utls/` | **`quic-utls-profile-v1`** shorts (SoT for dial) |
 | `compose.yaml` | Docker capture + emitters |
 | `scripts/build-emitters.ps1` | linux bins → `bin/` |
+| `scripts/match_utls_catalog.py` | Classify profiles → shorts |
 | `scripts/compare_profiles.py` | TP id-set table |
 | `targets.yaml` | Registry |
 | `capture/` | UDP Initial peek (`clienthellod`) |
-| `emitters/` | chromeparrot / uquic |
-| `captures/` `profiles/` | Raw + importable |
-| `docs/` | Contract, ecosystem, **RESULTS_MATRIX** |
-| `schema/` | JSON Schema манифеста |
+| `emitters/` | chromeparrot / fromprofile / uquic |
+| `captures/` `profiles/` | Raw observation |
+| `docs/` | UTLS_PROFILE, CONTRACT, RESULTS_MATRIX |
+| `schema/` | JSON Schema |
 
 ## Profile contract (кратко)
 
@@ -63,9 +67,14 @@ ported; aioquic → `match_only`.
 
 Детали: [docs/CONTRACT.md](docs/CONTRACT.md).
 
-## Интеграция в sing-box (целевая)
+## Интеграция (лаба → будущий продукт)
 
-Не смешивать с `common/tls/lxutls`. Черновик пакета:
-`common/quic/lxquicfp` (build-tag рядом с parrot) + sync `make lx-quic-fp-sync`
-из `quic/dist/export/`. UX: `quic.fingerprint: "chrome"` — см.
-[docs/APPLY.md](docs/APPLY.md).
+Сейчас готовим только лабу. Export:
+
+```powershell
+./lab.ps1 export   # → dist/export/ (quic-utls-catalog-v1)
+```
+
+Не смешивать с TCP `lxutls`. Product sync / CI — позже.
+Статус: [docs/STATUS.md](docs/STATUS.md) · [docs/IMPORT.md](docs/IMPORT.md).
+

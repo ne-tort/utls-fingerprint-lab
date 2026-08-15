@@ -17,13 +17,16 @@ try {
   go build -trimpath -ldflags "-s -w" -o (Join-Path $Out "quic-capture") .
 } finally { Pop-Location }
 
-Write-Host "building chromeparrot emitter from sing-box-lx..."
+Write-Host "building chromeparrot + fromprofile emitters from sing-box-lx..."
 $Tags = "with_gvisor,with_quic,with_wireguard,with_utls"
 Push-Location $RepoRoot.Path
 try {
   go build -trimpath -ldflags "-s -w -checklinkname=0" -tags $Tags `
     -o (Join-Path $Out "emit-chromeparrot") `
     ./lx-test/utls-fingerprint-docker/quic/emitters/chromeparrot
+  go build -trimpath -ldflags "-s -w -checklinkname=0" -tags $Tags `
+    -o (Join-Path $Out "emit-fromprofile") `
+    ./lx-test/utls-fingerprint-docker/quic/emitters/fromprofile
 } finally { Pop-Location }
 
 Write-Host "building uquic emitter..."

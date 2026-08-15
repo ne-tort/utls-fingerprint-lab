@@ -1,0 +1,99 @@
+{
+  "short": "firefox",
+  "family": "firefox",
+  "aliases": [],
+  "status": "observation_only",
+  "identity": {
+    "tp_id_set": [
+      "0x1",
+      "0x4",
+      "0x5",
+      "0x6",
+      "0x7",
+      "0x8",
+      "0x9",
+      "0xb",
+      "0xe",
+      "0xf",
+      "0x11",
+      "GREASE",
+      "0x20"
+    ],
+    "tp_id_set_match": "set",
+    "markers": {
+      "has_0x11": true,
+      "has_0x3128": false,
+      "has_0x20": true,
+      "has_0x2ab2": false
+    },
+    "scid_len": null,
+    "dcid_len": null,
+    "datagram_count_class": 2,
+    "ja4_hint": null
+  },
+  "emit": {
+    "emit_kind": "match_only",
+    "structured": {
+      "initial": {
+        "frame_policy": "unspecified"
+      },
+      "transport_parameters": {
+        "id_order": [
+          "0x1",
+          "0x4",
+          "0x5",
+          "0x6",
+          "0x7",
+          "0x8",
+          "0x9",
+          "0xb",
+          "0xe",
+          "0xf",
+          "0x11",
+          "GREASE",
+          "0x20"
+        ],
+        "grease": {
+          "policy": "random_0_15"
+        },
+        "value_policy": "unspecified"
+      },
+      "client_hello": {
+        "policy": "unspecified",
+        "alpn": [
+          "h3"
+        ],
+        "notes": "Live Firefox ≠ uquic-firefox-116"
+      }
+    }
+  },
+  "random": {
+    "slots": [
+      {
+        "id": "tp_grease_value",
+        "layer": "transport_parameters",
+        "stable_for_identity": false,
+        "policy": "unknown"
+      },
+      {
+        "id": "initial_scid",
+        "layer": "initial",
+        "stable_for_identity": false,
+        "policy": "random_len"
+      }
+    ]
+  },
+  "auth": {
+    "capable": false,
+    "channel": null,
+    "demux_match": null,
+    "requires_demux_fingerprint": false,
+    "notes": "No stable auth overlay for this persona yet"
+  },
+  "observation_refs": [
+    "firefox"
+  ],
+  "notes": "Live browser. Separate from uquic-firefox-116.",
+  "format": "quic-utls-profile-v1",
+  "version": 1
+}

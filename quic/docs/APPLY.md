@@ -1,6 +1,6 @@
 # Apply — from profile to wire / config
 
-## Product config (target UX)
+## Product config (target UX — not wired yet)
 
 Do **not** reuse `tls.utls.fingerprint` for QUIC ([027](../../../../SPECS/TASKS/027-UTLS_OVER_QUIC/SPEC.md),
 [090 D](../../../../SPECS/TASKS/090-QUIC_FINGERPRINT_PROFILES/modules/D-UTLS_CONFIG_TRAP.md)).
@@ -9,45 +9,35 @@ Do **not** reuse `tls.utls.fingerprint` for QUIC ([027](../../../../SPECS/TASKS/
 "quic": { "fingerprint": "chrome" }
 ```
 
-or protocol sugar (hy2):
+Lab catalogs shorts via `catalog/utls/` + `dist/export/`. Product package /
+`quic.fingerprint` option — **out of lab scope for now**.
 
-```json
-"fingerprint": "firefox"
-```
+## Emit mapping (lab)
 
-replacing boolean `disable_chrome_parrot` over time (`chrome` = parrot on,
-`quic-go` = off).
+| Short | Emit today | Dial in export |
+|-------|------------|----------------|
+| `chrome` | `ChromeParrot` + datagrams + SCID0 | yes |
+| `quic-go` | plain | yes |
+| `quic-go-datagram` | plain + `EnableDatagrams` | yes |
+| others | match_only / experimental | no |
 
-Optional alias name in docs: **`utls_quic`** / package `lxquicfp` — means
-“QUIC persona catalog like uTLS shorts”, **not** metacubex uTLS-over-QUIC.
+Lab emitter: `emitters/fromprofile -profile catalog/utls/chrome.json`.
 
-## Runtime mapping (sing-box-lx)
+`quic_auth` channel = GREASE TP value; demux match does **not** need fingerprint
+short ([I](../../../../SPECS/TASKS/090-QUIC_FINGERPRINT_PROFILES/modules/I-QUIC_AUTH_CHANNEL.md)).
 
-| Short | Emit today | Emit future |
-|-------|------------|-------------|
-| `chrome` / `chrome-N` | `ChromeParrot=true` | bump from lab |
-| `quic-go` | parrot false | same |
-| `firefox` / `firefox-N` | — | new path (uquic-inspired + capture) |
-| `quiche` / `aioquic` | — | match-only first |
-
-`quic_auth` remains **chrome GREASE-only** until a firefox auth channel exists.
-
-## Sync (future, mirror 018)
+## Export prep
 
 ```text
-quic/dist/export/catalog.json + profiles/<short>/
-    → make -f Makefile.lx lx-quic-fp-sync
-    → common/quic/lxquicfp/ embed
+./lab.ps1 export  →  dist/export/
 ```
 
-Build-tag TBD (`with_lx_quic_fp` or fold into existing quic tags).
+See [IMPORT.md](IMPORT.md) · [STATUS.md](STATUS.md).
 
 ## Verify loop (lab)
 
-1. Capture live → profile
-2. Emit candidate (parrot / future spec) → capture again
-3. Compare `expected.ja4` + `tp_id_set` + CID lens (tolerance on GREASE)
+1. Capture → observation
+2. Emit (`fromprofile` / parrot) → capture again
+3. `./lab.ps1 unify` + `./lab.ps1 exp-stable`
 
-Blunt “replay initials/*.bin as UDP” is **not** a valid QUIC connection (crypto
-needs live TP tied to SCID). Verify = re-emit from structured spec, not raw
-datagram replay (unlike TCP HelloCustom blunt mimicry).
+Blunt replay of `initials/*.bin` is not a valid dial path.

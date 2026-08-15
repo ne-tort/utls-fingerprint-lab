@@ -1,0 +1,72 @@
+{
+  "short": "chromium-stale",
+  "family": "chromium",
+  "aliases": [
+    "chromium"
+  ],
+  "status": "observation_only",
+  "identity": {
+    "tp_id_set": [
+      "0x1",
+      "0x3",
+      "0x4",
+      "0x5",
+      "0x6",
+      "0x7",
+      "0x8",
+      "0x9",
+      "0xf",
+      "GREASE",
+      "0x20",
+      "0x4752",
+      "0xff73db"
+    ],
+    "tp_id_set_match": "set",
+    "markers": {
+      "has_0x11": false,
+      "has_0x3128": false,
+      "has_0x20": true,
+      "has_0x2ab2": false
+    },
+    "scid_len": null,
+    "dcid_len": null,
+    "datagram_count_class": 2,
+    "ja4_hint": null
+  },
+  "emit": {
+    "emit_kind": "match_only",
+    "notes": "zenika/alpine Chromium — stale vs chromeparrot; keep as separate short"
+  },
+  "random": {
+    "slots": [
+      {
+        "id": "tp_grease_value",
+        "layer": "transport_parameters",
+        "stable_for_identity": false,
+        "policy": "unknown"
+      }
+    ]
+  },
+  "auth": {
+    "capable": false,
+    "channel": "tp_grease_value",
+    "crypto": "demux-quic-v1",
+    "value_len_min": 8,
+    "value_len_max": 15,
+    "emit_hook": null,
+    "demux_match": {
+      "quic": {
+        "auth": true
+      }
+    },
+    "requires_demux_fingerprint": false,
+    "requires_emit_style": null,
+    "notes": "Has RFC GREASE slot; demux verify is fingerprint-agnostic. Emit overlay not wired (would need non-parrot ChromeGREASEValue or structured apply)."
+  },
+  "observation_refs": [
+    "chromium"
+  ],
+  "notes": "Not an alias of chrome. Use chromiumfresh / winchrome for live.",
+  "format": "quic-utls-profile-v1",
+  "version": 1
+}

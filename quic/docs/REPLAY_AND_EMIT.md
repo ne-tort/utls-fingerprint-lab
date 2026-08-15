@@ -39,7 +39,8 @@ Export в продукт импортирует **emit recipe** (+ expected дл
 `structured` (или тонкому engine flag, если 1:1 с кодом). `uquic_preset` —
 промежуточный ярлык «как в refraction», не module path в go.mod.
 
-Схема: [../schema/quic-emit-spec-v1.schema.json](../schema/quic-emit-spec-v1.schema.json).
+Схема: [../schema/quic-emit-spec-v1.schema.json](../schema/quic-emit-spec-v1.schema.json).  
+Унифицированный catalog: [UTLS_PROFILE.md](UTLS_PROFILE.md) (`quic-utls-profile-v1`).
 
 ## Round-trip (как доказываем, что сняли правильно)
 

@@ -1,0 +1,85 @@
+{
+  "format": "quic-utls-catalog-index-v1",
+  "version": 1,
+  "description": "uTLS-like shorts for QUIC. Auth demux is fingerprint-agnostic (quic.auth).",
+  "shorts": [
+    {
+      "short": "chrome",
+      "family": "chrome",
+      "status": "emit_ready",
+      "file": "chrome.json",
+      "auth_capable": true
+    },
+    {
+      "short": "quic-go",
+      "family": "quic-go",
+      "status": "emit_ready",
+      "file": "quic-go.json",
+      "auth_capable": false
+    },
+    {
+      "short": "quic-go-datagram",
+      "family": "quic-go",
+      "status": "emit_ready",
+      "file": "quic-go-datagram.json",
+      "auth_capable": false
+    },
+    {
+      "short": "yandex",
+      "family": "yandex",
+      "status": "observation_only",
+      "file": "yandex.json",
+      "auth_capable": false
+    },
+    {
+      "short": "firefox",
+      "family": "firefox",
+      "status": "observation_only",
+      "file": "firefox.json",
+      "auth_capable": false
+    },
+    {
+      "short": "uquic-chrome-146",
+      "family": "uquic-chrome",
+      "status": "experimental",
+      "file": "uquic-chrome-146.json",
+      "auth_capable": false
+    },
+    {
+      "short": "uquic-chrome-115",
+      "family": "uquic-chrome",
+      "status": "experimental",
+      "file": "uquic-chrome-115.json",
+      "auth_capable": false
+    },
+    {
+      "short": "uquic-firefox-116",
+      "family": "uquic-firefox",
+      "status": "experimental",
+      "file": "uquic-firefox-116.json",
+      "auth_capable": false
+    },
+    {
+      "short": "aioquic",
+      "family": "aioquic",
+      "status": "observation_only",
+      "file": "aioquic.json",
+      "auth_capable": false
+    },
+    {
+      "short": "curl-quiche",
+      "family": "quiche",
+      "status": "observation_only",
+      "file": "curl-quiche.json",
+      "auth_capable": false
+    },
+    {
+      "short": "chromium-stale",
+      "family": "chromium",
+      "status": "observation_only",
+      "file": "chromium-stale.json",
+      "auth_capable": false
+    }
+  ],
+  "notes": "Dial: emit_ready. Demux auth: match quic.auth only — no fingerprint short required. See docs/UTLS_PROFILE.md. Lab SoT: catalog/utls/*.json via sync_utls_catalog.py."
+}

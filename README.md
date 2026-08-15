@@ -21,7 +21,11 @@ consumed by [sing-box-lx](https://github.com/ne-tort/sing-box-lx) as submodule
 
 Unix: `./lab.sh …` (same commands; filters via `ID=` / `GROUP=`).
 
-sing-box-lx: `make -f Makefile.lx lx-utls-sync` ([FEATURE 018](../../SPECS/FEATURES/018-UTLS_PROFILES/FEATURE.md) / SPEC 064).
+sing-box-lx TCP: `make -f Makefile.lx lx-utls-sync` ([FEATURE 018](../../SPECS/FEATURES/018-UTLS_PROFILES/FEATURE.md) / SPEC 064).
+
+**QUIC Initial lab** (separate): [`quic/`](quic/) — `./quic/lab.ps1 unify|export|exp-stable`.
+Prepares `quic/dist/export/` for a future product catalog; **not** mixed with TCP `lxutls`.
+See [quic/docs/STATUS.md](quic/docs/STATUS.md).
 
 ## Layout
 

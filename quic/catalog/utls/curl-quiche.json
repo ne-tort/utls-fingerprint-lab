@@ -1,0 +1,63 @@
+{
+  "short": "curl-quiche",
+  "family": "quiche",
+  "aliases": [
+    "curlquiche",
+    "quiche"
+  ],
+  "status": "observation_only",
+  "identity": {
+    "tp_id_set": [
+      "0x1",
+      "0x3",
+      "0x4",
+      "0x5",
+      "0x6",
+      "0x7",
+      "0x8",
+      "0x9",
+      "0xa",
+      "0xb",
+      "0xc",
+      "0xf"
+    ],
+    "tp_id_set_match": "set",
+    "markers": {
+      "has_0x11": false,
+      "has_0x3128": false,
+      "has_0x20": false,
+      "has_0x2ab2": false
+    },
+    "scid_len": 20,
+    "dcid_len": null,
+    "datagram_count_class": 1,
+    "ja4_hint": null
+  },
+  "emit": {
+    "emit_kind": "match_only",
+    "notes": "curl+quiche"
+  },
+  "random": {
+    "slots": [
+      {
+        "id": "initial_scid",
+        "layer": "initial",
+        "stable_for_identity": false,
+        "policy": "library"
+      }
+    ]
+  },
+  "auth": {
+    "capable": false,
+    "channel": null,
+    "demux_match": null,
+    "requires_demux_fingerprint": false,
+    "notes": "No stable auth overlay for this persona yet"
+  },
+  "observation_refs": [
+    "curlquiche"
+  ],
+  "notes": "No GREASE in this capture.",
+  "format": "quic-utls-profile-v1",
+  "version": 1
+}

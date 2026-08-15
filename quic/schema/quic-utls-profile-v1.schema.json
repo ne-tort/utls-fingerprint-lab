@@ -1,0 +1,246 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "quic-utls-profile-v1",
+  "title": "quic-utls-profile-v1 — unified QUIC fingerprint (identity + emit + random + auth)",
+  "description": "uTLS-like catalog entry for QUIC. Identity is GREASE-token stable. Auth channel is demux-fingerprint-agnostic (quic.auth).",
+  "type": "object",
+  "required": ["format", "short", "status", "identity", "emit", "random", "auth"],
+  "additionalProperties": false,
+  "properties": {
+    "format": { "const": "quic-utls-profile-v1" },
+    "version": { "type": "integer", "minimum": 1 },
+    "short": { "type": "string", "minLength": 1 },
+    "family": {
+      "type": "string",
+      "description": "Catalog family for grouping (chrome, quic-go, …)"
+    },
+    "aliases": { "type": "array", "items": { "type": "string" } },
+    "status": {
+      "enum": ["emit_ready", "experimental", "observation_only"]
+    },
+    "identity": {
+      "type": "object",
+      "required": ["tp_id_set"],
+      "additionalProperties": false,
+      "properties": {
+        "tp_id_set": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Ordered TP ids; GREASE token replaces unstable grease id"
+        },
+        "tp_id_set_match": { "enum": ["ordered", "set"] },
+        "markers": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "has_0x11": { "type": "boolean" },
+            "has_0x3128": { "type": "boolean" },
+            "has_0x20": { "type": "boolean" },
+            "has_0x2ab2": { "type": "boolean" }
+          }
+        },
+        "scid_len": { "type": ["integer", "null"], "minimum": 0 },
+        "dcid_len": { "type": ["integer", "null"] },
+        "datagram_count_class": { "type": ["integer", "null"], "enum": [1, 2, null] },
+        "ja4_hint": { "type": ["string", "null"] }
+      }
+    },
+    "emit": {
+      "type": "object",
+      "required": ["emit_kind"],
+      "additionalProperties": false,
+      "properties": {
+        "emit_kind": {
+          "enum": [
+            "sagernet_chrome_parrot",
+            "sagernet_plain",
+            "uquic_preset",
+            "structured",
+            "match_only"
+          ]
+        },
+        "uquic_preset": { "type": "string" },
+        "engine": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "chrome_parrot": { "type": "boolean" },
+            "enable_datagrams": { "type": "boolean" },
+            "zero_length_scid": { "type": "boolean" }
+          }
+        },
+        "structured": { "$ref": "#/$defs/structured" },
+        "notes": { "type": "string" }
+      }
+    },
+    "random": {
+      "type": "object",
+      "required": ["slots"],
+      "additionalProperties": false,
+      "description": "Where entropy lives; slots with stable_for_identity=false must not be used as match keys",
+      "properties": {
+        "slots": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "layer", "stable_for_identity", "policy"],
+            "additionalProperties": false,
+            "properties": {
+              "id": { "type": "string" },
+              "layer": {
+                "enum": ["initial", "transport_parameters", "client_hello"]
+              },
+              "stable_for_identity": { "type": "boolean" },
+              "policy": { "type": "string" },
+              "auth_overlay": { "type": "boolean" },
+              "notes": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "auth": {
+      "type": "object",
+      "required": ["capable", "requires_demux_fingerprint"],
+      "additionalProperties": false,
+      "description": "quic_auth placement. Demux match is independent of fingerprint short.",
+      "properties": {
+        "capable": {
+          "type": "boolean",
+          "description": "true = emit can overlay HMAC into channel today"
+        },
+        "channel": {
+          "type": ["string", "null"],
+          "description": "tp_grease_value | null"
+        },
+        "crypto": { "type": ["string", "null"] },
+        "value_len_min": { "type": "integer" },
+        "value_len_max": { "type": "integer" },
+        "emit_hook": { "type": ["string", "null"] },
+        "demux_match": {
+          "type": ["object", "null"],
+          "description": "Rule fragment, typically {\"quic\":{\"auth\":true}}"
+        },
+        "requires_demux_fingerprint": {
+          "type": "boolean",
+          "description": "Must be false for preferred design — demux uses quic.auth only"
+        },
+        "requires_emit_style": { "type": ["string", "null"] },
+        "notes": { "type": "string" }
+      }
+    },
+    "observation_refs": { "type": "array", "items": { "type": "string" } },
+    "notes": { "type": "string" }
+  },
+  "$defs": {
+    "structured": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "initial": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "src_conn_id_length": { "type": ["integer", "null"] },
+            "dest_conn_id_length": { "type": ["integer", "null"] },
+            "init_packet_number": { "type": ["integer", "null"] },
+            "udp_datagram_min_size": { "type": ["integer", "null"] },
+            "frame_policy": { "type": "string" }
+          }
+        },
+        "transport_parameters": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id_order": { "type": "array", "items": { "type": "string" } },
+            "grease": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "policy": {
+                  "enum": [
+                    "random_0_15",
+                    "random_0_15_or_auth_8_15",
+                    "random_8_15",
+                    "fixed",
+                    "omit",
+                    "unknown",
+                    "uquic"
+                  ]
+                },
+                "fixed_hex": { "type": "string" }
+              }
+            },
+            "value_policy": {
+              "enum": [
+                "chrome_parrot_defaults",
+                "quic_go_defaults",
+                "literal",
+                "unspecified"
+              ]
+            },
+            "values": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "kind": { "enum": ["varint", "bytes", "preset", "omit"] },
+                  "value": { "type": ["integer", "string"] },
+                  "hex": { "type": "string" },
+                  "name": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "client_hello": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "policy": { "enum": ["engine_default", "literal", "unspecified"] },
+            "alpn": { "type": "array", "items": { "type": "string" } },
+            "notes": { "type": "string" }
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "emit": { "properties": { "emit_kind": { "const": "uquic_preset" } } }
+        }
+      },
+      "then": {
+        "properties": { "emit": { "required": ["emit_kind", "uquic_preset"] } }
+      }
+    },
+    {
+      "if": { "properties": { "status": { "const": "emit_ready" } } },
+      "then": {
+        "properties": {
+          "emit": {
+            "properties": { "emit_kind": { "not": { "const": "match_only" } } }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "auth": { "properties": { "capable": { "const": true } } } }
+      },
+      "then": {
+        "properties": {
+          "auth": {
+            "required": ["capable", "channel", "requires_demux_fingerprint"],
+            "properties": {
+              "requires_demux_fingerprint": { "const": false },
+              "channel": { "const": "tp_grease_value" }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

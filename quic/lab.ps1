@@ -2,7 +2,7 @@
 # Single entry for QUIC Initial fingerprint lab (Docker-first).
 param(
     [Parameter(Position = 0)]
-    [ValidateSet("build", "build-emitters", "capture-listen", "parse", "list", "up", "matrix", "matrix-ext", "roundtrip", "live", "ja4", "hy2", "tuic", "host-browsers", "compare", "help")]
+    [ValidateSet("build", "build-emitters", "capture-listen", "parse", "list", "up", "matrix", "matrix-ext", "roundtrip", "live", "ja4", "hy2", "tuic", "host-browsers", "compare", "unify", "exp-stable", "export", "help")]
     [string]$Action = "help",
     [string]$Path = "",
     [string]$Listen = ":4433",
@@ -76,12 +76,15 @@ quic lab (Docker-first):
   tuic             real tuic outbound Initial vs hy2 / chromeparrot
   host-browsers    Windows Chrome / Edge / Yandex on :4433
   compare          TP table over profiles/
+  unify            extract drafts + match quic-utls catalog vs profiles/
+  exp-stable       live emit x2 + assert stable identity / random entropy
+  export           dist/export for future product sync (lab-only prep)
   capture-listen   host UDP peek (dev)
   parse -Path f    offline parse
   list             targets.yaml ids
   build            host capture exe only
 
-Docs: docs/REPLAY_AND_EMIT.md · docs/PYTHON_VS_GO_CAPTURE.md
+Docs: docs/UTLS_PROFILE.md · docs/REPLAY_AND_EMIT.md · docs/PYTHON_VS_GO_CAPTURE.md
 "@
     }
     "build" { Build-CaptureHost; Write-Host "ok" }
@@ -273,5 +276,41 @@ Docs: docs/REPLAY_AND_EMIT.md · docs/PYTHON_VS_GO_CAPTURE.md
     }
     "compare" {
         python (Join-Path $Root "scripts\compare_profiles.py")
+    }
+    "unify" {
+        New-Item -ItemType Directory -Force -Path (Join-Path $Root "catalog\utls\_drafts") | Out-Null
+        New-Item -ItemType Directory -Force -Path (Join-Path $Root "fixtures") | Out-Null
+        Write-Host "=== sync curated catalog/utls ==="
+        $prev = $ErrorActionPreference
+        $ErrorActionPreference = "Continue"
+        try {
+            python (Join-Path $Root "scripts\sync_utls_catalog.py")
+            if ($LASTEXITCODE -ne 0) { throw "sync_utls_catalog failed" }
+            Write-Host "=== extract observation -> utls drafts ==="
+            python (Join-Path $Root "scripts\extract_utls_profile.py")
+            if ($LASTEXITCODE -ne 0) { throw "extract_utls_profile failed" }
+            Write-Host "=== match catalog/utls vs profiles/ (strict-all) ==="
+            python (Join-Path $Root "scripts\match_utls_catalog.py") `
+                --strict-all `
+                --json-out (Join-Path $Root "fixtures\utls-catalog-match.json")
+            if ($LASTEXITCODE -ne 0) { throw "unify: catalog match failed" }
+        } finally {
+            $ErrorActionPreference = $prev
+        }
+        Write-Host "unify OK - see docs/UTLS_PROFILE.md"
+    }
+    "exp-stable" {
+        & (Join-Path $Root "scripts\exp-stable-random.ps1")
+    }
+    "export" {
+        $prev = $ErrorActionPreference
+        $ErrorActionPreference = "Continue"
+        try {
+            python (Join-Path $Root "scripts\export_dist.py") --sync-first
+            if ($LASTEXITCODE -ne 0) { throw "export_dist failed" }
+        } finally {
+            $ErrorActionPreference = $prev
+        }
+        Write-Host "export OK -> dist/export (lab prep; product sync later)"
     }
 }

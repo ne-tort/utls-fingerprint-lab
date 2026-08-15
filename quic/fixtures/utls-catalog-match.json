@@ -1,0 +1,1318 @@
+{
+  "catalog_shorts": [
+    "aioquic",
+    "chrome",
+    "chromium-stale",
+    "curl-quiche",
+    "firefox",
+    "quic-go-datagram",
+    "quic-go",
+    "uquic-chrome-115",
+    "uquic-chrome-146",
+    "uquic-firefox-116",
+    "yandex"
+  ],
+  "profiles_total": 24,
+  "matched": 24,
+  "unmatched": 0,
+  "unmatched_ids": [],
+  "emit_ready_matches": 11,
+  "auth_capable_matches": 7,
+  "auth_note": "Demux quic.auth does not require fingerprint short; only chrome short is auth.capable for emit today",
+  "rows": [
+    {
+      "lab_id": "aioquic",
+      "matched_short": "aioquic",
+      "status": "observation_only",
+      "score": 135,
+      "reasons": [
+        "tp_set_exact",
+        "scid_match",
+        "dg_class",
+        "ref_hint"
+      ],
+      "emit_kind": "match_only",
+      "engine": null,
+      "auth_capable": false,
+      "auth_channel": null,
+      "requires_demux_fingerprint": false,
+      "markers": {
+        "has_0x11": true,
+        "has_0x3128": false,
+        "has_0x20": false,
+        "has_0x2ab2": false
+      },
+      "tp_set": [
+        "0x1",
+        "0x11",
+        "0x4",
+        "0x5",
+        "0x6",
+        "0x7",
+        "0x8",
+        "0x9",
+        "0xa",
+        "0xb",
+        "0xe",
+        "0xf"
+      ],
+      "datagram_count": 1,
+      "scid_len": 8,
+      "candidates": [
+        {
+          "short": "aioquic",
+          "score": 135,
+          "reasons": [
+            "tp_set_exact",
+            "scid_match",
+            "dg_class",
+            "ref_hint"
+          ]
+        }
+      ]
+    },
+    {
+      "lab_id": "chromeparrot",
+      "matched_short": "chrome",
+      "status": "emit_ready",
+      "score": 135,
+      "reasons": [
+        "tp_set_exact",
+        "scid_match",
+        "dg_class",
+        "ref_hint"
+      ],
+      "emit_kind": "sagernet_chrome_parrot",
+      "engine": {
+        "chrome_parrot": true,
+        "enable_datagrams": true,
+        "zero_length_scid": true
+      },
+      "auth_capable": true,
+      "auth_channel": "tp_grease_value",
+      "requires_demux_fingerprint": false,
+      "markers": {
+        "has_0x11": true,
+        "has_0x3128": true,
+        "has_0x20": true,
+        "has_0x2ab2": false
+      },
+      "tp_set": [
+        "0x1",
+        "0x11",
+        "0x20",
+        "0x3",
+        "0x3128",
+        "0x4",
+        "0x5",
+        "0x6",
+        "0x7",
+        "0x8",
+        "0x9",
+        "0xf",
+        "GREASE"
+      ],
+      "datagram_count": 2,
+      "scid_len": 0,
+      "candidates": [
+        {
+          "short": "chrome",
+          "score": 135,
+          "reasons": [
+            "tp_set_exact",
+            "scid_match",
+            "dg_class",
+            "ref_hint"
+          ]
+        }
+      ]
+    },
+    {
+      "lab_id": "chromeparrot-b",
+      "matched_short": "chrome",
+      "status": "emit_ready",
+      "score": 135,
+      "reasons": [
+        "tp_set_exact",
+        "scid_match",
+        "dg_class",
+        "ref_hint"
+      ],
+      "emit_kind": "sagernet_chrome_parrot",
+      "engine": {
+        "chrome_parrot": true,
+        "enable_datagrams": true,
+        "zero_length_scid": true
+      },
+      "auth_capable": true,
+      "auth_channel": "tp_grease_value",
+      "requires_demux_fingerprint": false,
+      "markers": {
+        "has_0x11": true,
+        "has_0x3128": true,
+        "has_0x20": true,
+        "has_0x2ab2": false
+      },
+      "tp_set": [
+        "0x1",
+        "0x11",
+        "0x20",
+        "0x3",
+        "0x3128",
+        "0x4",
+        "0x5",
+        "0x6",
+        "0x7",
+        "0x8",
+        "0x9",
+        "0xf",
+        "GREASE"
+      ],
+      "datagram_count": 2,
+      "scid_len": 0,
+      "candidates": [
+        {
+          "short": "chrome",
+          "score": 135,
+          "reasons": [
+            "tp_set_exact",
+            "scid_match",
+            "dg_class",
+            "ref_hint"
+          ]
+        }
+      ]
+    },
+    {
+      "lab_id": "chromium",
+      "matched_short": "chromium-stale",
+      "status": "observation_only",
+      "score": 115,
+      "reasons": [
+        "tp_set_exact",
+        "dg_class",
+        "ref_hint"
+      ],
+      "emit_kind": "match_only",
+      "engine": null,
+      "auth_capable": false,
+      "auth_channel": "tp_grease_value",
+      "requires_demux_fingerprint": false,
+      "markers": {
+        "has_0x11": false,
+        "has_0x3128": false,
+        "has_0x20": true,
+        "has_0x2ab2": false
+      },
+      "tp_set": [
+        "0x1",
+        "0x20",
+        "0x3",
+        "0x4",
+        "0x4752",
+        "0x5",
+        "0x6",
+        "0x7",
+        "0x8",
+        "0x9",
+        "0xf",
+        "0xff73db",
+        "GREASE"
+      ],
+      "datagram_count": 2,
+      "scid_len": null,
+      "candidates": [
+        {
+          "short": "chromium-stale",
+          "score": 115,
+          "reasons": [
+            "tp_set_exact",
+            "dg_class",
+            "ref_hint"
+          ]
+        }
+      ]
+    },
+    {
+      "lab_id": "chromiumfresh",
+      "matched_short": "chrome",
+      "status": "emit_ready",
+      "score": 135,
+      "reasons": [
+        "tp_set_exact",
+        "scid_match",
+        "dg_class",
+        "ref_hint"
+      ],
+      "emit_kind": "sagernet_chrome_parrot",
+      "engine": {
+        "chrome_parrot": true,
+        "enable_datagrams": true,
+        "zero_length_scid": true
+      },
+      "auth_capable": true,
+      "auth_channel": "tp_grease_value",
+      "requires_demux_fingerprint": false,
+      "markers": {
+        "has_0x11": true,
+        "has_0x3128": true,
+        "has_0x20": true,
+        "has_0x2ab2": false
+      },
+      "tp_set": [
+        "0x1",
+        "0x11",
+        "0x20",
+        "0x3",
+        "0x3128",
+        "0x4",
+        "0x5",
+        "0x6",
+        "0x7",
+        "0x8",
+        "0x9",
+        "0xf",
+        "GREASE"
+      ],
+      "datagram_count": 2,
+      "scid_len": 0,
+      "candidates": [
+        {
+          "short": "chrome",
+          "score": 135,
+          "reasons": [
+            "tp_set_exact",
+            "scid_match",
+            "dg_class",
+            "ref_hint"
+          ]
+        }
+      ]
+    },
+    {
+      "lab_id": "curlquiche",
+      "matched_short": "curl-quiche",
+      "status": "observation_only",
+      "score": 135,
+      "reasons": [
+        "tp_set_exact",
+        "scid_match",
+        "dg_class",
+        "ref_hint"
+      ],
+      "emit_kind": "match_only",
+      "engine": null,
+      "auth_capable": false,
+      "auth_channel": null,
+      "requires_demux_fingerprint": false,
+      "markers": {
+        "has_0x11": false,
+        "has_0x3128": false,
+        "has_0x20": false,
+        "has_0x2ab2": false
+      },
+      "tp_set": [
+        "0x1",
+        "0x3",
+        "0x4",
+        "0x5",
+        "0x6",
+        "0x7",
+        "0x8",
+        "0x9",
+        "0xa",
+        "0xb",
+        "0xc",
+        "0xf"
+      ],
+      "datagram_count": 1,
+      "scid_len": 20,
+      "candidates": [
+        {
+          "short": "curl-quiche",
+          "score": 135,
+          "reasons": [
+            "tp_set_exact",
+            "scid_match",
+            "dg_class",
+            "ref_hint"
+          ]
+        }
+      ]
+    },
+    {
+      "lab_id": "firefox",
+      "matched_short": "firefox",
+      "status": "observation_only",
+      "score": 115,
+      "reasons": [
+        "tp_set_exact",
+        "dg_class",
+        "ref_hint"
+      ],
+      "emit_kind": "match_only",
+      "engine": null,
+      "auth_capable": false,
+      "auth_channel": null,
+      "requires_demux_fingerprint": false,
+      "markers": {
+        "has_0x11": true,
+        "has_0x3128": false,
+        "has_0x20": true,
+        "has_0x2ab2": false
+      },
+      "tp_set": [
+        "0x1",
+        "0x11",
+        "0x20",
+        "0x4",
+        "0x5",
+        "0x6",
+        "0x7",
+        "0x8",
+        "0x9",
+        "0xb",
+        "0xe",
+        "0xf",
+        "GREASE"
+      ],
+      "datagram_count": 2,
+      "scid_len": 3,
+      "candidates": [
+        {
+          "short": "firefox",
+          "score": 115,
+          "reasons": [
+            "tp_set_exact",
+            "dg_class",
+            "ref_hint"
+          ]
+        }
+      ]
+    },
+    {
+      "lab_id": "hy2parrot",
+      "matched_short": "chrome",
+      "status": "emit_ready",
+      "score": 135,
+      "reasons": [
+        "tp_set_exact",
+        "scid_match",
+        "dg_class",
+        "ref_hint"
+      ],
+      "emit_kind": "sagernet_chrome_parrot",
+      "engine": {
+        "chrome_parrot": true,
+        "enable_datagrams": true,
+        "zero_length_scid": true
+      },
+      "auth_capable": true,
+      "auth_channel": "tp_grease_value",
+      "requires_demux_fingerprint": false,
+      "markers": {
+        "has_0x11": true,
+        "has_0x3128": true,
+        "has_0x20": true,
+        "has_0x2ab2": false
+      },
+      "tp_set": [
+        "0x1",
+        "0x11",
+        "0x20",
+        "0x3",
+        "0x3128",
+        "0x4",
+        "0x5",
+        "0x6",
+        "0x7",
+        "0x8",
+        "0x9",
+        "0xf",
+        "GREASE"
+      ],
+      "datagram_count": 2,
+      "scid_len": 0,
+      "candidates": [
+        {
+          "short": "chrome",
+          "score": 135,
+          "reasons": [
+            "tp_set_exact",
+            "scid_match",
+            "dg_class",
+            "ref_hint"
+          ]
+        }
+      ]
+    },
+    {
+      "lab_id": "hy2plain",
+      "matched_short": "quic-go-datagram",
+      "status": "emit_ready",
+      "score": 115,
+      "reasons": [
+        "tp_set_exact",
+        "dg_class",
+        "ref_hint"
+      ],
+      "emit_kind": "sagernet_plain",
+      "engine": {
+        "chrome_parrot": false,
+        "enable_datagrams": true,
+        "zero_length_scid": false
+      },
+      "auth_capable": false,
+      "auth_channel": "tp_grease_value",
+      "requires_demux_fingerprint": false,
+      "markers": {
+        "has_0x11": false,
+        "has_0x3128": false,
+        "has_0x20": true,
+        "has_0x2ab2": false
+      },
+      "tp_set": [
+        "0x1",
+        "0x20",
+        "0x3",
+        "0x4",
+        "0x5",
+        "0x6",
+        "0x7",
+        "0x8",
+        "0x9",
+        "0xb",
+        "0xe",
+        "0xf",
+        "GREASE"
+      ],
+      "datagram_count": 2,
+      "scid_len": null,
+      "candidates": [
+        {
+          "short": "quic-go-datagram",
+          "score": 115,
+          "reasons": [
+            "tp_set_exact",
+            "dg_class",
+            "ref_hint"
+          ]
+        }
+      ]
+    },
+    {
+      "lab_id": "quicgo",
+      "matched_short": "quic-go",
+      "status": "emit_ready",
+      "score": 115,
+      "reasons": [
+        "tp_set_exact",
+        "dg_class",
+        "ref_hint"
+      ],
+      "emit_kind": "sagernet_plain",
+      "engine": {
+        "chrome_parrot": false,
+        "enable_datagrams": false,
+        "zero_length_scid": false
+      },
+      "auth_capable": false,
+      "auth_channel": "tp_grease_value",
+      "requires_demux_fingerprint": false,
+      "markers": {
+        "has_0x11": false,
+        "has_0x3128": false,
+        "has_0x20": false,
+        "has_0x2ab2": false
+      },
+      "tp_set": [
+        "0x1",
+        "0x3",
+        "0x4",
+        "0x5",
+        "0x6",
+        "0x7",
+        "0x8",
+        "0x9",
+        "0xb",
+        "0xe",
+        "0xf",
+        "GREASE"
+      ],
+      "datagram_count": 2,
+      "scid_len": 4,
+      "candidates": [
+        {
+          "short": "quic-go",
+          "score": 115,
+          "reasons": [
+            "tp_set_exact",
+            "dg_class",
+            "ref_hint"
+          ]
+        }
+      ]
+    },
+    {
+      "lab_id": "quicgodg",
+      "matched_short": "quic-go-datagram",
+      "status": "emit_ready",
+      "score": 115,
+      "reasons": [
+        "tp_set_exact",
+        "dg_class",
+        "ref_hint"
+      ],
+      "emit_kind": "sagernet_plain",
+      "engine": {
+        "chrome_parrot": false,
+        "enable_datagrams": true,
+        "zero_length_scid": false
+      },
+      "auth_capable": false,
+      "auth_channel": "tp_grease_value",
+      "requires_demux_fingerprint": false,
+      "markers": {
+        "has_0x11": false,
+        "has_0x3128": false,
+        "has_0x20": true,
+        "has_0x2ab2": false
+      },
+      "tp_set": [
+        "0x1",
+        "0x20",
+        "0x3",
+        "0x4",
+        "0x5",
+        "0x6",
+        "0x7",
+        "0x8",
+        "0x9",
+        "0xb",
+        "0xe",
+        "0xf",
+        "GREASE"
+      ],
+      "datagram_count": 2,
+      "scid_len": 4,
+      "candidates": [
+        {
+          "short": "quic-go-datagram",
+          "score": 115,
+          "reasons": [
+            "tp_set_exact",
+            "dg_class",
+            "ref_hint"
+          ]
+        }
+      ]
+    },
+    {
+      "lab_id": "tuicparrot",
+      "matched_short": "chrome",
+      "status": "emit_ready",
+      "score": 135,
+      "reasons": [
+        "tp_set_exact",
+        "scid_match",
+        "dg_class",
+        "ref_hint"
+      ],
+      "emit_kind": "sagernet_chrome_parrot",
+      "engine": {
+        "chrome_parrot": true,
+        "enable_datagrams": true,
+        "zero_length_scid": true
+      },
+      "auth_capable": true,
+      "auth_channel": "tp_grease_value",
+      "requires_demux_fingerprint": false,
+      "markers": {
+        "has_0x11": true,
+        "has_0x3128": true,
+        "has_0x20": true,
+        "has_0x2ab2": false
+      },
+      "tp_set": [
+        "0x1",
+        "0x11",
+        "0x20",
+        "0x3",
+        "0x3128",
+        "0x4",
+        "0x5",
+        "0x6",
+        "0x7",
+        "0x8",
+        "0x9",
+        "0xf",
+        "GREASE"
+      ],
+      "datagram_count": 2,
+      "scid_len": 0,
+      "candidates": [
+        {
+          "short": "chrome",
+          "score": 135,
+          "reasons": [
+            "tp_set_exact",
+            "scid_match",
+            "dg_class",
+            "ref_hint"
+          ]
+        }
+      ]
+    },
+    {
+      "lab_id": "tuicplain",
+      "matched_short": "quic-go-datagram",
+      "status": "emit_ready",
+      "score": 115,
+      "reasons": [
+        "tp_set_exact",
+        "dg_class",
+        "ref_hint"
+      ],
+      "emit_kind": "sagernet_plain",
+      "engine": {
+        "chrome_parrot": false,
+        "enable_datagrams": true,
+        "zero_length_scid": false
+      },
+      "auth_capable": false,
+      "auth_channel": "tp_grease_value",
+      "requires_demux_fingerprint": false,
+      "markers": {
+        "has_0x11": false,
+        "has_0x3128": false,
+        "has_0x20": true,
+        "has_0x2ab2": false
+      },
+      "tp_set": [
+        "0x1",
+        "0x20",
+        "0x3",
+        "0x4",
+        "0x5",
+        "0x6",
+        "0x7",
+        "0x8",
+        "0x9",
+        "0xb",
+        "0xe",
+        "0xf",
+        "GREASE"
+      ],
+      "datagram_count": 2,
+      "scid_len": null,
+      "candidates": [
+        {
+          "short": "quic-go-datagram",
+          "score": 115,
+          "reasons": [
+            "tp_set_exact",
+            "dg_class",
+            "ref_hint"
+          ]
+        }
+      ]
+    },
+    {
+      "lab_id": "uquic115",
+      "matched_short": "uquic-chrome-115",
+      "status": "experimental",
+      "score": 135,
+      "reasons": [
+        "tp_set_exact",
+        "scid_match",
+        "dg_class",
+        "ref_hint"
+      ],
+      "emit_kind": "uquic_preset",
+      "engine": null,
+      "auth_capable": false,
+      "auth_channel": null,
+      "requires_demux_fingerprint": false,
+      "markers": {
+        "has_0x11": false,
+        "has_0x3128": true,
+        "has_0x20": true,
+        "has_0x2ab2": false
+      },
+      "tp_set": [
+        "0x1",
+        "0x20",
+        "0x3",
+        "0x3128",
+        "0x4",
+        "0x4752",
+        "0x5",
+        "0x6",
+        "0x7",
+        "0x8",
+        "0x9",
+        "0xf",
+        "0xff73db",
+        "GREASE"
+      ],
+      "datagram_count": 1,
+      "scid_len": 0,
+      "candidates": [
+        {
+          "short": "uquic-chrome-115",
+          "score": 135,
+          "reasons": [
+            "tp_set_exact",
+            "scid_match",
+            "dg_class",
+            "ref_hint"
+          ]
+        }
+      ]
+    },
+    {
+      "lab_id": "uquic146",
+      "matched_short": "uquic-chrome-146",
+      "status": "experimental",
+      "score": 135,
+      "reasons": [
+        "tp_set_exact",
+        "scid_match",
+        "dg_class",
+        "ref_hint"
+      ],
+      "emit_kind": "uquic_preset",
+      "engine": null,
+      "auth_capable": false,
+      "auth_channel": null,
+      "requires_demux_fingerprint": false,
+      "markers": {
+        "has_0x11": false,
+        "has_0x3128": true,
+        "has_0x20": true,
+        "has_0x2ab2": false
+      },
+      "tp_set": [
+        "0x1",
+        "0x20",
+        "0x3",
+        "0x3127",
+        "0x3128",
+        "0x4",
+        "0x5",
+        "0x6",
+        "0x7",
+        "0x8",
+        "0x9",
+        "0xf",
+        "0xff73db",
+        "GREASE"
+      ],
+      "datagram_count": 2,
+      "scid_len": 0,
+      "candidates": [
+        {
+          "short": "uquic-chrome-146",
+          "score": 135,
+          "reasons": [
+            "tp_set_exact",
+            "scid_match",
+            "dg_class",
+            "ref_hint"
+          ]
+        }
+      ]
+    },
+    {
+      "lab_id": "uquic146-b",
+      "matched_short": "uquic-chrome-146",
+      "status": "experimental",
+      "score": 135,
+      "reasons": [
+        "tp_set_exact",
+        "scid_match",
+        "dg_class",
+        "ref_hint"
+      ],
+      "emit_kind": "uquic_preset",
+      "engine": null,
+      "auth_capable": false,
+      "auth_channel": null,
+      "requires_demux_fingerprint": false,
+      "markers": {
+        "has_0x11": false,
+        "has_0x3128": true,
+        "has_0x20": true,
+        "has_0x2ab2": false
+      },
+      "tp_set": [
+        "0x1",
+        "0x20",
+        "0x3",
+        "0x3127",
+        "0x3128",
+        "0x4",
+        "0x5",
+        "0x6",
+        "0x7",
+        "0x8",
+        "0x9",
+        "0xf",
+        "0xff73db",
+        "GREASE"
+      ],
+      "datagram_count": 2,
+      "scid_len": 0,
+      "candidates": [
+        {
+          "short": "uquic-chrome-146",
+          "score": 135,
+          "reasons": [
+            "tp_set_exact",
+            "scid_match",
+            "dg_class",
+            "ref_hint"
+          ]
+        }
+      ]
+    },
+    {
+      "lab_id": "uquicff",
+      "matched_short": "uquic-firefox-116",
+      "status": "experimental",
+      "score": 135,
+      "reasons": [
+        "tp_set_exact",
+        "scid_match",
+        "dg_class",
+        "ref_hint"
+      ],
+      "emit_kind": "uquic_preset",
+      "engine": null,
+      "auth_capable": false,
+      "auth_channel": null,
+      "requires_demux_fingerprint": false,
+      "markers": {
+        "has_0x11": false,
+        "has_0x3128": false,
+        "has_0x20": true,
+        "has_0x2ab2": true
+      },
+      "tp_set": [
+        "0x1",
+        "0x20",
+        "0x2ab2",
+        "0x4",
+        "0x5",
+        "0x6",
+        "0x7",
+        "0x8",
+        "0x9",
+        "0xb",
+        "0xc",
+        "0xe",
+        "0xf",
+        "0xff73db",
+        "GREASE"
+      ],
+      "datagram_count": 1,
+      "scid_len": 3,
+      "candidates": [
+        {
+          "short": "uquic-firefox-116",
+          "score": 135,
+          "reasons": [
+            "tp_set_exact",
+            "scid_match",
+            "dg_class",
+            "ref_hint"
+          ]
+        }
+      ]
+    },
+    {
+      "lab_id": "uquicffa",
+      "matched_short": "uquic-firefox-116",
+      "status": "experimental",
+      "score": 135,
+      "reasons": [
+        "tp_set_exact",
+        "scid_match",
+        "dg_class",
+        "ref_hint"
+      ],
+      "emit_kind": "uquic_preset",
+      "engine": null,
+      "auth_capable": false,
+      "auth_channel": null,
+      "requires_demux_fingerprint": false,
+      "markers": {
+        "has_0x11": false,
+        "has_0x3128": false,
+        "has_0x20": true,
+        "has_0x2ab2": true
+      },
+      "tp_set": [
+        "0x1",
+        "0x20",
+        "0x2ab2",
+        "0x4",
+        "0x5",
+        "0x6",
+        "0x7",
+        "0x8",
+        "0x9",
+        "0xb",
+        "0xc",
+        "0xe",
+        "0xf",
+        "0xff73db",
+        "GREASE"
+      ],
+      "datagram_count": 1,
+      "scid_len": 3,
+      "candidates": [
+        {
+          "short": "uquic-firefox-116",
+          "score": 135,
+          "reasons": [
+            "tp_set_exact",
+            "scid_match",
+            "dg_class",
+            "ref_hint"
+          ]
+        }
+      ]
+    },
+    {
+      "lab_id": "uquicffb",
+      "matched_short": "uquic-firefox-116",
+      "status": "experimental",
+      "score": 135,
+      "reasons": [
+        "tp_set_exact",
+        "scid_match",
+        "dg_class",
+        "ref_hint"
+      ],
+      "emit_kind": "uquic_preset",
+      "engine": null,
+      "auth_capable": false,
+      "auth_channel": null,
+      "requires_demux_fingerprint": false,
+      "markers": {
+        "has_0x11": false,
+        "has_0x3128": false,
+        "has_0x20": true,
+        "has_0x2ab2": true
+      },
+      "tp_set": [
+        "0x1",
+        "0x20",
+        "0x2ab2",
+        "0x4",
+        "0x5",
+        "0x6",
+        "0x7",
+        "0x8",
+        "0x9",
+        "0xb",
+        "0xc",
+        "0xe",
+        "0xf",
+        "0xff73db",
+        "GREASE"
+      ],
+      "datagram_count": 1,
+      "scid_len": 3,
+      "candidates": [
+        {
+          "short": "uquic-firefox-116",
+          "score": 135,
+          "reasons": [
+            "tp_set_exact",
+            "scid_match",
+            "dg_class",
+            "ref_hint"
+          ]
+        }
+      ]
+    },
+    {
+      "lab_id": "uquicffc",
+      "matched_short": "uquic-firefox-116",
+      "status": "experimental",
+      "score": 135,
+      "reasons": [
+        "tp_set_exact",
+        "scid_match",
+        "dg_class",
+        "ref_hint"
+      ],
+      "emit_kind": "uquic_preset",
+      "engine": null,
+      "auth_capable": false,
+      "auth_channel": null,
+      "requires_demux_fingerprint": false,
+      "markers": {
+        "has_0x11": false,
+        "has_0x3128": false,
+        "has_0x20": true,
+        "has_0x2ab2": true
+      },
+      "tp_set": [
+        "0x1",
+        "0x20",
+        "0x2ab2",
+        "0x4",
+        "0x5",
+        "0x6",
+        "0x7",
+        "0x8",
+        "0x9",
+        "0xb",
+        "0xc",
+        "0xe",
+        "0xf",
+        "0xff73db",
+        "GREASE"
+      ],
+      "datagram_count": 1,
+      "scid_len": 3,
+      "candidates": [
+        {
+          "short": "uquic-firefox-116",
+          "score": 135,
+          "reasons": [
+            "tp_set_exact",
+            "scid_match",
+            "dg_class",
+            "ref_hint"
+          ]
+        }
+      ]
+    },
+    {
+      "lab_id": "winchrome",
+      "matched_short": "chrome",
+      "status": "emit_ready",
+      "score": 135,
+      "reasons": [
+        "tp_set_exact",
+        "scid_match",
+        "dg_class",
+        "ref_hint"
+      ],
+      "emit_kind": "sagernet_chrome_parrot",
+      "engine": {
+        "chrome_parrot": true,
+        "enable_datagrams": true,
+        "zero_length_scid": true
+      },
+      "auth_capable": true,
+      "auth_channel": "tp_grease_value",
+      "requires_demux_fingerprint": false,
+      "markers": {
+        "has_0x11": true,
+        "has_0x3128": true,
+        "has_0x20": true,
+        "has_0x2ab2": false
+      },
+      "tp_set": [
+        "0x1",
+        "0x11",
+        "0x20",
+        "0x3",
+        "0x3128",
+        "0x4",
+        "0x5",
+        "0x6",
+        "0x7",
+        "0x8",
+        "0x9",
+        "0xf",
+        "GREASE"
+      ],
+      "datagram_count": 2,
+      "scid_len": 0,
+      "candidates": [
+        {
+          "short": "chrome",
+          "score": 135,
+          "reasons": [
+            "tp_set_exact",
+            "scid_match",
+            "dg_class",
+            "ref_hint"
+          ]
+        }
+      ]
+    },
+    {
+      "lab_id": "winedge",
+      "matched_short": "chrome",
+      "status": "emit_ready",
+      "score": 135,
+      "reasons": [
+        "tp_set_exact",
+        "scid_match",
+        "dg_class",
+        "ref_hint"
+      ],
+      "emit_kind": "sagernet_chrome_parrot",
+      "engine": {
+        "chrome_parrot": true,
+        "enable_datagrams": true,
+        "zero_length_scid": true
+      },
+      "auth_capable": true,
+      "auth_channel": "tp_grease_value",
+      "requires_demux_fingerprint": false,
+      "markers": {
+        "has_0x11": true,
+        "has_0x3128": true,
+        "has_0x20": true,
+        "has_0x2ab2": false
+      },
+      "tp_set": [
+        "0x1",
+        "0x11",
+        "0x20",
+        "0x3",
+        "0x3128",
+        "0x4",
+        "0x5",
+        "0x6",
+        "0x7",
+        "0x8",
+        "0x9",
+        "0xf",
+        "GREASE"
+      ],
+      "datagram_count": 2,
+      "scid_len": 0,
+      "candidates": [
+        {
+          "short": "chrome",
+          "score": 135,
+          "reasons": [
+            "tp_set_exact",
+            "scid_match",
+            "dg_class",
+            "ref_hint"
+          ]
+        }
+      ]
+    },
+    {
+      "lab_id": "winyandex",
+      "matched_short": "yandex",
+      "status": "observation_only",
+      "score": 135,
+      "reasons": [
+        "tp_set_exact",
+        "scid_match",
+        "dg_class",
+        "ref_hint"
+      ],
+      "emit_kind": "match_only",
+      "engine": {
+        "chrome_parrot": false,
+        "enable_datagrams": true,
+        "zero_length_scid": true
+      },
+      "auth_capable": false,
+      "auth_channel": "tp_grease_value",
+      "requires_demux_fingerprint": false,
+      "markers": {
+        "has_0x11": true,
+        "has_0x3128": false,
+        "has_0x20": true,
+        "has_0x2ab2": false
+      },
+      "tp_set": [
+        "0x1",
+        "0x11",
+        "0x20",
+        "0x3",
+        "0x4",
+        "0x5",
+        "0x6",
+        "0x7",
+        "0x8",
+        "0x9",
+        "0xf",
+        "GREASE"
+      ],
+      "datagram_count": 2,
+      "scid_len": 0,
+      "candidates": [
+        {
+          "short": "yandex",
+          "score": 135,
+          "reasons": [
+            "tp_set_exact",
+            "scid_match",
+            "dg_class",
+            "ref_hint"
+          ]
+        }
+      ]
+    },
+    {
+      "lab_id": "yandex",
+      "matched_short": "yandex",
+      "status": "observation_only",
+      "score": 135,
+      "reasons": [
+        "tp_set_exact",
+        "scid_match",
+        "dg_class",
+        "ref_hint"
+      ],
+      "emit_kind": "match_only",
+      "engine": {
+        "chrome_parrot": false,
+        "enable_datagrams": true,
+        "zero_length_scid": true
+      },
+      "auth_capable": false,
+      "auth_channel": "tp_grease_value",
+      "requires_demux_fingerprint": false,
+      "markers": {
+        "has_0x11": true,
+        "has_0x3128": false,
+        "has_0x20": true,
+        "has_0x2ab2": false
+      },
+      "tp_set": [
+        "0x1",
+        "0x11",
+        "0x20",
+        "0x3",
+        "0x4",
+        "0x5",
+        "0x6",
+        "0x7",
+        "0x8",
+        "0x9",
+        "0xf",
+        "GREASE"
+      ],
+      "datagram_count": 2,
+      "scid_len": 0,
+      "candidates": [
+        {
+          "short": "yandex",
+          "score": 135,
+          "reasons": [
+            "tp_set_exact",
+            "scid_match",
+            "dg_class",
+            "ref_hint"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,165 @@
+{
+  "short": "chrome",
+  "family": "chrome",
+  "aliases": [
+    "chromeparrot",
+    "hy2-default",
+    "tuic-default"
+  ],
+  "status": "emit_ready",
+  "identity": {
+    "tp_id_set": [
+      "0x1",
+      "0x3",
+      "0x4",
+      "0x5",
+      "0x6",
+      "0x7",
+      "0x8",
+      "0x9",
+      "0xf",
+      "0x11",
+      "GREASE",
+      "0x20",
+      "0x3128"
+    ],
+    "tp_id_set_match": "set",
+    "markers": {
+      "has_0x11": true,
+      "has_0x3128": true,
+      "has_0x20": true,
+      "has_0x2ab2": false
+    },
+    "scid_len": 0,
+    "dcid_len": null,
+    "datagram_count_class": 2,
+    "ja4_hint": null
+  },
+  "emit": {
+    "emit_kind": "sagernet_chrome_parrot",
+    "engine": {
+      "chrome_parrot": true,
+      "enable_datagrams": true,
+      "zero_length_scid": true
+    },
+    "structured": {
+      "initial": {
+        "src_conn_id_length": 0,
+        "dest_conn_id_length": null,
+        "frame_policy": "chrome_random_frames"
+      },
+      "transport_parameters": {
+        "id_order": [
+          "0x1",
+          "0x3",
+          "0x4",
+          "0x5",
+          "0x6",
+          "0x7",
+          "0x8",
+          "0x9",
+          "0xf",
+          "0x11",
+          "GREASE",
+          "0x20",
+          "0x3128"
+        ],
+        "grease": {
+          "policy": "random_0_15_or_auth_8_15"
+        },
+        "value_policy": "chrome_parrot_defaults"
+      },
+      "client_hello": {
+        "policy": "engine_default",
+        "alpn": [
+          "h3"
+        ]
+      }
+    }
+  },
+  "random": {
+    "slots": [
+      {
+        "id": "tp_grease_id",
+        "layer": "transport_parameters",
+        "stable_for_identity": true,
+        "policy": "token_GREASE",
+        "notes": "Wire id is random large 31*N+27; identity stores GREASE token"
+      },
+      {
+        "id": "tp_grease_value",
+        "layer": "transport_parameters",
+        "stable_for_identity": false,
+        "policy": "random_0_15_or_auth_8_15",
+        "auth_overlay": true,
+        "notes": "Without quic_auth: random 0..15 bytes. With auth: HMAC tag len 8..15"
+      },
+      {
+        "id": "tp_order",
+        "layer": "transport_parameters",
+        "stable_for_identity": true,
+        "policy": "shuffle",
+        "notes": "Identity match uses set, not order"
+      },
+      {
+        "id": "tp_0x11_version_grease",
+        "layer": "transport_parameters",
+        "stable_for_identity": false,
+        "policy": "chrome_version_information_grease",
+        "notes": "Inside 0x11 available-versions; not a separate TP id"
+      },
+      {
+        "id": "ch_ech_grease",
+        "layer": "client_hello",
+        "stable_for_identity": false,
+        "policy": "ech_grease"
+      },
+      {
+        "id": "ch_ext_shuffle",
+        "layer": "client_hello",
+        "stable_for_identity": false,
+        "policy": "extension_shuffle"
+      },
+      {
+        "id": "initial_dcid",
+        "layer": "initial",
+        "stable_for_identity": false,
+        "policy": "random_bytes"
+      },
+      {
+        "id": "initial_pn",
+        "layer": "initial",
+        "stable_for_identity": false,
+        "policy": "engine_pn"
+      }
+    ]
+  },
+  "auth": {
+    "capable": true,
+    "channel": "tp_grease_value",
+    "crypto": "demux-quic-v1",
+    "value_len_min": 8,
+    "value_len_max": 15,
+    "emit_hook": "Config.ChromeGREASEValue",
+    "demux_match": {
+      "quic": {
+        "auth": true
+      }
+    },
+    "requires_demux_fingerprint": false,
+    "requires_emit_style": "chrome_parrot_grease",
+    "notes": "Demux: match {quic:{auth:true}} only — no transport_params / client fingerprint. Client emit today still needs ChromeParrot so GREASE is chrome-shaped + overridable."
+  },
+  "observation_refs": [
+    "chromeparrot",
+    "chromeparrot-b",
+    "chromiumfresh",
+    "winchrome",
+    "winedge",
+    "hy2parrot",
+    "tuicparrot"
+  ],
+  "notes": "Product default. Only short with auth.capable emit today.",
+  "format": "quic-utls-profile-v1",
+  "version": 1
+}

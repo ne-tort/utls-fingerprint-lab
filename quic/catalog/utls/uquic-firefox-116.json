@@ -1,0 +1,105 @@
+{
+  "short": "uquic-firefox-116",
+  "family": "uquic-firefox",
+  "aliases": [
+    "uquicff",
+    "uquicffa",
+    "uquicffb",
+    "uquicffc"
+  ],
+  "status": "experimental",
+  "identity": {
+    "tp_id_set": [
+      "0x1",
+      "0x4",
+      "0x5",
+      "0x6",
+      "0x7",
+      "0x8",
+      "0x9",
+      "0xb",
+      "0xc",
+      "0xe",
+      "0xf",
+      "GREASE",
+      "0x20",
+      "0x2ab2",
+      "0xff73db"
+    ],
+    "tp_id_set_match": "set",
+    "markers": {
+      "has_0x11": false,
+      "has_0x3128": false,
+      "has_0x20": true,
+      "has_0x2ab2": true
+    },
+    "scid_len": 3,
+    "dcid_len": null,
+    "datagram_count_class": 1,
+    "ja4_hint": null
+  },
+  "emit": {
+    "emit_kind": "uquic_preset",
+    "uquic_preset": "firefox-116",
+    "structured": {
+      "initial": {
+        "src_conn_id_length": 3,
+        "frame_policy": "engine_default"
+      },
+      "transport_parameters": {
+        "id_order": [
+          "0x1",
+          "0x4",
+          "0x5",
+          "0x6",
+          "0x7",
+          "0x8",
+          "0x9",
+          "0xb",
+          "0xc",
+          "0xe",
+          "0xf",
+          "GREASE",
+          "0x20",
+          "0x2ab2",
+          "0xff73db"
+        ],
+        "grease": {
+          "policy": "random_0_15"
+        },
+        "value_policy": "unspecified"
+      },
+      "client_hello": {
+        "policy": "unspecified",
+        "notes": "≠ live firefox short"
+      }
+    },
+    "notes": "ffa/b/c share identity; preset letter is emit detail only"
+  },
+  "random": {
+    "slots": [
+      {
+        "id": "tp_grease_value",
+        "layer": "transport_parameters",
+        "stable_for_identity": false,
+        "policy": "uquic"
+      }
+    ]
+  },
+  "auth": {
+    "capable": false,
+    "channel": null,
+    "demux_match": null,
+    "requires_demux_fingerprint": false,
+    "notes": "No stable auth overlay for this persona yet"
+  },
+  "observation_refs": [
+    "uquicff",
+    "uquicffa",
+    "uquicffb",
+    "uquicffc"
+  ],
+  "notes": "Lab uquic FF116 family. Marker 0x2ab2.",
+  "format": "quic-utls-profile-v1",
+  "version": 1
+}

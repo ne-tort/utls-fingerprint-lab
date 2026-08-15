@@ -9,6 +9,7 @@ quic/profiles/*/
 !quic/profiles/.gitkeep
 !quic/fixtures/
 quic/fixtures/**/initials/
+quic/fixtures/*.log
 certs/*.pem
 
 **/__pycache__/
