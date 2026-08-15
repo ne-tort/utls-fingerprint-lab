@@ -20,6 +20,26 @@ Date: 2026-08-15 · stack: sagernet ChromeParrot emitter + `_refs/uquic` tip
 | **curlquiche** | quiche | 1 | n | n | DCID=16 SCID=20; no google ids; `match_only` |
 | **chromium** | chrome (live) | **2** | **n** | **n** | `0x4752`+`0xff73db`; **≠ parrot**; zenika alpine image |
 
+## JA4 (`expected.ja4`, ja4plus)
+
+Filled with `./lab.ps1 ja4` (wraps `initials/*.bin` → UDP → ja4plus). Prefix `q` = QUIC.
+
+| id | ja4 |
+|----|-----|
+| chromeparrot | `q12d039900_55b375c5d22e_5cae79f3dfec` |
+| chromium | `q13d0311h3_55b375c5d22e_5a1f323ef56d` |
+| uquic146 | `q13d0311h3_55b375c5d22e_653d80c3fe9d` |
+| uquic115 | `q13d0310h3_55b375c5d22e_cd85d2d88918` |
+| uquicff | `q13d0314h3_55b375c5d22e_2d2a40a25571` |
+| quicgo | `q13d0313h3_55b375c5d22e_f902b76752af` |
+| aioquic | `q13d0307h3_55b375c5d22e_1cecd519fee8` |
+| curlquiche | `q13d0308h3_55b375c5d22e_f0736a66fa6b` |
+
+Notes: chromeparrot shows ALPN `00` in this capture (ja4plus reading); live chromium /
+uquic146 share the middle hash (`55b375c5d22e`) but differ on the third. Roundtrip
+`uquic146`/`uquic146-b` share identical JA4; chromeparrot×2 can differ (GREASE / CH
+noise) — structural compare stays GREASE-tolerant, JA4 does not.
+
 ## Roundtrip
 
 `./lab.ps1 roundtrip` — chromeparrot×2 and uquic146×2 → **structural_match=true**

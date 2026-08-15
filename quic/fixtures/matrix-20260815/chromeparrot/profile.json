@@ -1,4 +1,7 @@
 {
+  "emit": {
+    "emit_kind": "sagernet_chrome_parrot"
+  },
   "expected": {
     "clienthellod_id": "7c10c7fa5212550a",
     "dcid_len": null,
@@ -17,7 +20,7 @@
         ]
       }
     },
-    "ja4": "",
+    "ja4": "q12d039900_55b375c5d22e_5cae79f3dfec",
     "scid_len": null,
     "tp_id_set": [
       "0x1",
@@ -38,8 +41,7 @@
   "family": "chrome",
   "format": "quic-raw-initial-v1",
   "id": "chromeparrot",
-  "notes": "auto-promoted from capture; review family/expected (docs/CONTRACT.md)",
+  "notes": "auto-promoted from capture; review family/expected/emit (docs/REPLAY_AND_EMIT.md)",
   "track": "pinned",
-  "version": 0,
-  "emit": { "emit_kind": "sagernet_chrome_parrot" }
+  "version": 0
 }

@@ -43,8 +43,8 @@ clienthellod deadline fix.
 
 1. Optional **hy2 outbound** parity service (thin sing-box image + mixed inbound —
    pattern from demux-quic-auth; dump only, no `quic_auth`).
-2. ~~Live Chromium~~ — done (`lab.ps1 live -Client chromium`); ≠ parrot (see RESULTS).
-   Firefox H3 still wishlist; optional newer Chromium image for freshness re-check.
-3. JA4 `q…` fill (`expected.ja4`) — FoxIO BSD / `ja4plus` sidecar; not JA4+ in product.
+2. ~~Live Chromium~~ — done; ≠ parrot (see RESULTS). Firefox H3 still wishlist.
+3. ~~JA4 `q…` fill~~ — `./lab.ps1 ja4` (`compose.ja4.yaml` + ja4plus); store only
+   the string in `expected.ja4` (not JA4+ in product).
 4. Export shorts + (later) `lxquicfp` sync — still no sing-box code in this phase.
 5. Write raw `transport_parameters.bin` if clienthellod exposes extension payload.

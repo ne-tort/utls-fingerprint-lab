@@ -1,0 +1,14 @@
+# Overlay: annotate expected.ja4 on promoted profiles.
+# Usage: ./lab.ps1 ja4
+# Build context is parent (utls-fingerprint-docker) for _refs/ja4plus.
+
+services:
+  ja4-annotate:
+    build:
+      context: ..
+      dockerfile: quic/docker/Dockerfile.ja4plus
+    volumes:
+      - ./profiles:/work/profiles
+    working_dir: /work
+    command: ["--profiles", "/work/profiles"]
+    profiles: ["ja4"]

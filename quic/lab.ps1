@@ -2,7 +2,7 @@
 # Single entry for QUIC Initial fingerprint lab (Docker-first).
 param(
     [Parameter(Position = 0)]
-    [ValidateSet("build", "build-emitters", "capture-listen", "parse", "list", "up", "matrix", "roundtrip", "live", "compare", "help")]
+    [ValidateSet("build", "build-emitters", "capture-listen", "parse", "list", "up", "matrix", "roundtrip", "live", "ja4", "compare", "help")]
     [string]$Command = "help",
     [string]$Path = "",
     [string]$Listen = ":4433",
@@ -61,6 +61,7 @@ quic lab (Docker-first):
   matrix           emitters: parrot/uquic/aioquic + compare
   roundtrip        prove emit recipes reproduce structural identity
   live -Client X   live clients overlay (aioquic|curl|chromium|all)
+  ja4              annotate expected.ja4 via ja4plus (compose.ja4.yaml)
   compare          TP table over profiles/
   capture-listen   host UDP peek (dev)
   parse -Path f    offline parse
@@ -157,6 +158,9 @@ Docs: docs/REPLAY_AND_EMIT.md · docs/PYTHON_VS_GO_CAPTURE.md
             Start-Sleep -Seconds 2
         }
         python (Join-Path $Root "scripts\compare_profiles.py")
+    }
+    "ja4" {
+        Invoke-Docker compose -f compose.ja4.yaml --profile ja4 run --rm --build ja4-annotate
     }
     "compare" {
         python (Join-Path $Root "scripts\compare_profiles.py")

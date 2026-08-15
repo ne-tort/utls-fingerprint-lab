@@ -114,19 +114,8 @@ Optional later: a **spec extractor** (bins → JSON QUICSpec fields) — still s
 
 Shipped overlay: `compose.live-clients.yaml` (`emit-aioquic`, `emit-curl-quiche`, `emit-chromium-h3`).
 
-JA4 sidecar (optional, post-promote):
-
-```yaml
-services:
-  ja4-annotate:
-    build:
-      context: ..
-      dockerfile: quic/docker/Dockerfile.ja4plus
-    volumes: ["./captures:/work/captures:ro", "./profiles:/work/profiles"]
-    profiles: ["ja4"]
-    # Replace ENTRYPOINT with a small script that walks profiles/*/initials
-    # and writes expected.ja4 — keep FoxIO BSD path out of product.
-```
+JA4 sidecar (shipped): `compose.ja4.yaml` + `scripts/annotate_ja4.py` →
+`./lab.ps1 ja4` writes `expected.ja4` (`q…`) into each `profiles/*/profile.json`.
 
 ## Recommendation (actionable)
 
