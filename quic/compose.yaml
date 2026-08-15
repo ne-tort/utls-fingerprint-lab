@@ -73,6 +73,36 @@ services:
     command: ["-host", "capture", "-port", "4433", "-sni", "uquicff.fp.lab", "-preset", "firefox-116"]
     profiles: ["emit", "uquic", "matrix"]
 
+  # Python aioquic library persona
+  emit-aioquic:
+    build:
+      context: ./emitters/aioquic
+    depends_on: [capture]
+    networks: [fpnet]
+    command: ["--host", "capture", "--port", "4433", "--sni", "aioquic.fp.lab"]
+    profiles: ["emit", "libs", "matrix"]
+
+  # Roundtrip: second chromeparrot dial with distinct SNI
+  emit-chromeparrot-b:
+    image: debian:bookworm-slim
+    depends_on: [capture]
+    volumes:
+      - ./bin/emit-chromeparrot:/emit:ro
+    networks: [fpnet]
+    entrypoint: ["/emit"]
+    command: ["-host", "capture", "-port", "4433", "-sni", "chromeparrot-b.fp.lab", "-chrome-parrot"]
+    profiles: ["roundtrip"]
+
+  emit-uquic146-b:
+    image: debian:bookworm-slim
+    depends_on: [capture]
+    volumes:
+      - ./bin/emit-uquic:/emit:ro
+    networks: [fpnet]
+    entrypoint: ["/emit"]
+    command: ["-host", "capture", "-port", "4433", "-sni", "uquic146-b.fp.lab", "-preset", "chrome-146"]
+    profiles: ["roundtrip"]
+
 networks:
   fpnet:
     driver: bridge

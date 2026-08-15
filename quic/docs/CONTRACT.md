@@ -56,6 +56,23 @@ Dedup within a family: same `(ja4, tp_id_set, scid_len)` → one short; others a
 | GREASE values / ECH grease / shuffle order | **unstable** — do not pin bytes |
 | Absolute `initials/*.bin` | observation; emit rebuilds from spec |
 
+## Relation to emit (`quic-emit-spec-v1`)
+
+Observation alone **cannot** drive dial. Pair with an `emit` object (same
+`profile.json` or sibling `emit.json`):
+
+```json
+{
+  "format": "quic-raw-initial-v1",
+  "id": "chromeparrot",
+  "family": "chrome",
+  "expected": { "tp_id_set": ["0x11", "0x3128"], "scid_len": 0 },
+  "emit": { "emit_kind": "sagernet_chrome_parrot" }
+}
+```
+
+See [REPLAY_AND_EMIT.md](REPLAY_AND_EMIT.md).
+
 ## Relation to `utls-raw-clienthello-v1`
 
 Different `format` string. Sync tooling must refuse to embed a QUIC profile into

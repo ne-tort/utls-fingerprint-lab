@@ -20,32 +20,22 @@ TCP short names **нельзя** импортировать как QUIC-проф
 ## Quick start (Docker-first)
 
 ```powershell
-# once: clone refs (from lab root)
-#   git clone --depth 1 https://github.com/gaukas/clienthellod.git _refs/clienthellod
-#   git clone --depth 1 https://github.com/refraction-networking/uquic.git _refs/uquic
-
 cd quic
-./lab.ps1 build-emitters   # linux bins → bin/
-./lab.ps1 matrix           # capture + ChromeParrot / plain / uquic presets → compare
+./lab.ps1 build-emitters
+./lab.ps1 matrix           # parrot / uquic / aioquic → compare
+./lab.ps1 roundtrip        # prove emit recipes reproduce structurally
 ./lab.ps1 compare
 ```
 
-Host-only peek (dev):
+Docs: [REPLAY_AND_EMIT](docs/REPLAY_AND_EMIT.md) · [PYTHON_VS_GO](docs/PYTHON_VS_GO.md) ·
+[RESULTS_MATRIX](docs/RESULTS_MATRIX.md).
 
-```powershell
-./lab.ps1 capture-listen -Target manual
-./lab.ps1 parse -Path .\captures\...\initials\000.bin
-```
+## Emit vs observation
 
-## Emitters vs hy2
-
-| Emitter | What it is |
-|---------|------------|
-| `emit-chromeparrot` | sagernet `ChromeParrot` (same quic-go as hy2 default) |
-| `emit-quicgo-plain` | same binary, parrot off (= hy2 `disable_chrome_parrot`) |
-| `emit-uquic-*` | refraction uquic presets (Chrome_146/115, Firefox_116) |
-
-Full hy2 outbound JSON path can be added later (sing-box binary mount); ChromeParrot probe is the intentional wire-level twin of hy2 parrot for fingerprint dumps.
+Raw `initials/*.bin` = observation (match/diff). Dial in sing-box needs
+`emit` recipes (`quic-emit-spec-v1`) — see catalog/`emit_templates.json`.
+ChromeParrot/hy2 → `sagernet_chrome_parrot`; uquic → lab `uquic_preset` until
+ported; aioquic → `match_only`.
 
 ## Layout
 

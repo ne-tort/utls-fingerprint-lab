@@ -32,6 +32,8 @@
 - `clienthellod` — parser (watch: zero deadline = expired)
 - `uquic` — presets including **Chrome_146** (ML-KEM, 2 datagrams)
 - `ja4` — JA4/JA4Q docs for later `expected.ja4`
+- `aioquic` / `ja4plus` — Python client persona + optional JA4 sidecar
+  (see [PYTHON_VS_GO_CAPTURE.md](PYTHON_VS_GO_CAPTURE.md), `compose.live-clients.yaml`)
 
 ## Next lab steps
 

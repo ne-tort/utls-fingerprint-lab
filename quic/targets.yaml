@@ -58,6 +58,12 @@ targets:
     track: pinned
     notes: "uquic QUICFirefox_116 reference emit"
 
+  - id: aioquic
+    group: matrix
+    status: active
+    family: aioquic
+    notes: "Python aioquic emitter; emit_kind=match_only; has 0x11 without 0x3128"
+
   # --- optional hy2 outbound (sing-box binary mount; pattern from demux-quic-auth) ---
   - id: hy2-parrot
     group: parrot

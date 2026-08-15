@@ -258,13 +258,26 @@ func promoteProfile(profileDir, id string, datagrams [][]byte, gather *clienthel
 			hexID = gather.HexID
 		}
 	}
+	emit := map[string]any{"emit_kind": "match_only"}
 	switch {
-	case strings.Contains(id, "firefox") || strings.Contains(id, "uquicff"):
-		family = "firefox"
-	case strings.Contains(id, "quicgo") || strings.Contains(id, "plain"):
-		family = "quic-go"
-	case strings.Contains(id, "chrome") || strings.Contains(id, "parrot") || strings.Contains(id, "uquic"):
+	case id == "chromeparrot" || strings.Contains(id, "hy2parrot") || strings.HasPrefix(id, "chromeparrot"):
+		emit = map[string]any{"emit_kind": "sagernet_chrome_parrot"}
 		family = "chrome"
+	case id == "quicgo" || strings.Contains(id, "hy2plain") || strings.Contains(id, "plain"):
+		emit = map[string]any{"emit_kind": "sagernet_plain"}
+		family = "quic-go"
+	case strings.Contains(id, "uquic146"):
+		emit = map[string]any{"emit_kind": "uquic_preset", "uquic_preset": "chrome-146"}
+		family = "chrome"
+	case strings.Contains(id, "uquic115"):
+		emit = map[string]any{"emit_kind": "uquic_preset", "uquic_preset": "chrome-115"}
+		family = "chrome"
+	case strings.Contains(id, "uquicff") || strings.Contains(id, "firefox"):
+		emit = map[string]any{"emit_kind": "uquic_preset", "uquic_preset": "firefox-116"}
+		family = "firefox"
+	case strings.Contains(id, "aioquic"):
+		emit = map[string]any{"emit_kind": "match_only", "notes": "python aioquic"}
+		family = "aioquic"
 	}
 
 	prof := map[string]any{
@@ -281,7 +294,8 @@ func promoteProfile(profileDir, id string, datagrams [][]byte, gather *clienthel
 			"scid_len":        scidLen,
 			"header":          header,
 		},
-		"notes": "auto-promoted from capture; review family/expected (docs/CONTRACT.md)",
+		"emit":  emit,
+		"notes": "auto-promoted from capture; review family/expected/emit (docs/REPLAY_AND_EMIT.md)",
 	}
 	pb, _ := json.MarshalIndent(prof, "", "  ")
 	return os.WriteFile(filepath.Join(dir, "profile.json"), pb, 0o644)

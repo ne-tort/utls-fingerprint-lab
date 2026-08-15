@@ -1,0 +1,63 @@
+# Overlay / sketches for live library+browser Initial capture.
+# Usage (from quic/):
+#   docker compose -f compose.yaml -f compose.live-clients.yaml --profile live up \
+#     --abort-on-container-exit capture emit-aioquic
+#
+# Capture service stays the Go clienthellod path from compose.yaml.
+# These services only emit Initials (handshake completion optional).
+
+services:
+  emit-aioquic:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.aioquic
+    depends_on: [capture]
+    networks: [fpnet]
+    command:
+      - "--host"
+      - "capture"
+      - "--port"
+      - "4433"
+      - "--sni"
+      - "aioquic.fp.lab"
+    profiles: ["live", "aioquic"]
+
+  # curl built with quiche (Cloudflare). Image provides --http3 / --http3-only.
+  # Bare capture does not speak H3; curl still sends QUIC Initial before failing.
+  emit-curl-quiche:
+    image: alpine/curl-http3:latest
+    depends_on: [capture]
+    networks: [fpnet]
+    entrypoint: ["curl"]
+    command:
+      - "--http3-only"
+      - "--connect-timeout"
+      - "2"
+      - "-k"
+      - "--resolve"
+      - "curlquiche.fp.lab:4433:capture"
+      - "https://curlquiche.fp.lab:4433/"
+    profiles: ["live", "curl"]
+
+  # Alternative if alpine image is unavailable locally:
+  # image: rmarx/curl-http3:latest  (same flags)
+
+  # Headless Chromium forced onto QUIC for the lab origin.
+  # Needs a Chromium image with --no-sandbox suitable for Docker.
+  emit-chromium-h3:
+    image: zenika/alpine-chrome:latest
+    depends_on: [capture]
+    networks: [fpnet]
+    shm_size: "256mb"
+    entrypoint: ["chromium-browser"]
+    command:
+      - "--headless=new"
+      - "--no-sandbox"
+      - "--disable-gpu"
+      - "--enable-quic"
+      - "--quic-version=h3"
+      - "--origin-to-force-quic-on=chromium.fp.lab:4433"
+      - "--host-resolver-rules=MAP chromium.fp.lab capture"
+      - "--ignore-certificate-errors"
+      - "https://chromium.fp.lab:4433/"
+    profiles: ["live", "chromium"]

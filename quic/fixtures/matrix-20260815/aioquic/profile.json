@@ -1,6 +1,10 @@
 {
+  "emit": {
+    "emit_kind": "match_only",
+    "notes": "python aioquic"
+  },
   "expected": {
-    "clienthellod_id": "7c10c7fa5212550a",
+    "clienthellod_id": "a7d68b1e9ad51277",
     "dcid_len": null,
     "header": {
       "raw": {
@@ -11,9 +15,10 @@
           1
         ],
         "dest_conn_id_len": 8,
+        "source_conn_id_len": 8,
         "packet_number": [
           0,
-          7
+          8
         ]
       }
     },
@@ -21,25 +26,23 @@
     "scid_len": null,
     "tp_id_set": [
       "0x1",
-      "0x3",
       "0x4",
       "0x5",
       "0x6",
       "0x7",
       "0x8",
       "0x9",
+      "0xa",
+      "0xb",
+      "0xe",
       "0xf",
-      "0x11",
-      "GREASE",
-      "0x20",
-      "0x3128"
+      "0x11"
     ]
   },
-  "family": "chrome",
+  "family": "aioquic",
   "format": "quic-raw-initial-v1",
-  "id": "chromeparrot",
-  "notes": "auto-promoted from capture; review family/expected (docs/CONTRACT.md)",
+  "id": "aioquic",
+  "notes": "auto-promoted from capture; review family/expected/emit (docs/REPLAY_AND_EMIT.md)",
   "track": "pinned",
-  "version": 0,
-  "emit": { "emit_kind": "sagernet_chrome_parrot" }
+  "version": 0
 }

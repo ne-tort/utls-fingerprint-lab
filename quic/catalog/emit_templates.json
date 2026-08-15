@@ -1,0 +1,48 @@
+{
+  "chrome": {
+    "short": "chrome",
+    "emit": { "emit_kind": "sagernet_chrome_parrot" },
+    "expected": {
+      "tp_id_set_must_contain": ["0x11", "0x3128"],
+      "scid_len": 0,
+      "datagrams_typical": 2
+    },
+    "lab_ids": ["chromeparrot", "hy2-parrot"]
+  },
+  "quic-go": {
+    "short": "quic-go",
+    "emit": { "emit_kind": "sagernet_plain" },
+    "expected": {
+      "tp_id_set_must_not_contain": ["0x11", "0x3128"],
+      "datagrams_typical": 2
+    },
+    "lab_ids": ["quicgo", "hy2-plain"]
+  },
+  "firefox": {
+    "short": "firefox",
+    "emit": { "emit_kind": "uquic_preset", "uquic_preset": "firefox-116" },
+    "expected": {
+      "tp_id_set_must_not_contain": ["0x11", "0x3128"],
+      "datagrams_typical": 1
+    },
+    "lab_ids": ["uquicff"],
+    "product_status": "lab_only_until_structured_port"
+  },
+  "uquic-chrome-146": {
+    "short": "uquic-chrome-146",
+    "emit": { "emit_kind": "uquic_preset", "uquic_preset": "chrome-146" },
+    "expected": {
+      "tp_id_set_must_contain": ["0x3128"],
+      "tp_id_set_must_not_contain": ["0x11"],
+      "datagrams_typical": 2
+    },
+    "lab_ids": ["uquic146"],
+    "product_status": "reference_not_hy2_parrot"
+  },
+  "aioquic": {
+    "short": "aioquic",
+    "emit": { "emit_kind": "match_only" },
+    "lab_ids": ["aioquic"],
+    "product_status": "match_only"
+  }
+}

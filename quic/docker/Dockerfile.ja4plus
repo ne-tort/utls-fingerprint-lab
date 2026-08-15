@@ -1,0 +1,11 @@
+# Optional JA4 q… annotator (Python). Build from lab root:
+#   docker build -f quic/docker/Dockerfile.ja4plus -t quic-ja4plus .
+# Context must be utls-fingerprint-docker/ (parent of quic/), so _refs/ is visible.
+FROM python:3.12-slim-bookworm
+RUN apt-get update && apt-get install -y --no-install-recommends libpcap0.8 \
+    && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+COPY _refs/ja4plus /tmp/ja4plus
+RUN pip install --no-cache-dir /tmp/ja4plus scapy
+WORKDIR /work
+ENTRYPOINT ["python", "-c", "from ja4plus import JA4Fingerprinter; print('ja4plus ok')"]

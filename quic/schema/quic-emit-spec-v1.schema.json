@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "quic-emit-spec-v1",
+  "title": "quic-emit-spec-v1 — how to re-emit a QUIC Initial persona",
+  "type": "object",
+  "required": ["emit_kind"],
+  "properties": {
+    "emit_kind": {
+      "enum": [
+        "sagernet_chrome_parrot",
+        "sagernet_plain",
+        "uquic_preset",
+        "structured",
+        "match_only"
+      ]
+    },
+    "uquic_preset": {
+      "type": "string",
+      "description": "When emit_kind=uquic_preset: chrome-146|chrome-115|firefox-116|…"
+    },
+    "structured": {
+      "type": "object",
+      "description": "Future universal QUICSpec-like recipe for sagernet emit",
+      "properties": {
+        "src_conn_id_length": { "type": "integer" },
+        "dest_conn_id_length": { "type": "integer" },
+        "init_packet_number": { "type": "integer" },
+        "udp_datagram_min_size": { "type": "integer" },
+        "transport_parameters": {
+          "type": "object",
+          "description": "id hex → value encoding hint; grease policy separate"
+        },
+        "client_hello": {
+          "type": "object",
+          "description": "TLS1.3-only CH recipe: curves, key_shares, alpn, alps, ech grease…"
+        },
+        "frame_policy": {
+          "type": "string",
+          "description": "e.g. chrome_random_frames | single_crypto | custom"
+        }
+      }
+    },
+    "notes": { "type": "string" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "emit_kind": { "const": "uquic_preset" } } },
+      "then": { "required": ["uquic_preset"] }
+    }
+  ]
+}

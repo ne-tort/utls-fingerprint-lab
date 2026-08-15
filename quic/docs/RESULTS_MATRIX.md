@@ -15,9 +15,14 @@ Date: 2026-08-15 · stack: sagernet ChromeParrot emitter + `_refs/uquic` tip
 | **quicgo** | quic-go | 2 | n | n | no google ids; has `0xb`,`0xe` |
 | **uquic146** | chrome | 2 | **n** | Y | +`0x3127` initial RTT; **no** `0x11` version_information |
 | **uquic115** | chrome | 1 | **n** | Y | +`0x4752` google_quic_version; no `0x11` |
-| **uquicff** | firefox | 1 | n | n | +`0x2ab2`; different base set |
+| **aioquic** | aioquic | 1 | **Y** | **n** | has `0x11` but **no** `0x3128`; SCID len 8; `match_only` |
 
-## Conclusions
+## Roundtrip
+
+`./lab.ps1 roundtrip` — chromeparrot×2 and uquic146×2 → **structural_match=true**
+(GREASE-tolerant tp_id_set + datagram count).
+
+See [REPLAY_AND_EMIT.md](REPLAY_AND_EMIT.md).
 
 1. **Our ChromeParrot ≠ uquic Chrome_115/146 on TP id-set.** Demux match on
    `0x11`+`0x3128` (SPEC 087) uniquely hits **sagernet parrot**, not uquic
