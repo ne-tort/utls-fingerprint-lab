@@ -15,6 +15,7 @@ Date: 2026-08-15 · stack: sagernet ChromeParrot emitter + `_refs/uquic` tip
 | **quicgo** | quic-go | 2 | n | n | no google ids; has `0xb`,`0xe` |
 | **uquic146** | chrome | 2 | **n** | Y | +`0x3127` initial RTT; **no** `0x11` version_information |
 | **uquic115** | chrome | 1 | **n** | Y | +`0x4752` google_quic_version; no `0x11` |
+| **uquicff** | firefox | 1 | n | n | +`0x2ab2`; different base set |
 | **aioquic** | aioquic | 1 | **Y** | **n** | has `0x11` but **no** `0x3128`; SCID len 8; `match_only` |
 
 ## Roundtrip
@@ -23,6 +24,8 @@ Date: 2026-08-15 · stack: sagernet ChromeParrot emitter + `_refs/uquic` tip
 (GREASE-tolerant tp_id_set + datagram count).
 
 See [REPLAY_AND_EMIT.md](REPLAY_AND_EMIT.md).
+
+## Conclusions
 
 1. **Our ChromeParrot ≠ uquic Chrome_115/146 on TP id-set.** Demux match on
    `0x11`+`0x3128` (SPEC 087) uniquely hits **sagernet parrot**, not uquic
@@ -34,7 +37,8 @@ See [REPLAY_AND_EMIT.md](REPLAY_AND_EMIT.md).
 4. **Plain quic-go** cleanly separates from parrot (no `0x11`/`0x3128`) — good
    negative control / `quic-go` short.
 5. Multi-datagram (2) correlates with ML-KEM-sized CH (chromeparrot, uquic146);
-   firefox/uquic115 fit in one UDP datagram in this run.
+   firefox/uquic115/aioquic fit in one UDP datagram in this run.
+6. **aioquic ≠ chromeparrot** despite sharing `0x11` — needs `0x3128` for parrot match.
 
 ## Reproduce
 
