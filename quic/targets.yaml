@@ -104,7 +104,14 @@ targets:
     status: active
     family: chrome
     track: latest
-    notes: "chromedp/headless-shell; freshness vs zenika + parrot"
+    notes: "chromedp/headless-shell; freshness vs zenika + parrot; ≡ chromeparrot"
+
+  - id: yandex
+    group: live
+    status: active
+    family: chrome
+    track: latest
+    notes: "lab.ps1 live -Client yandex; 0x11 no 0x3128; ≠ chromeparrot"
 
   - id: firefox
     group: browsers

@@ -1,0 +1,46 @@
+{
+  "emit": {
+    "emit_kind": "match_only",
+    "notes": "live Yandex Browser H3; compare vs chromeparrot/chromiumfresh"
+  },
+  "expected": {
+    "clienthellod_id": "5ea28ca3c93c201a",
+    "dcid_len": null,
+    "header": {
+      "raw": {
+        "version": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "dest_conn_id_len": 8,
+        "packet_number": [
+          4
+        ]
+      }
+    },
+    "ja4": "q12d039900_55b375c5d22e_d0089e3dd656",
+    "scid_len": null,
+    "tp_id_set": [
+      "0x1",
+      "0x3",
+      "0x4",
+      "0x5",
+      "0x6",
+      "0x7",
+      "0x8",
+      "0x9",
+      "0xf",
+      "0x11",
+      "GREASE",
+      "0x20"
+    ]
+  },
+  "family": "chrome",
+  "format": "quic-raw-initial-v1",
+  "id": "yandex",
+  "notes": "auto-promoted from capture; review family/expected/emit (docs/REPLAY_AND_EMIT.md)",
+  "track": "pinned",
+  "version": 0
+}

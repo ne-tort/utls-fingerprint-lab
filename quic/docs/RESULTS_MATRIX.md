@@ -20,6 +20,7 @@ Date: 2026-08-15 · stack: sagernet ChromeParrot emitter + `_refs/uquic` tip
 | **curlquiche** | quiche | 1 | n | n | DCID=16 SCID=20; no google ids; `match_only` |
 | **chromium** | chrome (live) | **2** | **n** | **n** | zenika alpine; `0x4752`+`0xff73db`; **≠ parrot** |
 | **chromiumfresh** | chrome (live) | **2** | **Y** | **Y** | chromedp headless-shell; **≡ chromeparrot** |
+| **yandex** | chrome (live) | **2** | **Y** | **n** | Yandex Browser stable; `0x11`+`0x20`, **no `0x3128`** ≠ parrot |
 | **firefox** | firefox (live) | **2** | **Y** | **n** | ≠ uquicff (no `0x2ab2`; has `0x11`; 2 dg) |
 | **hy2parrot** | chrome | **2** | **Y** | **Y** | real hy2; **≡ chromeparrot** |
 | **hy2plain** | quic-go | 2 | n | n | +`0x20` datagram; **≡ quicgodg** |
@@ -37,6 +38,7 @@ Filled with `./lab.ps1 ja4` (wraps `initials/*.bin` → UDP → ja4plus). Prefix
 | chromeparrot | `q12d039900_55b375c5d22e_5cae79f3dfec` |
 | chromium | `q13d0311h3_55b375c5d22e_5a1f323ef56d` |
 | chromiumfresh | `q12d039900_55b375c5d22e_893e9c6f0878` |
+| yandex | `q12d039900_55b375c5d22e_d0089e3dd656` |
 | firefox | `q12d039900_55b375c5d22e_000000000000` (check decrypt completeness) |
 | uquic146 | `q13d0311h3_55b375c5d22e_653d80c3fe9d` |
 | uquic115 | `q13d0310h3_55b375c5d22e_cd85d2d88918` |
@@ -88,6 +90,9 @@ See [REPLAY_AND_EMIT.md](REPLAY_AND_EMIT.md).
 11. **Fresh Chromium (chromedp) ≡ chromeparrot**; zenika alpine Chromium is stale (≠ parrot).
 12. **Live Firefox ≠ uquic Firefox_116**: live has `0x11` + 2 datagrams; uquic has `0x2ab2` /
     `0xff73db` + 1 datagram — uquic is a fixed reference, not “current Firefox”.
+13. **Yandex Browser** (`./lab.ps1 live -Client yandex`): Chromium fork with `0x11`+`0x20`
+    and 2 datagrams, but **without `0x3128`** — closer to Chrome than zenika alpine, yet
+    **≠ chromeparrot / chromiumfresh** (demux parrot match on `0x11`+`0x3128` misses Yandex).
 
 ## Reproduce
 

@@ -14,6 +14,7 @@ services:
           - chromium.fp.lab
           - chromiumfresh.fp.lab
           - firefox.fp.lab
+          - yandex.fp.lab
 
   emit-aioquic:
     build:
@@ -84,3 +85,11 @@ services:
     networks: [fpnet]
     shm_size: "1gb"
     profiles: ["live", "firefox"]
+
+  emit-yandex-h3:
+    build:
+      context: ./emitters/yandex
+    depends_on: [capture]
+    networks: [fpnet]
+    shm_size: "512mb"
+    profiles: ["live", "yandex"]

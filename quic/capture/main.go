@@ -305,6 +305,12 @@ func promoteProfile(profileDir, id string, datagrams [][]byte, gather *clienthel
 			"notes":     "chromedp/headless-shell live H3; freshness vs zenika chromium + chromeparrot",
 		}
 		family = "chrome"
+	case strings.Contains(id, "yandex"):
+		emit = map[string]any{
+			"emit_kind": "match_only",
+			"notes":     "live Yandex Browser H3; compare vs chromeparrot/chromiumfresh",
+		}
+		family = "chrome"
 	case strings.Contains(id, "chromium"):
 		emit = map[string]any{
 			"emit_kind": "match_only",

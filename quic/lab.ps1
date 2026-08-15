@@ -7,7 +7,7 @@ param(
     [string]$Path = "",
     [string]$Listen = ":4433",
     [string]$Target = "unknown",
-    [ValidateSet("aioquic", "curl", "chromium", "chromiumfresh", "firefox", "all")]
+    [ValidateSet("aioquic", "curl", "chromium", "chromiumfresh", "firefox", "yandex", "all")]
     [string]$Client = "aioquic"
 )
 
@@ -70,7 +70,7 @@ quic lab (Docker-first):
   matrix           emitters: parrot/uquic/aioquic + compare
   matrix-ext       firefox 116A/B/C + quicgo-datagram
   roundtrip        prove emit recipes reproduce structural identity
-  live -Client X   aioquic|curl|chromium|chromiumfresh|firefox|all
+  live -Client X   aioquic|curl|chromium|chromiumfresh|firefox|yandex|all
   ja4              annotate expected.ja4 via ja4plus (compose.ja4.yaml)
   hy2              real hy2 outbound Initial vs chromeparrot/quicgo
   tuic             real tuic outbound Initial vs hy2 / chromeparrot
@@ -186,7 +186,8 @@ Docs: docs/REPLAY_AND_EMIT.md · docs/PYTHON_VS_GO_CAPTURE.md
             "chromium" { @("emit-chromium-h3") }
             "chromiumfresh" { @("emit-chromium-fresh") }
             "firefox" { @("emit-firefox-h3") }
-            "all" { @("emit-aioquic", "emit-curl-quiche", "emit-chromium-h3", "emit-chromium-fresh", "emit-firefox-h3") }
+            "yandex" { @("emit-yandex-h3") }
+            "all" { @("emit-aioquic", "emit-curl-quiche", "emit-chromium-h3", "emit-chromium-fresh", "emit-firefox-h3", "emit-yandex-h3") }
         }
         foreach ($svc in $svcs) {
             Write-Host "=== live $svc ==="

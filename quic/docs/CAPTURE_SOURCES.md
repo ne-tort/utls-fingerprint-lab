@@ -14,7 +14,8 @@ Ground truth: UDP Initial → Go `quic-capture` → `profiles/<id>/`.
 | aioquic | live | Python H3 |
 | curl+quiche | live | Cloudflare quiche |
 | Chromium zenika | live | older chrome-like |
-| Chromium chromedp | live `chromiumfresh` | fresher chrome |
+| Chromium chromedp | live `chromiumfresh` | fresher chrome ≡ parrot |
+| Yandex Browser | live `yandex` | Chromium fork; `0x11` without `0x3128` |
 | Firefox headless | live | vs uquicff |
 | hy2 / tuic outbound | `lab.ps1 hy2` / `tuic` | product stacks |
 
